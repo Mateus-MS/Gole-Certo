@@ -1,5 +1,4 @@
-module placeholder
-
+module github.com/Mateus-MS/Gole-Certo
 go 1.24.1
 
 require (

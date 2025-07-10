@@ -2,8 +2,9 @@ package app
 
 import (
 	"net/http"
-	middleware "placeholder/dev/features/middlewares"
 	"strings"
+
+	middleware "github.com/Mateus-MS/Gole-Certo/dev/features/middlewares"
 )
 
 type Router struct {

@@ -2,9 +2,10 @@ package routes_pages
 
 import (
 	"net/http"
-	app "placeholder/dev/features/app"
-	test_page_mob "placeholder/dev/frontend/desktop/pages/test_page"
 	"strings"
+
+	app "github.com/Mateus-MS/Gole-Certo/dev/features/app"
+	test_page_mob "github.com/Mateus-MS/Gole-Certo/dev/frontend/desktop/pages/test_page"
 )
 
 func init() {

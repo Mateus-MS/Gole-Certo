@@ -3,9 +3,11 @@ package main
 import (
 	"flag"
 	"net/http"
-	_ "placeholder/dev/backend/routes/pages"
-	"placeholder/dev/features/app"
-	"placeholder/dev/features/middlewares"
+
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/reseller"
+
+	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
+	"github.com/Mateus-MS/Gole-Certo/dev/features/middlewares"
 )
 
 func main() {
