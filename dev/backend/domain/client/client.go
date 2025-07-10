@@ -3,9 +3,9 @@ package client
 import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
 
 type BaseClient struct {
-	Email   fields.Email
-	Phone   fields.Phone
-	Address string
+	Email   fields.Email `json:"Email"`
+	Phone   fields.Phone `json:"Phone"`
+	Address string       `json:"Address"`
 }
 
 type Client interface {

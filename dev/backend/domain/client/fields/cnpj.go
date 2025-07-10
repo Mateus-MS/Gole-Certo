@@ -9,9 +9,9 @@ var ErrInvalidCNPJ = errors.New("invalid cnpj")
 
 // Constructor
 func NewCNPJ(value string) (cnpj CNPJ, err error) {
-	return NewField[CNPJTag](value, validateCNPJ, ErrInvalidCNPJ)
+	return NewField[CNPJTag](value, cnpj.Tag.Validate, ErrInvalidCNPJ)
 }
 
-func validateCNPJ(value string) bool {
+func (c CNPJTag) Validate(value string) bool {
 	return true
 }

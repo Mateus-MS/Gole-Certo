@@ -5,7 +5,7 @@ import (
 )
 
 type Company struct {
-	CNPJ fields.CNPJ
+	CNPJ fields.CNPJ `json:"cnpj"`
 
 	BaseClient
 

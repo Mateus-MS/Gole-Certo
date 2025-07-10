@@ -3,7 +3,7 @@ package client
 import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
 
 type Individual struct {
-	CPF fields.CPF
+	CPF fields.CPF `json:"CPF"`
 
 	BaseClient
 

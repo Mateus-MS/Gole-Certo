@@ -9,9 +9,9 @@ var ErrInvalidPhone = errors.New("invalid phone")
 
 // Constructor
 func NewPhone(value string) (phone Phone, err error) {
-	return NewField[PhoneTag](value, validatePhone, ErrInvalidPhone)
+	return NewField[PhoneTag](value, phone.Tag.Validate, ErrInvalidPhone)
 }
 
-func validatePhone(value string) bool {
+func (p PhoneTag) Validate(value string) bool {
 	return true
 }
