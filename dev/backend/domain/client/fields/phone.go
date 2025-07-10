@@ -1,35 +1,17 @@
 package fields
 
-import (
-	"errors"
-)
+import "errors"
 
-type Phone struct {
-	value string
-}
+type PhoneTag struct{}
+type Phone = Field[PhoneTag]
 
-var ErrorInvalidPhone = errors.New("invalid phone")
+var ErrInvalidPhone = errors.New("invalid phone")
 
+// Constructor
 func NewPhone(value string) (phone Phone, err error) {
-	phone.set(value)
-
-	if !phone.validate() {
-		return phone, ErrorInvalidPhone
-	}
-
-	return phone, nil
+	return NewField[PhoneTag](value, validatePhone, ErrInvalidPhone)
 }
 
-func (c *Phone) Get() string {
-	return c.value
-}
-
-// Since the value can't change it will be validate only on this package
-func (c *Phone) validate() bool {
+func validatePhone(value string) bool {
 	return true
-}
-
-// The set method is only available on this package for immutability
-func (c *Phone) set(value string) {
-	c.value = value
 }

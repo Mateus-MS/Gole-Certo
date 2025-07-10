@@ -1,35 +1,17 @@
 package fields
 
-import (
-	"errors"
-)
+import "errors"
 
-type Email struct {
-	value string
-}
+type EmailTag struct{}
+type Email = Field[EmailTag]
 
-var ErrorInvalidEmail = errors.New("invalid email")
+var ErrInvalidEmail = errors.New("invalid email")
 
+// Constructor
 func NewEmail(value string) (email Email, err error) {
-	email.set(value)
-
-	if !email.validate() {
-		return email, ErrorInvalidEmail
-	}
-
-	return email, nil
+	return NewField[EmailTag](value, validateEmail, ErrInvalidEmail)
 }
 
-func (e *Email) Get() string {
-	return e.value
-}
-
-// Since the value can't change it will be validate only on this package
-func (e *Email) validate() bool {
+func validateEmail(value string) bool {
 	return true
-}
-
-// The set method is only available on this package for immutability
-func (e *Email) set(value string) {
-	e.value = value
 }

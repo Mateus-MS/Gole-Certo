@@ -1,35 +1,17 @@
 package fields
 
-import (
-	"errors"
-)
+import "errors"
 
-type CNPJ struct {
-	value string
-}
+type CNPJTag struct{}
+type CNPJ = Field[CNPJTag]
 
-var ErrorInvalidCNPJ = errors.New("invalid cnpj")
+var ErrInvalidCNPJ = errors.New("invalid cnpj")
 
+// Constructor
 func NewCNPJ(value string) (cnpj CNPJ, err error) {
-	cnpj.set(value)
-
-	if !cnpj.validate() {
-		return cnpj, ErrorInvalidCNPJ
-	}
-
-	return cnpj, nil
+	return NewField[CNPJTag](value, validateCNPJ, ErrInvalidCNPJ)
 }
 
-func (c *CNPJ) Get() string {
-	return c.value
-}
-
-// Since the value can't change it will be validate only on this package
-func (c *CNPJ) validate() bool {
+func validateCNPJ(value string) bool {
 	return true
-}
-
-// The set method is only available on this package for immutability
-func (c *CNPJ) set(value string) {
-	c.value = value
 }
