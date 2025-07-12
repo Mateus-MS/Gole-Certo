@@ -10,6 +10,6 @@ type CompanyRepository struct {
 	Db *sql.DB
 }
 
-func (db *CompanyRepository) Register(client client.Company) (err error) {
+func (db *CompanyRepository) Save(client client.Company) (err error) {
 	return nil
 }

@@ -15,15 +15,15 @@ func init() {
 
 func registerSellerRoute(w http.ResponseWriter, r *http.Request) {
 	var err error
-	var clientRaw client.Individual
+	var client client.Individual
 
-	if err = json.NewDecoder(r.Body).Decode(&clientRaw); err != nil {
+	if err = json.NewDecoder(r.Body).Decode(&client); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	// Re-send the json just for test :P
-	if err := json.NewEncoder(w).Encode(clientRaw); err != nil {
+	if err := json.NewEncoder(w).Encode(client); err != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}
 }
