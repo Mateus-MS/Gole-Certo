@@ -8,7 +8,7 @@ type Individual struct {
 	Age        int `json:"Age" bson:"age"`
 }
 
-func NewIndividual(cpfRaw, emailRaw, phoneRaw, address string, age int) (Individual, error) {
+func NewIndividual(cpfRaw, emailRaw string, age int, phoneRaw, address, contactNames []string) (Individual, error) {
 	var (
 		base   BaseClient
 		client Individual
@@ -21,7 +21,7 @@ func NewIndividual(cpfRaw, emailRaw, phoneRaw, address string, age int) (Individ
 	}
 
 	// Create the base client
-	if base, err = NewBaseClient(emailRaw, phoneRaw, address); err != nil {
+	if base, err = NewBaseClient(emailRaw, phoneRaw, address, contactNames); err != nil {
 		return client, err
 	}
 
@@ -30,6 +30,30 @@ func NewIndividual(cpfRaw, emailRaw, phoneRaw, address string, age int) (Individ
 		BaseClient: base,
 		Age:        age,
 	}, nil
+}
+
+func (c *Individual) IsValid() bool {
+	if c.CPF.Get() == "" {
+		return false
+	}
+
+	if c.Email.Get() == "" {
+		return false
+	}
+
+	if len(c.Phone) < 1 {
+		return false
+	}
+
+	if len(c.Address) < 1 {
+		return false
+	}
+
+	if len(c.ContactNames) < 1 {
+		return false
+	}
+
+	return true
 }
 
 func (c *Individual) GetIdentifier() string {

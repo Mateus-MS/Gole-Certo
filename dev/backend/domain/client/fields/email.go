@@ -1,6 +1,9 @@
 package fields
 
-import "errors"
+import (
+	"errors"
+	"regexp"
+)
 
 type EmailTag struct{}
 type Email = Field[EmailTag]
@@ -13,5 +16,6 @@ func NewEmail(value string) (email Email, err error) {
 }
 
 func (e EmailTag) Validate(value string) bool {
-	return true
+	var re = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
+	return re.MatchString(value)
 }

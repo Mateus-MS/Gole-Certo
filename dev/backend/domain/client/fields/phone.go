@@ -1,6 +1,9 @@
 package fields
 
-import "errors"
+import (
+	"errors"
+	"regexp"
+)
 
 type PhoneTag struct{}
 type Phone = Field[PhoneTag]
@@ -13,5 +16,6 @@ func NewPhone(value string) (phone Phone, err error) {
 }
 
 func (p PhoneTag) Validate(value string) bool {
-	return true
+	var re = regexp.MustCompile(`^(\+351|00351)?(9[1236]\d{7}|2\d{8})$`)
+	return re.MatchString(value)
 }
