@@ -4,7 +4,7 @@ import (
 	"flag"
 	"net/http"
 
-	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/reseller"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/client"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/middlewares"

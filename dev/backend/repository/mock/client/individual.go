@@ -1,4 +1,4 @@
-package DAO
+package mock
 
 import (
 	"database/sql"
@@ -10,6 +10,6 @@ type MockIndividualRepository struct {
 	DB *sql.DB
 }
 
-func (db *MockIndividualRepository) Register(client client.Individual) (err error) {
+func (db *MockIndividualRepository) Save(client client.Individual) (err error) {
 	return nil
 }

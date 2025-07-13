@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/bsontype"
 )
 
 type Validator interface {
@@ -45,4 +48,23 @@ func (f *Field[T]) UnmarshalJSON(data []byte) error {
 
 func (f Field[T]) MarshalJSON() ([]byte, error) {
 	return json.Marshal(f.value)
+}
+
+// Override the default bson's methods to use with mongoDB
+func (f *Field[T]) UnmarshalBSONValue(t bsontype.Type, data []byte) error {
+	var raw string
+	if err := bson.UnmarshalValue(t, data, &raw); err != nil {
+		return err
+	}
+
+	if !f.Tag.Validate(raw) {
+		return fmt.Errorf("invalid value for %T: %s", f.Tag, raw)
+	}
+
+	f.value = raw
+	return nil
+}
+
+func (f Field[T]) MarshalBSONValue() (bsontype.Type, []byte, error) {
+	return bson.MarshalValue(f.value)
 }

@@ -3,12 +3,15 @@ package client
 import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
 
 type BaseClient struct {
-	Email   fields.Email `json:"Email"`
-	Phone   fields.Phone `json:"Phone"`
-	Address string       `json:"Address"`
+	// I'm not a fan of using a `type` field here, but till i think in something better, will be like this
+	Type    string       `json:"Type"    bson:"type"`
+	Email   fields.Email `json:"Email"   bson:"email"`
+	Phone   fields.Phone `json:"Phone"   bson:"phone"`
+	Address string       `json:"Address" bson:"address"`
 }
 
 type Client interface {
+	GetIdentifier() string
 }
 
 func NewBaseClient(emailRaw, phoneRaw, address string) (BaseClient, error) {

@@ -1,17 +1,21 @@
 package app
 
 import (
-	"database/sql"
 	"net/http"
 	"sync"
+
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/persistence"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var app_instance *Application
 var app_once sync.Once
 
 type Application struct {
-	DB     *sql.DB
-	Router *Router
+	DB           *mongo.Client
+	Router       *Router
+	Repositories *repository.Repositories
 }
 
 func GetInstance() *Application {
@@ -28,9 +32,16 @@ func newApplication() *Application {
 	// Serve static files from the "frontend" directory
 	router.Mux.Handle("/frontend/", http.StripPrefix("/frontend/", http.FileServer(http.Dir("dev/frontend"))))
 
+	db := StartDBConnection()
+
+	repositories := repository.Repositories{
+		Client: persistence.ClientRepository{DB: db},
+	}
+
 	// Return the application instance
 	return &Application{
-		DB:     StartDBConnection(),
-		Router: &router,
+		DB:           db,
+		Router:       &router,
+		Repositories: &repositories,
 	}
 }

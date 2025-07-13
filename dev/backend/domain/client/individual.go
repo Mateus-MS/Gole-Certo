@@ -3,11 +3,9 @@ package client
 import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
 
 type Individual struct {
-	CPF fields.CPF `json:"CPF"`
-
-	BaseClient
-
-	Age int
+	CPF        fields.CPF `json:"CPF" bson:"_id"`
+	BaseClient `bson:",inline"`
+	Age        int `json:"Age" bson:"age"`
 }
 
 func NewIndividual(cpfRaw, emailRaw, phoneRaw, address string, age int) (Individual, error) {
@@ -32,4 +30,8 @@ func NewIndividual(cpfRaw, emailRaw, phoneRaw, address string, age int) (Individ
 		BaseClient: base,
 		Age:        age,
 	}, nil
+}
+
+func (c *Individual) GetIdentifier() string {
+	return c.CPF.Get()
 }

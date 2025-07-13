@@ -36,3 +36,7 @@ func NewCompany(cnpjRaw, emailRaw, phoneRaw, address, fantasyName, legalName str
 		LegalName:   legalName,
 	}, nil
 }
+
+func (c *Company) GetIdentifier() string {
+	return c.CNPJ.Get()
+}

@@ -1,4 +1,4 @@
-package DAO
+package mock
 
 import (
 	"database/sql"
