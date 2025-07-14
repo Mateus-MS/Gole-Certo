@@ -36,9 +36,9 @@ func newApplication() *Application {
 	db := StartDBConnection()
 
 	repositories := repository.Repositories{
-		Client:  &persistence.ClientRepository{DB: db},
-		Product: &mock.ProductRepository{DB: db},
-		Order:   &persistence.OrderRepository{DB: db},
+		Client:  &persistence.ClientRepository{Collection: db.Database("goleCertoDB").Collection("clients")},
+		Product: &mock.ProductRepository{Collection: db.Database("goleCertoDB").Collection("products")},
+		Order:   &persistence.OrderRepository{Collection: db.Database("goleCertoDB").Collection("orders")},
 	}
 
 	// Return the application instance

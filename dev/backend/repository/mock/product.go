@@ -8,12 +8,12 @@ import (
 )
 
 type ProductRepository struct {
-	DB *mongo.Client
+	Collection *mongo.Collection
 }
 
 var TestError = errors.New("Test")
 
-func (rep *ProductRepository) Search(identifier string) (prod product.Product, err error) {
+func (repo *ProductRepository) Search(identifier string) (prod product.Product, err error) {
 	return prod, err
 	// return prod, TestError
 }

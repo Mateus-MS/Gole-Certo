@@ -10,13 +10,12 @@ import (
 )
 
 type ClientRepository struct {
-	DB *mongo.Client
+	// DB *mongo.Client --- Removing, if needed add aggain later :P
+	Collection *mongo.Collection
 }
 
-func (db *ClientRepository) Save(client client.Client) (err error) {
-	collection := db.DB.Database("goleCertoDB").Collection("clients")
-
-	if _, err = collection.InsertOne(context.TODO(), client); err != nil {
+func (repo *ClientRepository) Save(client client.Client) (err error) {
+	if _, err = repo.Collection.InsertOne(context.TODO(), client); err != nil {
 		return err
 	}
 
@@ -31,17 +30,14 @@ var (
 	ErrorMissingTypeField   = errors.New("the queryied document doesn't has the type field")
 )
 
-func (db *ClientRepository) Search(identifier string) (c client.Client, err error) {
-	// TODO: Store the collection inside `db`
-	collection := db.DB.Database("goleCertoDB").Collection("clients")
-
+func (repo *ClientRepository) Search(identifier string) (c client.Client, err error) {
 	// The query
 	filter := bson.M{"_id": identifier}
 
 	var raw bson.Raw
 
 	// Query in DB
-	if err = collection.FindOne(context.TODO(), filter).Decode(&raw); err != nil {
+	if err = repo.Collection.FindOne(context.TODO(), filter).Decode(&raw); err != nil {
 		return c, err
 	}
 

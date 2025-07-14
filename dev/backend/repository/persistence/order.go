@@ -8,13 +8,11 @@ import (
 )
 
 type OrderRepository struct {
-	DB *mongo.Client
+	Collection *mongo.Collection
 }
 
-func (rep *OrderRepository) Save(ord order.Order) (err error) {
-	collection := rep.DB.Database("goleCertoDB").Collection("orders")
-
-	if _, err = collection.InsertOne(context.TODO(), ord); err != nil {
+func (repo *OrderRepository) Save(ord order.Order) (err error) {
+	if _, err = repo.Collection.InsertOne(context.TODO(), ord); err != nil {
 		return err
 	}
 
