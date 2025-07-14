@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/client"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/order"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/pages"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/middlewares"

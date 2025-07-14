@@ -10,11 +10,11 @@ import (
 )
 
 func init() {
-	app.GetInstance().Router.RegisterRoutes("/api/client", "GET", searchSellerRoute)
-	println("Route registered: searchSeller")
+	app.GetInstance().Router.RegisterRoutes("/api/client", "GET", searchClientRoute)
+	println("Route registered: searchClient")
 }
 
-func searchSellerRoute(w http.ResponseWriter, r *http.Request) {
+func searchClientRoute(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var client client.Client
 	var identifierRaw string
@@ -31,6 +31,7 @@ func searchSellerRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(client); err != nil {
 		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
 	}

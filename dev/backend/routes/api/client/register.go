@@ -10,20 +10,22 @@ import (
 )
 
 func init() {
-	app.GetInstance().Router.RegisterRoutes("/api/client", "POST", registerSellerRoute)
-	println("Route registered: registerSeller")
+	app.GetInstance().Router.RegisterRoutes("/api/client", "POST", registerClientRoute)
+	println("Route registered: registerClient")
 }
 
-func registerSellerRoute(w http.ResponseWriter, r *http.Request) {
+func registerClientRoute(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var typeRaw string
 	var cli client.Client
 
+	// Get the type received from the param
 	if typeRaw, err = utils.GetQueryParam(r, "type", true, ""); err != nil {
 		http.Error(w, "Request must include the client type in parameters", http.StatusBadRequest)
 		return
 	}
 
+	// Unmarshal the JSON into the struct accordantly with the type
 	if typeRaw == "individual" {
 		var ind client.Individual
 
@@ -52,6 +54,7 @@ func registerSellerRoute(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Save in DB
 	if err = app.GetInstance().Repositories.Client.Save(cli); err != nil {
 		http.Error(w, "Failed to save the client into DB: "+err.Error(), http.StatusInternalServerError)
 		return

@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/mock"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/persistence"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -35,7 +36,9 @@ func newApplication() *Application {
 	db := StartDBConnection()
 
 	repositories := repository.Repositories{
-		Client: persistence.ClientRepository{DB: db},
+		Client:  &persistence.ClientRepository{DB: db},
+		Product: &mock.ProductRepository{DB: db},
+		Order:   &persistence.OrderRepository{DB: db},
 	}
 
 	// Return the application instance
