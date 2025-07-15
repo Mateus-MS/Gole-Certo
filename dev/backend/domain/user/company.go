@@ -1,46 +1,42 @@
-package client
+package user
 
-import (
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
-)
+import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user/fields"
 
 type Company struct {
 	CNPJ fields.CNPJ `json:"CNPJ" bson:"_id"`
 
-	BaseClient `bson:",inline"`
+	BaseUser `bson:",inline"`
 
 	FantasyName fields.FantasyName `json:"FantasyName" bson:"fantasyName"`
 	LegalName   fields.LegalName   `json:"LegalName"   bson:"legalName"`
 }
 
-func NewCompany(cnpjRaw, emailRaw, fantasyNameRaw, legalNameRaw string, phoneRaw, address, contactNames []string) (Company, error) {
+func NewCompany(cnpjRaw, emailRaw, fantasyNameRaw, legalNameRaw string, phoneRaw, address, contactNames []string) (comp Company, err error) {
 	var (
-		base        BaseClient
-		client      Company
+		base        BaseUser
 		cnpj        fields.CNPJ
-		err         error
 		fantasyName fields.FantasyName
 		legalName   fields.LegalName
 	)
 
 	if cnpj, err = fields.NewCNPJ(cnpjRaw); err != nil {
-		return client, fields.ErrInvalidCNPJ
+		return comp, fields.ErrInvalidCNPJ
 	}
 
 	if fantasyName, err = fields.NewFantasyName(fantasyNameRaw); err != nil {
-		return client, fields.ErrInvalidName
+		return comp, fields.ErrInvalidName
 	}
 	if legalName, err = fields.NewLegalName(legalNameRaw); err != nil {
-		return client, fields.ErrInvalidName
+		return comp, fields.ErrInvalidName
 	}
 
-	if base, err = NewBaseClient(emailRaw, phoneRaw, address, contactNames); err != nil {
-		return client, err
+	if base, err = NewBaseUser(emailRaw, phoneRaw, address, contactNames); err != nil {
+		return comp, err
 	}
 
 	return Company{
 		CNPJ:        cnpj,
-		BaseClient:  base,
+		BaseUser:    base,
 		FantasyName: fantasyName,
 		LegalName:   legalName,
 	}, nil

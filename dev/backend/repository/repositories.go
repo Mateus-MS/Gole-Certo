@@ -1,16 +1,16 @@
 package repository
 
 import (
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/order"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/product"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user"
 )
 
 // TODO: Seems strange to inittiate the interfaces here
 
-type ClientRepository interface {
-	Save(cli client.Client) (err error)
-	Search(identifier string) (c client.Client, err error)
+type UserRepository interface {
+	Save(cli user.User) (err error)
+	Search(identifier string) (c user.User, err error)
 }
 
 type ProductRepository interface {
@@ -22,7 +22,7 @@ type OrderRepository interface {
 }
 
 type Repositories struct {
-	Client  ClientRepository
+	User    UserRepository
 	Product ProductRepository
 	Order   OrderRepository
 }

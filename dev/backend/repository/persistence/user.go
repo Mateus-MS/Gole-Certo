@@ -4,18 +4,17 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type ClientRepository struct {
-	// DB *mongo.Client --- Removing, if needed add aggain later :P
+type UserRepository struct {
 	Collection *mongo.Collection
 }
 
-func (repo *ClientRepository) Save(client client.Client) (err error) {
-	if _, err = repo.Collection.InsertOne(context.TODO(), client); err != nil {
+func (repo *UserRepository) Save(usr user.User) (err error) {
+	if _, err = repo.Collection.InsertOne(context.TODO(), usr); err != nil {
 		return err
 	}
 
@@ -26,11 +25,11 @@ var (
 	// query errors
 
 	// internal erros
-	ErrDocumentTypeUnkown = errors.New("document doesn't match any client type")
+	ErrDocumentTypeUnkown = errors.New("document doesn't match any user type")
 	ErrMissingTypeField   = errors.New("the queryied document doesn't has the type field")
 )
 
-func (repo *ClientRepository) Search(identifier string) (c client.Client, err error) {
+func (repo *UserRepository) Search(identifier string) (c user.User, err error) {
 	// The query
 	filter := bson.M{"_id": identifier}
 
@@ -49,23 +48,22 @@ func (repo *ClientRepository) Search(identifier string) (c client.Client, err er
 
 		if err = typeVal.Unmarshal(&typeStr); err == nil {
 
-			if typeStr == "individual" {
-				var ind client.Individual
+			switch typeStr {
+			case "individual":
+				var ind user.Individual
 				// Unmarshal the whole struct and return it
 				if err = bson.Unmarshal(raw, &ind); err == nil {
 					return &ind, nil
 				}
-			}
-
-			if typeStr == "company" {
-				var comp client.Company
+			case "company":
+				var comp user.Company
 				// Unmarshal the whole struct and return it
 				if err = bson.Unmarshal(raw, &comp); err == nil {
 					return &comp, nil
 				}
+			default:
+				return nil, ErrDocumentTypeUnkown
 			}
-
-			return nil, ErrDocumentTypeUnkown
 
 		}
 	}
