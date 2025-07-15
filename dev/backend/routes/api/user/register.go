@@ -1,4 +1,4 @@
-package api_client
+package api_user
 
 import (
 	"encoding/json"
@@ -11,18 +11,18 @@ import (
 )
 
 func init() {
-	app.GetInstance().Router.RegisterRoutes("/api/client", "POST", registerClientRoute)
-	println("Route registered: registerClient")
+	app.GetInstance().Router.RegisterRoutes("/api/user", "POST", registerUserRoute)
+	println("Route registered: registerUser")
 }
 
-func registerClientRoute(w http.ResponseWriter, r *http.Request) {
+func registerUserRoute(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var typeRaw string
 	var usr user.User
 
 	// Get the type received from the param
 	if typeRaw, err = utils.GetQueryParam(r, "type", true, ""); err != nil {
-		http.Error(w, "Request must include the client type in parameters", http.StatusBadRequest)
+		http.Error(w, "Request must include the user type in parameters", http.StatusBadRequest)
 		return
 	}
 
@@ -51,7 +51,7 @@ func registerClientRoute(w http.ResponseWriter, r *http.Request) {
 
 	// Save in DB
 	if err = userservice.Register(usr); err != nil {
-		http.Error(w, "Failed to save the client into DB: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to save the user into DB: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 }

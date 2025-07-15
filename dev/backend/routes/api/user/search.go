@@ -1,4 +1,4 @@
-package api_client
+package api_user
 
 import (
 	"encoding/json"
@@ -11,11 +11,11 @@ import (
 )
 
 func init() {
-	app.GetInstance().Router.RegisterRoutes("/api/client", "GET", searchClientRoute)
-	println("Route registered: searchClient")
+	app.GetInstance().Router.RegisterRoutes("/api/user", "GET", searchUserRoute)
+	println("Route registered: searchUser")
 }
 
-func searchClientRoute(w http.ResponseWriter, r *http.Request) {
+func searchUserRoute(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var usr user.User
 	var identifierRaw string
