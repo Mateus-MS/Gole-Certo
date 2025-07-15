@@ -26,8 +26,8 @@ var (
 	// query errors
 
 	// internal erros
-	ErrorDocumentTypeUnkown = errors.New("document doesn't match any client type")
-	ErrorMissingTypeField   = errors.New("the queryied document doesn't has the type field")
+	ErrDocumentTypeUnkown = errors.New("document doesn't match any client type")
+	ErrMissingTypeField   = errors.New("the queryied document doesn't has the type field")
 )
 
 func (repo *ClientRepository) Search(identifier string) (c client.Client, err error) {
@@ -65,11 +65,11 @@ func (repo *ClientRepository) Search(identifier string) (c client.Client, err er
 				}
 			}
 
-			return nil, ErrorDocumentTypeUnkown
+			return nil, ErrDocumentTypeUnkown
 
 		}
 	}
 
-	return nil, ErrorMissingTypeField
+	return nil, ErrMissingTypeField
 
 }
