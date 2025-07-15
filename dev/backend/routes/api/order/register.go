@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/order"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/product"
+	orderservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/order"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
-	"github.com/google/uuid"
 )
 
 func init() {
@@ -16,10 +15,9 @@ func init() {
 }
 
 func registerOrder(w http.ResponseWriter, r *http.Request) {
-	reps := app.GetInstance().Repositories
 	var (
-		err error
-		ord order.Order
+		err   error
+		ordID string
 
 		// Anounymous structs
 		request struct {
@@ -38,37 +36,14 @@ func registerOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 2- Check if the received user identifier, identifies any user
-	// TODO: Sanitize this input
-	if _, err = reps.Client.Search(request.UserID); err != nil {
-		http.Error(w, "User ID in request does not exists in DB. "+err.Error(), http.StatusNotFound)
+	// 2 - Save the order in DB
+	if ordID, err = orderservice.Register(request.UserID, request.Products); err != nil {
+		http.Error(w, "Error while registering order in DB: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// 3- Check if the received product list match existing products
-	// NOTE: currently, it's not checking, it's using a mock, always returning true :P
-	for _, product := range request.Products {
-		if _, err := app.GetInstance().Repositories.Product.Search(product.ProductID); err != nil {
-			http.Error(w, "Product does not exist: "+product.ProductID, http.StatusNotFound)
-			return
-		}
-	}
-
-	// 4- Save the order in the DB
-	ord = order.New(
-		request.UserID,      // UserID
-		uuid.New().String(), // OrderID
-		"processing",        // State
-		request.Products,    // Products
-	)
-
-	if err = reps.Order.Save(ord); err != nil {
-		http.Error(w, "Error while saving order in DB: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	// 5- Build the response
-	response.OrderID = ord.OrderID
+	// 3- Build the response
+	response.OrderID = ordID
 	response.Products = request.Products
 
 	w.Header().Set("Content-Type", "application/json")

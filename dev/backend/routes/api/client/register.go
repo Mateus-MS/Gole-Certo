@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client"
+	clientservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/client"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 )
@@ -48,14 +49,8 @@ func registerClientRoute(w http.ResponseWriter, r *http.Request) {
 		cli = &comp
 	}
 
-	// TODO: show in the error message the parameter that is missing
-	if !cli.IsValid() {
-		http.Error(w, "Request must be a complete client", http.StatusBadRequest)
-		return
-	}
-
 	// Save in DB
-	if err = app.GetInstance().Repositories.Client.Save(cli); err != nil {
+	if err = clientservice.Register(cli); err != nil {
 		http.Error(w, "Failed to save the client into DB: "+err.Error(), http.StatusInternalServerError)
 		return
 	}

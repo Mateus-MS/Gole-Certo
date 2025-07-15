@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client"
+	clientservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/client"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 )
@@ -26,7 +27,7 @@ func searchClientRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// client.Search returns a NOT concrete type, it returns the Interface client.Client
-	if client, err = app.GetInstance().Repositories.Client.Search(identifierRaw); err != nil {
+	if client, err = clientservice.Search(identifierRaw); err != nil {
 		http.Error(w, "Some error occurred while querying: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
