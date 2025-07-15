@@ -2,35 +2,40 @@ package main
 
 import (
 	"flag"
+	"log"
 	"net/http"
 
-	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/client"
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/order"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/user"
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/pages"
+	"github.com/joho/godotenv"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/middlewares"
 )
 
 func main() {
-	enviroment := flag.String("env", "dev", "The enviroment to run")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	environment := flag.String("env", "dev", "The environment to run")
 	flag.Parse()
 
 	app := app.GetInstance()
 
 	app.Router.Use(middlewares.CorsMiddleware(app.Router.Routes))
 
-	startServer(app.Router, *enviroment)
+	startServer(app.Router, *environment)
 }
 
 func startServer(router *app.Router, env string) {
 	if env == "dev" {
 		println("Starting SERVER in DEV mode")
-		go func() {
-			if err := http.ListenAndServe("localhost:3000", router.Handle()); err != nil {
-				println("HTTP server error:", err)
-			}
-		}()
-		select {}
+		err := http.ListenAndServe(":3000", router.Handle())
+		if err != nil {
+			log.Fatalf("Server error: %v", err)
+		}
 	}
 }

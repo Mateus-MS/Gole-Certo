@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/mock"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/persistence"
@@ -17,6 +18,7 @@ type Application struct {
 	DB           *mongo.Client
 	Router       *Router
 	Repositories *repository.Repositories
+	Duffbeer     duffbeer.Client
 }
 
 func GetInstance() *Application {
@@ -46,5 +48,6 @@ func newApplication() *Application {
 		DB:           db,
 		Router:       &router,
 		Repositories: &repositories,
+		Duffbeer:     &duffbeer.MockClient{},
 	}
 }
