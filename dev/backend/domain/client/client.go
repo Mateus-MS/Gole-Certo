@@ -1,6 +1,8 @@
 package client
 
-import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
+import (
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/client/fields"
+)
 
 type BaseClient struct {
 	Type         string         `json:"Type"        bson:"type"` // I'm not a fan of using a `type` field here, but till i think in something better, will be like this
@@ -12,7 +14,7 @@ type BaseClient struct {
 
 type Client interface {
 	GetIdentifier() string
-	IsValid() bool
+	IsValid() error
 }
 
 func NewBaseClient(emailRaw string, phonesRaw, address, contactNamesRaw []string) (BaseClient, error) {
@@ -27,14 +29,14 @@ func NewBaseClient(emailRaw string, phonesRaw, address, contactNamesRaw []string
 
 	// Validate email
 	if email, err = fields.NewEmail(emailRaw); err != nil {
-		return client, err
+		return client, fields.ErrInvalidEmail
 	}
 
 	// Validate all phones
 	for _, phoneRaw := range phonesRaw {
 		var phone fields.Phone
 		if phone, err = fields.NewPhone(phoneRaw); err != nil {
-			return client, err
+			return client, fields.ErrInvalidPhone
 		}
 		phones = append(phones, phone)
 	}
@@ -43,7 +45,7 @@ func NewBaseClient(emailRaw string, phonesRaw, address, contactNamesRaw []string
 	for _, contactNameRaw := range contactNamesRaw {
 		var contactName fields.Name
 		if contactName, err = fields.NewName(contactNameRaw); err != nil {
-			return client, err
+			return client, fields.ErrInvalidName
 		}
 		contactNames = append(contactNames, contactName)
 	}

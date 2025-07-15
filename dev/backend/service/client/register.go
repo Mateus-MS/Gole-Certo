@@ -12,8 +12,8 @@ var ErrorInvalidClient = errors.New("invalid user")
 func Register(cli client.Client) (err error) {
 	// TODO: See if is need to first check if already exists a client equals to the received one
 	// TODO: show in the error message the parameter that is missing
-	if !cli.IsValid() {
-		return ErrorInvalidClient
+	if err = cli.IsValid(); err != nil {
+		return err
 	}
 
 	return app.GetInstance().Repositories.Client.Save(cli)

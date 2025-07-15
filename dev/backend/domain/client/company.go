@@ -24,14 +24,14 @@ func NewCompany(cnpjRaw, emailRaw, fantasyNameRaw, legalNameRaw string, phoneRaw
 	)
 
 	if cnpj, err = fields.NewCNPJ(cnpjRaw); err != nil {
-		return client, err
+		return client, fields.ErrInvalidCNPJ
 	}
 
 	if fantasyName, err = fields.NewFantasyName(fantasyNameRaw); err != nil {
-		return client, err
+		return client, fields.ErrInvalidName
 	}
 	if legalName, err = fields.NewLegalName(legalNameRaw); err != nil {
-		return client, err
+		return client, fields.ErrInvalidName
 	}
 
 	if base, err = NewBaseClient(emailRaw, phoneRaw, address, contactNames); err != nil {
@@ -46,36 +46,36 @@ func NewCompany(cnpjRaw, emailRaw, fantasyNameRaw, legalNameRaw string, phoneRaw
 	}, nil
 }
 
-func (c *Company) IsValid() bool {
+func (c *Company) IsValid() error {
 	if c.CNPJ.Get() == "" {
-		return false
+		return fields.ErrInvalidCNPJ
 	}
 
 	if c.Email.Get() == "" {
-		return false
+		return fields.ErrInvalidEmail
 	}
 
 	if len(c.Phone) < 1 {
-		return false
+		return fields.ErrInvalidPhone
 	}
 
 	if len(c.Address) < 1 {
-		return false
+		return fields.ErrInvalidAddress
 	}
 
 	if len(c.ContactNames) < 1 {
-		return false
+		return fields.ErrInvalidName
 	}
 
 	if c.FantasyName.Get() == "" {
-		return false
+		return fields.ErrInvalidName
 	}
 
 	if c.LegalName.Get() == "" {
-		return false
+		return fields.ErrInvalidName
 	}
 
-	return true
+	return nil
 }
 
 func (c *Company) GetIdentifier() string {

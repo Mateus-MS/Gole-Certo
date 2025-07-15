@@ -9,6 +9,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/bsontype"
 )
 
+var (
+	ErrInvalidAddress = errors.New("invalid address")
+)
+
 type Validator interface {
 	Validate(value string) bool
 }

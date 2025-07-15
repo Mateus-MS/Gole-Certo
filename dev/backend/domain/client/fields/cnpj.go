@@ -1,8 +1,6 @@
 package fields
 
-import (
-	"errors"
-)
+import "errors"
 
 type CNPJTag struct{}
 type CNPJ = Field[CNPJTag]

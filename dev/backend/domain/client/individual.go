@@ -32,28 +32,28 @@ func NewIndividual(cpfRaw, emailRaw string, age int, phoneRaw, address, contactN
 	}, nil
 }
 
-func (c *Individual) IsValid() bool {
+func (c *Individual) IsValid() error {
 	if c.CPF.Get() == "" {
-		return false
+		return fields.ErrInvalidCPF
 	}
 
 	if c.Email.Get() == "" {
-		return false
+		return fields.ErrInvalidEmail
 	}
 
 	if len(c.Phone) < 1 {
-		return false
+		return fields.ErrInvalidPhone
 	}
 
 	if len(c.Address) < 1 {
-		return false
+		return fields.ErrInvalidAddress
 	}
 
 	if len(c.ContactNames) < 1 {
-		return false
+		return fields.ErrInvalidName
 	}
 
-	return true
+	return nil
 }
 
 func (c *Individual) GetIdentifier() string {
