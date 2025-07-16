@@ -13,7 +13,7 @@ type Router struct {
 	GlobalMiddlewares []middleware.Middleware
 }
 
-func CreateRouter() Router {
+func createRouter() Router {
 	return Router{
 		Mux:    http.NewServeMux(),
 		Routes: make(map[string]map[string]http.HandlerFunc),

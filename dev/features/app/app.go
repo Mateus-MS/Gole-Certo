@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository"
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/mock"
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository/persistence"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/service"
+	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/service/external/duffbeer/mock"
+	orderservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/order"
+	productservice_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/service/product/mock"
+	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -15,10 +17,9 @@ var app_instance *Application
 var app_once sync.Once
 
 type Application struct {
-	DB           *mongo.Client
-	Router       *Router
-	Repositories *repository.Repositories
-	Duffbeer     duffbeer.Client
+	DB       *mongo.Client
+	Router   *Router
+	Services *service.Services
 }
 
 func GetInstance() *Application {
@@ -30,24 +31,35 @@ func GetInstance() *Application {
 
 func newApplication() *Application {
 	// Create the router
-	router := CreateRouter()
+	router := createRouter()
 
 	// Serve static files from the "frontend" directory
 	router.Mux.Handle("/frontend/", http.StripPrefix("/frontend/", http.FileServer(http.Dir("dev/frontend"))))
 
 	db := StartDBConnection()
 
-	repositories := repository.Repositories{
-		User:    &persistence.UserRepository{Collection: db.Database("goleCertoDB").Collection("users")},
-		Product: &mock.ProductRepository{Collection: db.Database("goleCertoDB").Collection("products")},
-		Order:   &persistence.OrderRepository{Collection: db.Database("goleCertoDB").Collection("orders")},
-	}
-
 	// Return the application instance
 	return &Application{
-		DB:           db,
-		Router:       &router,
-		Repositories: &repositories,
-		Duffbeer:     &duffbeer.MockClient{},
+		DB:       db,
+		Router:   &router,
+		Services: createServices(db),
+	}
+}
+
+func createServices(client *mongo.Client) *service.Services {
+	user := userservice.New(repository.UserRepository{Collection: client.Database("goleCertoDB").Collection("users")})
+	prod := productservice_mock.New()
+	ordr := orderservice.New(
+		repository.OrderRepository{Collection: client.Database("goleCertoDB").Collection("orders")},
+		user,
+		prod,
+	)
+	duffbeer := duffbeerService_mock.New()
+
+	return &service.Services{
+		User:     user,
+		Product:  prod,
+		Order:    ordr,
+		DuffBeer: duffbeer,
 	}
 }

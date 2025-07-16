@@ -1,17 +1,22 @@
-package duffbeer
+package duffbeerService_mock
 
 import (
 	"errors"
 	"math/rand"
 	"time"
 
+	duffbeerService "github.com/Mateus-MS/Gole-Certo/dev/backend/service/external/duffbeer"
 	"github.com/google/uuid"
 )
 
-type MockClient struct {
+type service struct {
 }
 
-func (c *MockClient) SubmitOrder(ord Order) (resp OrderResponse, err error) {
+func New() *service {
+	return &service{}
+}
+
+func (c *service) SubmitOrder(ord duffbeerService.Order) (resp duffbeerService.OrderResponse, err error) {
 	// Simulate API instability
 	if rand.Intn(10) < 3 {
 		return resp, errors.New("duff Beer is down (simulated)")

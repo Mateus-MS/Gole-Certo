@@ -3,22 +3,38 @@ package orderservice
 import (
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/order"
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/product"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository"
 	productservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/product"
 	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
-	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/google/uuid"
 )
 
-func Register(userID string, products []product.Product) (_ string, err error) {
+type service struct {
+	repository repository.OrderRepository
+
+	// Dependencies
+	userServ userservice.Service
+	prodServ productservice.Service
+}
+
+func New(repo repository.OrderRepository, userServ userservice.Service, prodServ productservice.Service) *service {
+	return &service{
+		repository: repo,
+		userServ:   userServ,
+		prodServ:   prodServ,
+	}
+}
+
+func (s *service) Register(userID string, products []product.Product) (_ string, err error) {
 	// 1 - Check if the received user exists
-	if _, err = userservice.Search(userID); err != nil {
+	if _, err = s.userServ.Search(userID); err != nil {
 		return "", err
 	}
 
 	// 2 - Check if the received product list match existing products
 	// NOTE: currently, it's not checking, it's using a mock, always returning true :P
 	for _, product := range products {
-		if _, err = productservice.Search(product.ProductID); err != nil {
+		if _, err = s.prodServ.Search(product.ProductID); err != nil {
 			return "", err
 		}
 	}
@@ -32,7 +48,7 @@ func Register(userID string, products []product.Product) (_ string, err error) {
 	)
 
 	// 4 - Save in DB
-	if err = app.GetInstance().Repositories.Order.Save(ord); err != nil {
+	if err = s.repository.Save(ord); err != nil {
 		return "", err
 	}
 
@@ -42,4 +58,21 @@ func Register(userID string, products []product.Product) (_ string, err error) {
 	// in the waiting list
 
 	return ord.OrderID, nil
+}
+
+type SearchFilter struct {
+	State  string
+	UserID string
+}
+
+func (s *service) Search(filter SearchFilter) (ord order.Order, err error) {
+	if filter.State != "" {
+		println("Searching all orders with state: " + filter.State)
+	}
+
+	if filter.UserID != "" {
+		println("Searching all orders of user: " + filter.UserID)
+	}
+
+	return ord, err
 }

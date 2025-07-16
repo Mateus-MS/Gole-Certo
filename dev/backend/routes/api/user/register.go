@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user"
-	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 )
@@ -50,7 +49,7 @@ func registerUserRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Save in DB
-	if err = userservice.Register(usr); err != nil {
+	if err = app.GetInstance().Services.User.Register(usr); err != nil {
 		http.Error(w, "Failed to save the user into DB: "+err.Error(), http.StatusInternalServerError)
 		return
 	}

@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user"
-	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 )
@@ -27,7 +26,7 @@ func searchUserRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// user.Search returns a NOT concrete type, it returns the Interface user.User
-	if usr, err = userservice.Search(identifierRaw); err != nil {
+	if usr, err = app.GetInstance().Services.User.Search(identifierRaw); err != nil {
 		http.Error(w, "Some error occurred while querying: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
