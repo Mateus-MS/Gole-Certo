@@ -22,6 +22,7 @@ func NewIndividual(cpfRaw, emailRaw string, age int, phoneRaw, address, contactN
 	if base, err = NewBaseUser(emailRaw, phoneRaw, address, contactNames); err != nil {
 		return usr, err
 	}
+	base.Type = "individual"
 
 	return Individual{
 		CPF:      cpf,

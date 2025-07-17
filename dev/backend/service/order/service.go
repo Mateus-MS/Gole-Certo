@@ -7,5 +7,5 @@ import (
 
 type Service interface {
 	Register(string, []product.Product) (string, error)
-	Search(SearchFilter) (order.Order, error)
+	Search(QueryFilter) (order.Order, error)
 }

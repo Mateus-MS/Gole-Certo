@@ -7,6 +7,7 @@ import (
 	productservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/product"
 	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type service struct {
@@ -60,19 +61,32 @@ func (s *service) Register(userID string, products []product.Product) (_ string,
 	return ord.OrderID, nil
 }
 
-type SearchFilter struct {
-	State  string
-	UserID string
+type QueryFilter struct {
+	State   string
+	UserID  string
+	OrderID string
 }
 
-func (s *service) Search(filter SearchFilter) (ord order.Order, err error) {
+func (s *service) Search(filter QueryFilter) (ord order.Order, err error) {
+	queryFilter := bson.M{}
+
+	// Dinamically build the filter
 	if filter.State != "" {
-		println("Searching all orders with state: " + filter.State)
+		queryFilter["state"] = filter.State
 	}
 
 	if filter.UserID != "" {
-		println("Searching all orders of user: " + filter.UserID)
+		queryFilter["userID"] = filter.UserID
 	}
 
-	return ord, err
+	if filter.OrderID != "" {
+		queryFilter["_id"] = filter.OrderID
+	}
+
+	// Perform the query
+	if ord, err = s.repository.Search(queryFilter); err != nil {
+		return ord, err
+	}
+
+	return ord, nil
 }

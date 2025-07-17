@@ -13,6 +13,7 @@ func New(repo repository.UserRepository) *service {
 	return &service{repository: repo}
 }
 
+// TODO: instead of usr having a field `type`, it "discovers" here
 func (s *service) Register(usr user.User) (err error) {
 	// TODO: See if is need to first check if already exists a client equals to the received one
 	if err = usr.IsValid(); err != nil {

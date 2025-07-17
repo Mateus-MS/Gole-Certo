@@ -27,6 +27,8 @@ var (
 	// internal erros
 	ErrDocumentTypeUnkown = errors.New("document doesn't match any user type")
 	ErrMissingTypeField   = errors.New("the queryied document doesn't has the type field")
+
+	ErrUserNotFound = errors.New("user not found")
 )
 
 func (repo *UserRepository) Search(identifier string) (c user.User, err error) {
@@ -37,6 +39,12 @@ func (repo *UserRepository) Search(identifier string) (c user.User, err error) {
 
 	// Query in DB
 	if err = repo.Collection.FindOne(context.TODO(), filter).Decode(&raw); err != nil {
+		// If the cause of the error is, document not found
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			// Means the user don't exists
+			return c, ErrUserNotFound
+		}
+
 		return c, err
 	}
 

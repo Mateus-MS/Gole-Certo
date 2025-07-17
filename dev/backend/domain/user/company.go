@@ -33,6 +33,7 @@ func NewCompany(cnpjRaw, emailRaw, fantasyNameRaw, legalNameRaw string, phoneRaw
 	if base, err = NewBaseUser(emailRaw, phoneRaw, address, contactNames); err != nil {
 		return comp, err
 	}
+	base.Type = "company"
 
 	return Company{
 		CNPJ:        cnpj,
