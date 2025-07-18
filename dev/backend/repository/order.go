@@ -18,7 +18,7 @@ type OrderRepository struct {
 	Collection *mongo.Collection
 }
 
-func (repo *OrderRepository) Save(ord order.Order) (err error) {
+func (repo *OrderRepository) Create(ord order.Order) (err error) {
 	if _, err = repo.Collection.InsertOne(context.TODO(), ord); err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func (repo *OrderRepository) Save(ord order.Order) (err error) {
 	return nil
 }
 
-func (repo *OrderRepository) Search(queryFilter bson.M) (ord order.Order, err error) {
+func (repo *OrderRepository) Read(queryFilter bson.M) (ord order.Order, err error) {
 	if err = repo.Collection.FindOne(context.TODO(), queryFilter).Decode(&ord); err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			return ord, ErrOrderNotFound

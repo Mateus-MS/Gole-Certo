@@ -37,7 +37,7 @@ func TestCreateOrder(t *testing.T) {
 	// Test if the Order really is on DB
 	ord, _ := ordertestutils.Search(t, app, orderservice.QueryFilter{OrderID: orderID})
 	assert.EqualValues(t, orderID, ord.OrderID, "order ID from query should match the one returned on creation")
-	assert.EqualValues(t, "033.355.662-38", ord.UserIdentifier, "user identifier from query should match the one used during order creation")
+	assert.EqualValues(t, "03335566238", ord.UserIdentifier, "user identifier from query should match the one used during order creation")
 	assert.Equal(t, products, ord.Product, "products from query should match the ones used during order creation")
 }
 

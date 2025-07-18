@@ -1,6 +1,10 @@
 package fields
 
-import "errors"
+import (
+	"errors"
+	"regexp"
+	"strings"
+)
 
 type NameTag struct{}
 type Name = Field[NameTag]
@@ -15,6 +19,10 @@ i found that was easier to read and to maintain if it has the custom type like t
 
 // Constructor
 func NewName(value string) (name Name, err error) {
+	re := regexp.MustCompile(`[^\w]+`)
+	value = re.ReplaceAllString(value, " ")
+	value = strings.TrimSpace(value)
+
 	return NewField[NameTag](value, name.Tag.Validate, ErrInvalidName)
 }
 

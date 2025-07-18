@@ -15,11 +15,8 @@ type User interface {
 	IsValid() error
 }
 
-func NewBaseUser(emailRaw string, phonesRaw, address, contactNamesRaw []string) (BaseUser, error) {
+func NewBaseUser(emailRaw string, phonesRaw, address, contactNamesRaw []string) (usr BaseUser, err error) {
 	var (
-		usr BaseUser
-		err error
-
 		email        fields.Email
 		phones       []fields.Phone
 		contactNames []fields.Name
@@ -46,6 +43,13 @@ func NewBaseUser(emailRaw string, phonesRaw, address, contactNamesRaw []string) 
 			return usr, fields.ErrInvalidName
 		}
 		contactNames = append(contactNames, contactName)
+	}
+
+	// Validate address
+	for _, adr := range address {
+		if len(adr) < 10 {
+			return usr, fields.ErrInvalidAddress
+		}
 	}
 
 	return BaseUser{

@@ -2,9 +2,9 @@ package fields
 
 import (
 	"errors"
+	"regexp"
 	"slices"
 	"strconv"
-	"strings"
 )
 
 type CPFTag struct{}
@@ -14,14 +14,12 @@ var ErrInvalidCPF = errors.New("invalid cpf")
 
 // Constructor
 func NewCPF(value string) (cpf CPF, err error) {
+	value = cpf.Tag.sanitize(value)
+
 	return NewField[CPFTag](value, cpf.Tag.Validate, ErrInvalidCPF)
 }
 
 func (c CPFTag) Validate(value string) bool {
-	// Remove non-digit characters
-	value = strings.ReplaceAll(value, ".", "")
-	value = strings.ReplaceAll(value, "-", "")
-
 	// Must be 11 digits
 	if len(value) != 11 {
 		return false
@@ -66,4 +64,10 @@ func (c CPFTag) Validate(value string) bool {
 	}
 
 	return true
+}
+
+func (c CPFTag) sanitize(value string) (clean string) {
+	// Remove non-digit characters
+	re := regexp.MustCompile(`\D`)
+	return re.ReplaceAllString(value, "")
 }

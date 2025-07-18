@@ -6,6 +6,6 @@ import (
 )
 
 type Service interface {
-	Register(string, []product.Product) (string, error)
-	Search(QueryFilter) (order.Order, error)
+	Create(string, []product.Product) (string, error)
+	Read(QueryFilter) (order.Order, error)
 }

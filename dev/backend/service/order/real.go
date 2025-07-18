@@ -26,18 +26,26 @@ func New(repo repository.OrderRepository, userServ userservice.Service, prodServ
 	}
 }
 
-func (s *service) Register(userID string, products []product.Product) (_ string, err error) {
+func (s *service) Create(userID string, products []product.Product) (_ string, err error) {
 	// 1 - Check if the received user exists
-	if _, err = s.userServ.Search(userID); err != nil {
+	if _, err = s.userServ.Read(userID); err != nil {
 		return "", err
 	}
 
 	// 2 - Check if the received product list match existing products
 	// NOTE: currently, it's not checking, it's using a mock, always returning true :P
 	for _, product := range products {
-		if _, err = s.prodServ.Search(product.ProductID); err != nil {
+
+		_, err = s.prodServ.Read(
+			productservice.QueryFilter{
+				ID: product.ProductID,
+			},
+		)
+
+		if err != nil {
 			return "", err
 		}
+
 	}
 
 	// 3 - Create the structure to save in DB
@@ -49,7 +57,7 @@ func (s *service) Register(userID string, products []product.Product) (_ string,
 	)
 
 	// 4 - Save in DB
-	if err = s.repository.Save(ord); err != nil {
+	if err = s.repository.Create(ord); err != nil {
 		return "", err
 	}
 
@@ -67,7 +75,7 @@ type QueryFilter struct {
 	OrderID string
 }
 
-func (s *service) Search(filter QueryFilter) (ord order.Order, err error) {
+func (s *service) Read(filter QueryFilter) (ord order.Order, err error) {
 	queryFilter := bson.M{}
 
 	// Dinamically build the filter
@@ -84,7 +92,7 @@ func (s *service) Search(filter QueryFilter) (ord order.Order, err error) {
 	}
 
 	// Perform the query
-	if ord, err = s.repository.Search(queryFilter); err != nil {
+	if ord, err = s.repository.Read(queryFilter); err != nil {
 		return ord, err
 	}
 

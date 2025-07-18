@@ -13,7 +13,7 @@ import (
 func Register(t *testing.T, app *testutils.Application, userID string, prods []product.Product) (ordID string, err error) {
 	t.Helper()
 
-	if ordID, err = app.Services.Order.Register(userID, prods); err != nil {
+	if ordID, err = app.Services.Order.Create(userID, prods); err != nil {
 		return ordID, err
 	}
 
@@ -24,7 +24,7 @@ func Register(t *testing.T, app *testutils.Application, userID string, prods []p
 func Search(t *testing.T, app *testutils.Application, filter orderservice.QueryFilter) (ord order.Order, err error) {
 	t.Helper()
 
-	if ord, err = app.Services.Order.Search(filter); err != nil {
+	if ord, err = app.Services.Order.Read(filter); err != nil {
 		return ord, err
 	}
 

@@ -36,7 +36,7 @@ func registerOrder(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 2 - Save the order in DB
-	if ordID, err = app.GetInstance().Services.Order.Register(request.UserID, request.Products); err != nil {
+	if ordID, err = app.GetInstance().Services.Order.Create(request.UserID, request.Products); err != nil {
 		http.Error(w, "Error while registering order in DB: "+err.Error(), http.StatusBadRequest)
 		return
 	}

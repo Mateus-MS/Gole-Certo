@@ -5,10 +5,9 @@ import "github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user/fields"
 type Individual struct {
 	CPF      fields.CPF `json:"CPF" bson:"_id"`
 	BaseUser `bson:",inline"`
-	Age      int `json:"Age" bson:"age"`
 }
 
-func NewIndividual(cpfRaw, emailRaw string, age int, phoneRaw, address, contactNames []string) (usr Individual, err error) {
+func NewIndividual(cpfRaw, emailRaw string, phoneRaw, address, contactNames []string) (usr Individual, err error) {
 	var (
 		base BaseUser
 		cpf  fields.CPF
@@ -27,7 +26,6 @@ func NewIndividual(cpfRaw, emailRaw string, age int, phoneRaw, address, contactN
 	return Individual{
 		CPF:      cpf,
 		BaseUser: base,
-		Age:      age,
 	}, nil
 }
 

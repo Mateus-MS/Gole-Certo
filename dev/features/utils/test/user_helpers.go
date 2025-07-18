@@ -1,26 +1,13 @@
-package usertestutils
+package testutils
 
 import (
 	"testing"
 
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user"
-	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
 )
 
-func CreateValidBase(t *testing.T) user.BaseUser {
-	t.Helper()
-
-	usr, _ := user.NewBaseUser(
-		"teste@gmail.com",
-		[]string{"911911911"},
-		[]string{"bem ali meu cupadi"},
-		[]string{"mateus alves de sousa"},
-	)
-	return usr
-}
-
 // Returns the same generic and valid user of type `individual`
-func CreateValidIndividual(t *testing.T) user.Individual {
+func CreateValidUserIndividual(t *testing.T) user.Individual {
 	t.Helper()
 
 	usr, _ := user.NewIndividual(
@@ -34,11 +21,11 @@ func CreateValidIndividual(t *testing.T) user.Individual {
 }
 
 // Returns the same generic and valid user of type `company`
-func CreateValidCompany(t *testing.T) user.Company {
+func CreateValidUserCompany(t *testing.T) user.Company {
 	t.Helper()
 
 	usr, _ := user.NewCompany(
-		"12.345.678/0001-95",
+		"79.379.491/0001-15",
 		"teste@gmail.com",
 		"empresaaleatoriadobabado",
 		"nossonomeéumafantasia",
@@ -50,7 +37,7 @@ func CreateValidCompany(t *testing.T) user.Company {
 }
 
 // Try to register the received user into received application service
-func Register(t *testing.T, app *testutils.Application, usr user.User) (err error) {
+func RegisterUser(t *testing.T, app *Application, usr user.User) (err error) {
 	t.Helper()
 
 	if err = app.Services.User.Create(usr); err != nil {

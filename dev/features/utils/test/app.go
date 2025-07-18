@@ -7,7 +7,7 @@ import (
 	"github.com/Mateus-MS/Gole-Certo/dev/backend/service"
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/service/external/duffbeer/mock"
 	orderservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/order"
-	productservice_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/service/product/mock"
+	productservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/product"
 	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,7 +24,7 @@ func createTestApp() *Application {
 	db := app.StartDBConnection()
 
 	user := userservice.New(repository.UserRepository{Collection: db.Database("goleCertoDB_MOCK").Collection("users")})
-	prod := productservice_mock.New()
+	prod := productservice.New(repository.ProductRepository{Collection: db.Database("goleCertoDB_MOCK").Collection("products")})
 	ordr := orderservice.New(
 		repository.OrderRepository{Collection: db.Database("goleCertoDB_MOCK").Collection("orders")},
 		user,

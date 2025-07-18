@@ -13,7 +13,7 @@ type UserRepository struct {
 	Collection *mongo.Collection
 }
 
-func (repo *UserRepository) Save(usr user.User) (err error) {
+func (repo *UserRepository) Create(usr user.User) (err error) {
 	if _, err = repo.Collection.InsertOne(context.TODO(), usr); err != nil {
 		return err
 	}
@@ -31,7 +31,7 @@ var (
 	ErrUserNotFound = errors.New("user not found")
 )
 
-func (repo *UserRepository) Search(identifier string) (c user.User, err error) {
+func (repo *UserRepository) Read(identifier string) (c user.User, err error) {
 	// The query
 	filter := bson.M{"_id": identifier}
 
