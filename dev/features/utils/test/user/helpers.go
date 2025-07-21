@@ -3,9 +3,38 @@ package usertestutils
 import (
 	"testing"
 
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/domain/user"
+	user "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
 )
+
+func GetMock(t *testing.T) user.Individual {
+	t.Helper()
+
+	usr, _ := user.NewIndividual(
+		"033.355.662-38",
+		"teste@gmail.com",
+		[]string{"911911911"},
+		[]string{"bem ali meu cupadi"},
+		[]string{"mateus alves de sousa"},
+	)
+	return usr
+}
+
+func GetMockRegistered(t *testing.T, app *testutils.Application) user.Individual {
+	t.Helper()
+
+	usr, _ := user.NewIndividual(
+		"033.355.662-38",
+		"teste@gmail.com",
+		[]string{"911911911"},
+		[]string{"bem ali meu cupadi"},
+		[]string{"mateus alves de sousa"},
+	)
+
+	app.Services.User.Create(&usr)
+
+	return usr
+}
 
 func CreateValidBase(t *testing.T) user.BaseUser {
 	t.Helper()

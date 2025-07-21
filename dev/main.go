@@ -5,8 +5,10 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/order"
-	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/api/user"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/order/routes"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/routes"
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/routes"
+
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/pages"
 	"github.com/joho/godotenv"
 

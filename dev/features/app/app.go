@@ -4,12 +4,12 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/repository"
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/service"
-	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/service/external/duffbeer/mock"
-	orderservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/order"
-	productservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/product"
-	userservice "github.com/Mateus-MS/Gole-Certo/dev/backend/service/user"
+	duffbeer_service "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
+	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
+	order_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/order/service"
+	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
+	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
+	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -19,7 +19,17 @@ var app_once sync.Once
 type Application struct {
 	DB       *mongo.Client
 	Router   *Router
-	Services *service.Services
+	Services *Services
+}
+
+type Services struct {
+	User    user_service.Service
+	Product product_service.Service
+	Order   order_service.Service
+
+	SupplierOrder supplierOrder_service.Service
+
+	DuffBeer duffbeer_service.Service
 }
 
 func GetInstance() *Application {
@@ -46,17 +56,17 @@ func newApplication() *Application {
 	}
 }
 
-func createServices(client *mongo.Client) *service.Services {
-	user := userservice.New(repository.UserRepository{Collection: client.Database("goleCertoDB").Collection("users")})
-	prod := productservice.New(repository.ProductRepository{Collection: client.Database("goleCertoDB").Collection("products")})
-	ordr := orderservice.New(
-		repository.OrderRepository{Collection: client.Database("goleCertoDB").Collection("orders")},
+func createServices(client *mongo.Client) *Services {
+	user := user_service.New(client.Database("goleCertoDB").Collection("users"))
+	prod := product_service.New(client.Database("goleCertoDB_MOCK").Collection("products"))
+	ordr := order_service.New(
+		client.Database("goleCertoDB").Collection("orders"),
 		user,
 		prod,
 	)
 	duffbeer := duffbeerService_mock.New()
 
-	return &service.Services{
+	return &Services{
 		User:     user,
 		Product:  prod,
 		Order:    ordr,

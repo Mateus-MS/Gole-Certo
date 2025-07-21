@@ -14,6 +14,6 @@ func SetupTest(t *testing.T) *Application {
 
 func teardown(t *testing.T, app *Application) {
 	t.Cleanup(func() {
-		app.DB.Database("goleCertoDB_MOCK").Drop(context.TODO())
+		app.DB.Database("MOCK").Drop(context.TODO())
 	})
 }
