@@ -21,7 +21,7 @@ func TestRegister_SuccessUpdatingProduct(t *testing.T) {
 		[]product.Product{prod},
 		"batching",
 	)
-	prodSum := order.Products[0].Quantity
+	prodSum := prod.Quantity
 
 	// It should create a new order batch
 	_, err := app.Services.SupplierOrder.Register(order)
@@ -32,7 +32,7 @@ func TestRegister_SuccessUpdatingProduct(t *testing.T) {
 		[]product.Product{prod},
 		"batching",
 	)
-	prodSum += order.Products[0].Quantity
+	prodSum += prod.Quantity
 
 	// It should update the existing order batch doubling the quantity
 	ordID, err := app.Services.SupplierOrder.Register(order)
@@ -41,7 +41,7 @@ func TestRegister_SuccessUpdatingProduct(t *testing.T) {
 	ordOBJ, _ := primitive.ObjectIDFromHex(ordID)
 	ordDB, err := app.Services.SupplierOrder.ReadByOrderID(ordOBJ)
 	assert.NoError(t, err)
-	assert.Equal(t, ordDB.Products[0].Quantity, prodSum)
+	assert.Equal(t, ordDB.TotalQuantity, prodSum)
 }
 
 func TestRegister_SuccessAppendingProduct(t *testing.T) {

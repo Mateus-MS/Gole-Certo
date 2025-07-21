@@ -69,8 +69,9 @@ func (repo *Repository) ReadMany(filter bson.M, limit int) ([]Order, error) {
 func (repo *Repository) Update(ord Order, filter bson.M) (err error) {
 	update := bson.M{
 		"$set": bson.M{
-			"products": ord.Products,
-			"state":    ord.State,
+			"products":      ord.Products,
+			"state":         ord.State,
+			"totalQuantity": ord.TotalQuantity,
 		},
 	}
 

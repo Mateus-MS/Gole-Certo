@@ -10,14 +10,16 @@ import (
 )
 
 var (
-	ErrEmptyProductList = errors.New("empty product list")
-	ErrInvalidState     = errors.New("invalid state")
+	ErrEmptyProductList       = errors.New("empty product list")
+	ErrInvalidState           = errors.New("invalid state")
+	ErrInvalidProductQuantity = errors.New("invalid quantity")
 )
 
 type SupplierOrder struct {
-	ID       primitive.ObjectID `json:"ID"        bson:"_id"`
-	Products []product.Product  `json:"Products"  bson:"products"`
-	State    string             `json:"State"     bson:"state"`
+	ID            primitive.ObjectID `json:"ID"             bson:"_id"`
+	Products      []product.Product  `json:"Products"       bson:"products"`
+	State         string             `json:"State"          bson:"state"`
+	TotalQuantity int64              `json:"TotalQuantity"  bson:"totalQuantity"`
 }
 
 func New(prods []product.Product, state string) (SupplierOrder, error) {

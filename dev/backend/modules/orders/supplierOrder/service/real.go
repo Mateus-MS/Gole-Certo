@@ -15,8 +15,6 @@ import (
 
 var (
 	ErrOrderStateMustBeBatching = errors.New("supplier order status must be batching")
-	ErrInvalidIDType            = errors.New("only allows a string or a primitive.ObjectID")
-	ErrInvalidIDFormat          = errors.New("the received string id is invalid formated")
 )
 
 type service struct {
@@ -38,6 +36,13 @@ func (s *service) Register(ord Order) (_ string, err error) {
 	if !s.prodService.ValidateList(ord.Products) {
 		return "", product.ErrProductInexistent
 	}
+
+	// Count how many products are
+	var prodCount int64
+	for _, prod := range ord.Products {
+		prodCount += prod.Quantity
+	}
+	ord.TotalQuantity = prodCount
 
 	// Handle the batching case
 	if ord.State == "batching" {
@@ -96,6 +101,14 @@ func (s *service) UpdateByID(updateState Order) (err error) {
 
 	// Merge the DB state with the updated one
 	updateState.Products = product.MergeLists(updateState.Products, realState.Products)
+
+	// TODO: optimize this part
+	// Count how many products are
+	var prodCount int64
+	for _, prod := range updateState.Products {
+		prodCount += prod.Quantity
+	}
+	updateState.TotalQuantity = prodCount
 
 	// Save it
 	if err = s.repository.Update(updateState, bson.M{"_id": updateState.ID}); err != nil {
