@@ -7,7 +7,7 @@ import (
 type SupplierProduct struct {
 	Name      string             `json:"Name"      bson:"name"`
 	Quantity  int64              `json:"Quantity"  bson:"quantity"`
-	ProductID primitive.ObjectID `json:"omitempty" bson:"omitempty"`
+	ProductID primitive.ObjectID `json:"-"         bson:"-"`
 }
 
 func (p *SupplierProduct) GetProductID() string {
