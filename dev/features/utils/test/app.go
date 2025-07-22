@@ -22,7 +22,7 @@ func createTestApp() *Application {
 	db := app.StartDBConnection()
 
 	user := user_service.New(db.Database("MOCK").Collection("users"))
-	prod := product_service.New(db.Database("MOCK").Collection("products"))
+	prod := product_service.New(db.Database("MOCK").Collection("stock"))
 	ordr := supplierOrder_service.New(
 		db.Database("MOCK").Collection("supplier_orders"),
 		prod,

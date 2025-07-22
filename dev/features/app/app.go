@@ -6,7 +6,6 @@ import (
 
 	duffbeer_service "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
-	order_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/order/service"
 	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
 	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
@@ -25,7 +24,6 @@ type Application struct {
 type Services struct {
 	User    user_service.Service
 	Product product_service.Service
-	Order   order_service.Service
 
 	SupplierOrder supplierOrder_service.Service
 
@@ -58,18 +56,13 @@ func newApplication() *Application {
 
 func createServices(client *mongo.Client) *Services {
 	user := user_service.New(client.Database("goleCertoDB").Collection("users"))
-	prod := product_service.New(client.Database("goleCertoDB_MOCK").Collection("products"))
-	ordr := order_service.New(
-		client.Database("goleCertoDB").Collection("orders"),
-		user,
-		prod,
-	)
+	prod := product_service.New(client.Database("goleCertoDB").Collection("stock"))
+
 	duffbeer := duffbeerService_mock.New()
 
 	return &Services{
 		User:     user,
 		Product:  prod,
-		Order:    ordr,
 		DuffBeer: duffbeer,
 	}
 }

@@ -48,7 +48,7 @@ func TestCreate_NegativeStock(t *testing.T) {
 	app := testutils.SetupTest(t)
 	prod := producttestutils.GetMock()[0]
 
-	prod.Quantity = -10
+	prod.Stock = -10
 
 	// Try register the invalid product into DB
 	err := app.Services.Product.Create(prod)

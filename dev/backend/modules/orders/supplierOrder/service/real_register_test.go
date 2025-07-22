@@ -6,6 +6,7 @@ import (
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
+	ordertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/order"
 	producttestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/product"
 	"github.com/stretchr/testify/assert"
 )
@@ -13,13 +14,8 @@ import (
 func TestCreate_Success(t *testing.T) {
 	app := testutils.SetupTest(t)
 
-	// Get a registered product
-	prod := producttestutils.GetMockRegistered(t, app)[0]
-
-	order, _ := supplierOrder.New(
-		[]product.Product{prod},
-		"batching",
-	)
+	// Create the new supplier order OBJ
+	order, _, _ := ordertestutils.GetUnregisteredMock(t, app)
 
 	// Try to save it on DB
 	_, err := app.Services.SupplierOrder.Register(order)
@@ -30,10 +26,15 @@ func TestCreate_NotRegisteredProduct(t *testing.T) {
 	app := testutils.SetupTest(t)
 
 	// Get a NOT registered product
-	prod := producttestutils.GetMock()[0]
+	stock := producttestutils.GetMock()[0]
 
+	// Get the NON registered product in SupplierProduct format
+	prod := stock.GetInSupplierFormat()
+	prod.Quantity = 200
+
+	// Create the new supplier order OBJ
 	order, _ := supplierOrder.New(
-		[]product.Product{prod},
+		[]*supplierOrder.SupplierProduct{prod},
 		"batching",
 	)
 

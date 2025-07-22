@@ -6,77 +6,94 @@ import (
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
-	producttestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/product"
+	ordertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/order"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func TestRegister_SuccessUpdatingProduct(t *testing.T) {
 	app := testutils.SetupTest(t)
 
-	// Get a registered product
-	prod := producttestutils.GetMockRegistered(t, app)[0]
+	// Create the first order
+	order1, _, prod := ordertestutils.GetUnregisteredMock(t, app)
+	prodOrderQuantity := prod.Quantity * 2
 
-	order, _ := supplierOrder.New(
-		[]product.Product{prod},
-		"batching",
-	)
-	prodSum := prod.Quantity
-
+	// Register it
 	// It should create a new order batch
-	_, err := app.Services.SupplierOrder.Register(order)
+	_, err := app.Services.SupplierOrder.Register(order1)
 	assert.NoError(t, err)
 
 	// Create a new order with the same product
-	order, _ = supplierOrder.New(
-		[]product.Product{prod},
+	order2, _ := supplierOrder.New(
+		[]*supplierOrder.SupplierProduct{prod},
 		"batching",
 	)
-	prodSum += prod.Quantity
 
-	// It should update the existing order batch doubling the quantity
-	ordID, err := app.Services.SupplierOrder.Register(order)
+	// try to register it again
+	// It should sum the order products with the existing "batch"
+	orderHEX, err := app.Services.SupplierOrder.Register(order2)
 	assert.NoError(t, err)
 
-	ordOBJ, _ := primitive.ObjectIDFromHex(ordID)
-	ordDB, err := app.Services.SupplierOrder.ReadByOrderID(ordOBJ)
+	// To confirm
+	// Search for the received ID
+	ordDB, err := app.Services.SupplierOrder.ReadByOrderID(orderHEX)
 	assert.NoError(t, err)
-	assert.Equal(t, ordDB.TotalQuantity, prodSum)
+
+	// The total quantity of this order should be twice the prod, since we order it two times
+	assert.Equal(t, prodOrderQuantity, ordDB.TotalQuantity)
 }
 
 func TestRegister_SuccessAppendingProduct(t *testing.T) {
 	app := testutils.SetupTest(t)
 
-	// Get a registered product
-	prod1 := producttestutils.GetMockRegistered(t, app)[0]
-
-	// Register another product
-	prod2, err := product.New(
-		"Pepsi",
+	// Register two different products into DB
+	stock1, err := product.New(
+		"Pepsi zero",
 		"Pepsi",
 		"1.99",
 		50,
 	)
 	assert.NoError(t, err)
-	assert.NoError(t, app.Services.Product.Create(prod2))
+	assert.NoError(t, app.Services.Product.Create(stock1))
 
+	stock2, err := product.New(
+		"Coca cola zero",
+		"Coca cola",
+		"1.99",
+		50,
+	)
+	assert.NoError(t, err)
+	assert.NoError(t, app.Services.Product.Create(stock2))
+
+	// Get the stock in supplier format
+	prod1 := stock1.GetInSupplierFormat()
+	prod1.Quantity = 200 // Ordered quantity
+
+	prod2 := stock2.GetInSupplierFormat()
+	prod2.Quantity = 400 // Ordered quantity
+
+	// Create the first order with the first prod
 	order1, _ := supplierOrder.New(
-		[]product.Product{prod1},
+		[]*supplierOrder.SupplierProduct{prod1},
 		"batching",
 	)
 
-	// It should create a new order batch
+	// Order for the first order
+	// It should create a new order "batch"
 	ordID1, err := app.Services.SupplierOrder.Register(order1)
 	assert.NoError(t, err)
 
-	// Now creating a completely new order
+	// Now a new order with a different product
 	order2, _ := supplierOrder.New(
-		[]product.Product{prod2},
+		[]*supplierOrder.SupplierProduct{prod2},
 		"batching",
 	)
 
-	// It should instade of create a new batch, merge it with the existing one
+	// Order for the second order
+	// It should append the order to the existing "batch"
 	ordID2, err := app.Services.SupplierOrder.Register(order2)
 	assert.NoError(t, err)
+
+	// To check if the order was appended instead of a new one created
+	// just check if the returned IDs of both register methods is equal
 	assert.Equal(t, ordID1, ordID2)
 }

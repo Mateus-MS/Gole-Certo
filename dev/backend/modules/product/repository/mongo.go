@@ -13,7 +13,7 @@ import (
 )
 
 // Alias
-type Product = product.Product
+type Product = product.ProductStock
 
 type Repository struct {
 	Collection *mongo.Collection
@@ -123,7 +123,7 @@ func (repo *Repository) Update(prod Product, filter bson.M) (err error) {
 			"name":     prod.Name,
 			"brand":    prod.Brand,
 			"price":    prod.Price,
-			"quantity": prod.Quantity,
+			"quantity": prod.Stock,
 		},
 	}
 

@@ -33,8 +33,10 @@ func New(coll *mongo.Collection, prodService product_service.Service) service {
 
 func (s *service) Register(ord Order) (_ string, err error) {
 	// Check if all products received, are valids
-	if !s.prodService.ValidateList(ord.Products) {
-		return "", product.ErrProductInexistent
+	for _, prod := range ord.Products {
+		if !s.prodService.ValidateProductByID(prod.GetProductID()) {
+			return "", product.ErrProductInexistent
+		}
 	}
 
 	// Count how many products are
@@ -102,7 +104,6 @@ func (s *service) UpdateByID(updateState Order) (err error) {
 	// Merge the DB state with the updated one
 	updateState.Products = product.MergeLists(updateState.Products, realState.Products)
 
-	// TODO: optimize this part
 	// Count how many products are
 	var prodCount int64
 	for _, prod := range updateState.Products {

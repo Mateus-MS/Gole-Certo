@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/order/routes"
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/routes"
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/routes"
 

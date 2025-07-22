@@ -6,21 +6,23 @@ import (
 )
 
 type Service interface {
-	Create(product.Product) error
+	Create(product.ProductStock) error
 
-	Read(bson.M) (product.Product, error)
-	// ReadManyAfterID(bson.M, string, int64) ([]product.Product, error)
-	ReadByID(string) (product.Product, error)
-	ReadByName(string) (product.Product, error)
+	// ReadManyAfterID(bson.M, string, int64) ([]Product, error)
+	ReadByID(string) (product.ProductStock, error)
+	ReadByName(string) (product.ProductStock, error)
 
-	UpdateByID(product.Product) error
+	UpdateByID(product.ProductStock) error
 
-	Delete(bson.M) error
 	DeleteByID(string) error
 	DeleteByName(string) error
 
 	// Utils
-	ValidateList([]product.Product) bool
+	ValidateProductByID(string) bool
+
+	// Base functions
+	Delete(bson.M) error
+	Read(bson.M) (product.ProductStock, error)
 }
 
 // TODO: ReadMany

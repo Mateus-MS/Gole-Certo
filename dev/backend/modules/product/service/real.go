@@ -8,6 +8,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// Alias
+type Stock = product.ProductStock
+
 type service struct {
 	repository product_repository.Repository
 }
@@ -16,7 +19,7 @@ func New(coll *mongo.Collection) *service {
 	return &service{repository: *product_repository.New(coll)}
 }
 
-func (s *service) Create(prod product.Product) (err error) {
+func (s *service) Create(prod Stock) (err error) {
 	if err = prod.IsValid(); err != nil {
 		return err
 	}
@@ -30,15 +33,7 @@ func (s *service) Create(prod product.Product) (err error) {
 	return s.repository.Create(prod)
 }
 
-func (s *service) Read(filter bson.M) (prod product.Product, err error) {
-	// Perform the query
-	if prod, err = s.repository.Read(filter); err != nil {
-		return prod, err
-	}
-
-	return prod, nil
-}
-func (s *service) ReadByID(id string) (prod product.Product, err error) {
+func (s *service) ReadByID(id string) (prod Stock, err error) {
 	// Build the query
 	var filter bson.M
 	if filter, err = product_utils.NewQueryFilter().SetID(id).Build(); err != nil {
@@ -52,7 +47,7 @@ func (s *service) ReadByID(id string) (prod product.Product, err error) {
 
 	return prod, nil
 }
-func (s *service) ReadByName(name string) (prod product.Product, err error) {
+func (s *service) ReadByName(name string) (prod Stock, err error) {
 	// Build the query
 	var filter bson.M
 	if filter, err = product_utils.NewQueryFilter().SetName(name).Build(); err != nil {
@@ -67,7 +62,7 @@ func (s *service) ReadByName(name string) (prod product.Product, err error) {
 	return prod, nil
 }
 
-func (s *service) UpdateByID(prod product.Product) (err error) {
+func (s *service) UpdateByID(prod Stock) (err error) {
 	if err = prod.IsValid(); err != nil {
 		return err
 	}
@@ -85,7 +80,7 @@ func (s *service) UpdateByID(prod product.Product) (err error) {
 
 	return nil
 }
-func (s *service) UpdateByName(prod product.Product) (err error) {
+func (s *service) UpdateByName(prod Stock) (err error) {
 	if err = prod.IsValid(); err != nil {
 		return err
 	}
@@ -104,14 +99,6 @@ func (s *service) UpdateByName(prod product.Product) (err error) {
 	return nil
 }
 
-func (s *service) Delete(filter bson.M) (err error) {
-	// Perform the query
-	if err = s.repository.Delete(filter); err != nil {
-		return err
-	}
-
-	return nil
-}
 func (s *service) DeleteByID(id string) (err error) {
 	// Build the query
 	var filter bson.M
@@ -141,12 +128,31 @@ func (s *service) DeleteByName(name string) (err error) {
 	return nil
 }
 
-func (s *service) ValidateList(prods []product.Product) bool {
-	for _, prod := range prods {
-		if _, err := s.ReadByName(prod.Name); err != nil {
-			return false
-		}
+// Utils
+
+func (s *service) ValidateProductByID(id string) bool {
+	if _, err := s.ReadByID(id); err != nil {
+		return false
+	}
+	return true
+}
+
+// Base functions
+
+func (s *service) Read(filter bson.M) (prod Stock, err error) {
+	// Perform the query
+	if prod, err = s.repository.Read(filter); err != nil {
+		return prod, err
 	}
 
-	return true
+	return prod, nil
+}
+
+func (s *service) Delete(filter bson.M) (err error) {
+	// Perform the query
+	if err = s.repository.Delete(filter); err != nil {
+		return err
+	}
+
+	return nil
 }

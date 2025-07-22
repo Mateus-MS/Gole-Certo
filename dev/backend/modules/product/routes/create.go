@@ -18,7 +18,7 @@ func init() {
 func registerProduct(w http.ResponseWriter, r *http.Request) {
 	var (
 		err  error
-		prod product.Product
+		prod product.ProductStock
 	)
 
 	// 1- Build the request json

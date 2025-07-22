@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -19,29 +20,29 @@ var (
 	ErrProductInexistent = errors.New("product does not exists on db")
 )
 
-type Product struct {
+type ProductStock struct {
 	ProductID primitive.ObjectID   `json:"ProductID,omitempty" bson:"_id,omitempty"`
 	Name      string               `json:"Name"                bson:"name"`
 	Brand     string               `json:"Brand"               bson:"brand"`
 	Price     primitive.Decimal128 `json:"Price"               bson:"price"`
-	Quantity  int64                `json:"Quantity"            bson:"quantity"`
+	Stock     int64                `json:"Quantity"            bson:"quantity"`
 }
 
 // Constructor
-func New(name, brand, priceStr string, quantity int64) (Product, error) {
+func New(name, brand, priceStr string, stock int64) (ProductStock, error) {
 	// Converts the received price into correct format
 	var price primitive.Decimal128
 	var err error
 	if price, err = primitive.ParseDecimal128(priceStr); err != nil {
-		return Product{}, ErrInvalidPrice
+		return ProductStock{}, ErrInvalidPrice
 	}
 
-	prod := Product{
+	prod := ProductStock{
 		ProductID: primitive.NewObjectIDFromTimestamp(time.Now()),
 		Name:      name,
 		Brand:     brand,
 		Price:     price,
-		Quantity:  quantity,
+		Stock:     stock,
 	}
 
 	if err := prod.IsValid(); err != nil {
@@ -52,7 +53,7 @@ func New(name, brand, priceStr string, quantity int64) (Product, error) {
 }
 
 // Validator
-func (p *Product) IsValid() error {
+func (p *ProductStock) IsValid() error {
 	if p.Name == "" {
 		return ErrInvalidName
 	}
@@ -70,36 +71,29 @@ func (p *Product) IsValid() error {
 	}
 
 	// Check the quantity
-	if p.Quantity < 0 {
+	if p.Stock < 0 {
 		return ErrInvalidQuantity
 	}
 
 	return nil
 }
 
-func (p Product) Equals(other Product) bool {
-	return p.ProductID == other.ProductID
+func (p *ProductStock) GetProductID() string {
+	return p.ProductID.Hex()
 }
 
-// Returns a merged list with
-// added up quantities of any repeated product
-// and append any unique
-func MergeLists(p1, p2 []Product) []Product {
-	merged := append([]Product{}, p1...)
+func (p *ProductStock) SetAmmount(q int64) {
+	p.Stock = q
+}
+func (p *ProductStock) GetAmmount() int64 {
+	return p.Stock
+}
 
-	for _, newProd := range p2 {
-		found := false
-		for i, existing := range merged {
-			if newProd.Equals(existing) {
-				merged[i].Quantity += newProd.Quantity
-				found = true
-				break
-			}
-		}
-		if !found {
-			merged = append(merged, newProd)
-		}
+// Utils
+
+func (p *ProductStock) GetInSupplierFormat() *supplierOrder.SupplierProduct {
+	return &supplierOrder.SupplierProduct{
+		Name:      p.Name,
+		ProductID: p.ProductID,
 	}
-
-	return merged
 }

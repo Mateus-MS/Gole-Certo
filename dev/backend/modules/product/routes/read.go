@@ -18,7 +18,7 @@ func init() {
 
 func readProductRoute(w http.ResponseWriter, r *http.Request) {
 	var err error
-	var prod product.Product
+	var prod product.ProductStock
 
 	// Build the filter
 	var nameRaw, _ = utils.GetQueryParam(r, "name", false, "")
