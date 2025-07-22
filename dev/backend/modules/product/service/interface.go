@@ -23,6 +23,9 @@ type Service interface {
 	// Base functions
 	Delete(bson.M) error
 	Read(bson.M) (product.ProductStock, error)
+
+	// TODO
+	ApplyStockReduction(string, int) error
 }
 
 // TODO: ReadMany
