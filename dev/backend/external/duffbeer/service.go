@@ -1,6 +1,6 @@
 package duffbeer_service
 
-import product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+import product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 
 type Service interface {
 	SubmitOrder(Order) (OrderResponse, error)

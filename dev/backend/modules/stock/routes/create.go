@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 )
 

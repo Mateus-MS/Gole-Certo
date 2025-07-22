@@ -1,7 +1,7 @@
 package product_utils
 
 import (
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

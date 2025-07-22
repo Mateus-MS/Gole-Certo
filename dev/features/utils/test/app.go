@@ -6,7 +6,7 @@ import (
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
 	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
 	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
-	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
+	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"go.mongodb.org/mongo-driver/mongo"

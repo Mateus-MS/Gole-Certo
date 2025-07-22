@@ -8,7 +8,7 @@ import (
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
 	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
 	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
-	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
+	stock_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -24,7 +24,7 @@ type Application struct {
 
 type Services struct {
 	User    user_service.Service
-	Product product_service.Service
+	Product stock_service.Service
 
 	SupplierOrder supplierOrder_service.Service
 	CostumerOrder costumerOrder_service.Service
@@ -58,7 +58,7 @@ func newApplication() *Application {
 
 func createServices(client *mongo.Client) *Services {
 	user := user_service.New(client.Database("goleCertoDB").Collection("users"))
-	prod := product_service.New(client.Database("goleCertoDB").Collection("stock"))
+	prod := stock_service.New(client.Database("goleCertoDB").Collection("stock"))
 
 	duffbeer := duffbeerService_mock.New()
 

@@ -3,7 +3,7 @@ package producttestutils
 import (
 	"testing"
 
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
 )
 

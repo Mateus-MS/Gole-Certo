@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
 	ordersuppliertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/orders/supplier"
 	producttestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/product"

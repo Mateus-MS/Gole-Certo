@@ -1,7 +1,7 @@
-package product_service
+package stock_service
 
 import (
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -25,7 +25,7 @@ type Service interface {
 	Read(bson.M) (product.ProductStock, error)
 
 	// TODO
-	ApplyStockReduction(string, int) error
+	// ApplyStockReduction(string, int) error
 }
 
 // TODO: ReadMany

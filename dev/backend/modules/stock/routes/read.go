@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
-	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/utils"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/utils"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 	"go.mongodb.org/mongo-driver/bson"

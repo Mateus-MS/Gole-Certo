@@ -1,9 +1,9 @@
-package product_service_test
+package stock_service_test
 
 import (
 	"testing"
 
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
 	producttestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/product"
 	"github.com/stretchr/testify/assert"

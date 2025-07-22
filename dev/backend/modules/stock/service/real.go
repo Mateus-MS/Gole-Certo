@@ -1,9 +1,9 @@
-package product_service
+package stock_service
 
 import (
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
-	product_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/repository"
-	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/utils"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+	product_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/repository"
+	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

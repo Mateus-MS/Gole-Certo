@@ -5,8 +5,8 @@ import (
 
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	supplierOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/repository"
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
-	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

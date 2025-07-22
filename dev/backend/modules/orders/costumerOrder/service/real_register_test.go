@@ -5,7 +5,7 @@ import (
 
 	costumerOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/model"
 	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
-	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
+	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	user_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/repository"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
 	ordercostumertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/orders/costumer"

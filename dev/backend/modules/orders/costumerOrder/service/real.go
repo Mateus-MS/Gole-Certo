@@ -5,7 +5,7 @@ import (
 
 	costumerOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/model"
 	costumerOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/repository"
-	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
+	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -53,6 +53,8 @@ func (s *service) Register(ord costumerOrder.CostumerOrder) (ordID string, err e
 
 	// Create the order
 	return s.Create(ord)
+
+	// Remove from STOCK what was ordered
 }
 
 // C R U D
