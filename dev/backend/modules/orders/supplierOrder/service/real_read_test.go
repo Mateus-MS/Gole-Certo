@@ -7,7 +7,7 @@ import (
 	supplierOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/repository"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
-	ordertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/order"
+	ordersuppliertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/orders/supplier"
 	producttestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/product"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -17,7 +17,7 @@ func TestReadByState_Success(t *testing.T) {
 	app := testutils.SetupTest(t)
 
 	// Create the new supplier order OBJ
-	order, _, _ := ordertestutils.GetUnregisteredMock(t, app)
+	order, _, _ := ordersuppliertestutils.GetUnregisteredMock(t, app)
 
 	// Register the supplier order into DB
 	// This should create a new one

@@ -6,7 +6,7 @@ import (
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
-	ordertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/order"
+	ordersuppliertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/orders/supplier"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +14,7 @@ func TestRegister_SuccessUpdatingProduct(t *testing.T) {
 	app := testutils.SetupTest(t)
 
 	// Create the first order
-	order1, _, prod := ordertestutils.GetUnregisteredMock(t, app)
+	order1, _, prod := ordersuppliertestutils.GetUnregisteredMock(t, app)
 	prodOrderQuantity := prod.Quantity * 2
 
 	// Register it

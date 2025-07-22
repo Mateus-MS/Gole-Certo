@@ -6,7 +6,7 @@ import (
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/model"
 	testutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test"
-	ordertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/order"
+	ordersuppliertestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/orders/supplier"
 	producttestutils "github.com/Mateus-MS/Gole-Certo/dev/features/utils/test/product"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,7 +15,7 @@ func TestCreate_Success(t *testing.T) {
 	app := testutils.SetupTest(t)
 
 	// Create the new supplier order OBJ
-	order, _, _ := ordertestutils.GetUnregisteredMock(t, app)
+	order, _, _ := ordersuppliertestutils.GetUnregisteredMock(t, app)
 
 	// Try to save it on DB
 	_, err := app.Services.SupplierOrder.Register(order)

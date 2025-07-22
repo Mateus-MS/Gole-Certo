@@ -6,6 +6,7 @@ import (
 
 	duffbeer_service "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
+	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
 	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
 	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
@@ -26,6 +27,7 @@ type Services struct {
 	Product product_service.Service
 
 	SupplierOrder supplierOrder_service.Service
+	CostumerOrder costumerOrder_service.Service
 
 	DuffBeer duffbeer_service.Service
 }

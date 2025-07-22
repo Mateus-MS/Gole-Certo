@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	costumerOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/model"
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -94,6 +95,12 @@ func (p *ProductStock) GetAmmount() int64 {
 func (p *ProductStock) GetInSupplierFormat() *supplierOrder.SupplierProduct {
 	return &supplierOrder.SupplierProduct{
 		Name:      p.Name,
+		ProductID: p.ProductID,
+	}
+}
+
+func (p *ProductStock) GetInCostumerFormat() *costumerOrder.CostumerProduct {
+	return &costumerOrder.CostumerProduct{
 		ProductID: p.ProductID,
 	}
 }

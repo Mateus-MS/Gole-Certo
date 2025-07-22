@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
+	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
 	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
 	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/product/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
@@ -23,8 +24,13 @@ func createTestApp() *Application {
 
 	user := user_service.New(db.Database("MOCK").Collection("users"))
 	prod := product_service.New(db.Database("MOCK").Collection("stock"))
-	ordr := supplierOrder_service.New(
+	supplierOrder := supplierOrder_service.New(
 		db.Database("MOCK").Collection("supplier_orders"),
+		prod,
+	)
+	costumerOrder := costumerOrder_service.New(
+		db.Database("MOCK").Collection("costumer_orders"),
+		user,
 		prod,
 	)
 	duffbeer := duffbeerService_mock.New()
@@ -33,7 +39,8 @@ func createTestApp() *Application {
 		User:    user,
 		Product: prod,
 
-		SupplierOrder: &ordr,
+		SupplierOrder: &supplierOrder,
+		CostumerOrder: &costumerOrder,
 
 		DuffBeer: duffbeer,
 	}
