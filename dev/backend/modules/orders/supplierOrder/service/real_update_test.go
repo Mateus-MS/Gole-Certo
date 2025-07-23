@@ -53,7 +53,7 @@ func TestRegister_SuccessAppendingProduct(t *testing.T) {
 		50,
 	)
 	assert.NoError(t, err)
-	assert.NoError(t, app.Services.Product.Create(stock1))
+	assert.NoError(t, app.Services.Stock.Create(stock1))
 
 	stock2, err := product.New(
 		"Coca cola zero",
@@ -62,7 +62,7 @@ func TestRegister_SuccessAppendingProduct(t *testing.T) {
 		50,
 	)
 	assert.NoError(t, err)
-	assert.NoError(t, app.Services.Product.Create(stock2))
+	assert.NoError(t, app.Services.Stock.Create(stock2))
 
 	// Get the stock in supplier format
 	prod1 := stock1.GetInSupplierFormat()

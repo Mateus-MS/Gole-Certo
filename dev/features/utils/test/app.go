@@ -23,21 +23,21 @@ func createTestApp() *Application {
 	db := app.StartDBConnection()
 
 	user := user_service.New(db.Database("MOCK").Collection("users"))
-	prod := product_service.New(db.Database("MOCK").Collection("stock"))
-	supplierOrder := supplierOrder_service.New(
-		db.Database("MOCK").Collection("supplier_orders"),
-		prod,
-	)
-	costumerOrder := costumerOrder_service.New(
-		db.Database("MOCK").Collection("costumer_orders"),
-		user,
-		prod,
-	)
+	stock := product_service.New(db.Database("MOCK").Collection("stock"))
+	supplierOrder := supplierOrder_service.New(db.Database("MOCK").Collection("supplier_orders"))
+	costumerOrder := costumerOrder_service.New(db.Database("MOCK").Collection("costumer_orders"))
+
+	// Add the dependecies
+	supplierOrder.SetStockService(stock)
+
+	costumerOrder.SetStockService(stock)
+	costumerOrder.SetUserService(user)
+
 	duffbeer := duffbeerService_mock.New()
 
 	services := &app.Services{
-		User:    user,
-		Product: prod,
+		User:  user,
+		Stock: stock,
 
 		SupplierOrder: &supplierOrder,
 		CostumerOrder: &costumerOrder,

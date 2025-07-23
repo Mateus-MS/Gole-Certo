@@ -3,10 +3,10 @@ package supplierOrder_service
 import (
 	"errors"
 
+	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	supplierOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/repository"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
-	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -21,20 +21,23 @@ type service struct {
 	repository supplierOrder_repository.Repository
 
 	// Dependencies
-	prodService product_service.Service
+	stockService contracts.Stock_Service
 }
 
-func New(coll *mongo.Collection, prodService product_service.Service) service {
+func (s *service) SetStockService(stockService contracts.Stock_Service) {
+	s.stockService = stockService
+}
+
+func New(coll *mongo.Collection) service {
 	return service{
-		repository:  *supplierOrder_repository.New(coll),
-		prodService: prodService,
+		repository: *supplierOrder_repository.New(coll),
 	}
 }
 
-func (s *service) Register(ord Order) (_ string, err error) {
+func (s *service) Register(ord supplierOrder.SupplierOrder) (_ string, err error) {
 	// Check if all products received, are valids
 	for _, prod := range ord.Products {
-		if !s.prodService.ValidateProductByID(prod.GetProductID()) {
+		if !s.stockService.ValidateProductByID(prod.GetProductID()) {
 			return "", product.ErrProductInexistent
 		}
 	}
@@ -59,7 +62,7 @@ func (s *service) Register(ord Order) (_ string, err error) {
 	return ord.ID.Hex(), nil
 }
 
-func (s *service) ReadByOrderID(ordID_any any) (ord Order, err error) {
+func (s *service) ReadByOrderID(ordID_any any) (ord supplierOrder.SupplierOrder, err error) {
 	var ordID_obj primitive.ObjectID
 	if ordID_obj, err = utils.ParseObjectID(ordID_any); err != nil {
 		return ord, err
@@ -72,7 +75,7 @@ func (s *service) ReadByOrderID(ordID_any any) (ord Order, err error) {
 	return ord, nil
 }
 
-func (s *service) ReadOneByState(state string) (Order, error) {
+func (s *service) ReadOneByState(state string) (supplierOrder.SupplierOrder, error) {
 	filter := bson.M{"state": state}
 
 	orders, err := s.repository.Read(filter)
@@ -83,7 +86,7 @@ func (s *service) ReadOneByState(state string) (Order, error) {
 	return orders, nil
 }
 
-func (s *service) ReadManyByState(state string, limit int) ([]Order, error) {
+func (s *service) ReadManyByState(state string, limit int) ([]supplierOrder.SupplierOrder, error) {
 	filter := bson.M{"state": state}
 
 	orders, err := s.repository.ReadMany(filter, limit)
@@ -94,9 +97,9 @@ func (s *service) ReadManyByState(state string, limit int) ([]Order, error) {
 	return orders, nil
 }
 
-func (s *service) UpdateByID(updateState Order) (err error) {
+func (s *service) UpdateByID(updateState supplierOrder.SupplierOrder) (err error) {
 	// Get the actual state of the order
-	var realState Order
+	var realState supplierOrder.SupplierOrder
 	if realState, err = s.ReadByOrderID(updateState.ID); err != nil {
 		return err
 	}
@@ -119,7 +122,7 @@ func (s *service) UpdateByID(updateState Order) (err error) {
 	return nil
 }
 
-func (s *service) create(ord Order) (_ string, err error) {
+func (s *service) create(ord supplierOrder.SupplierOrder) (_ string, err error) {
 	// Save into DB
 	if err := s.repository.Create(ord); err != nil {
 		return "", err
@@ -128,7 +131,7 @@ func (s *service) create(ord Order) (_ string, err error) {
 	return ord.ID.Hex(), nil
 }
 
-func (s *service) handleBatching(updateState Order) (_ string, err error) {
+func (s *service) handleBatching(updateState supplierOrder.SupplierOrder) (_ string, err error) {
 	// Check if there is any batch available
 	var realState supplierOrder.SupplierOrder
 	if realState, err = s.ReadOneByState("batching"); err != nil {

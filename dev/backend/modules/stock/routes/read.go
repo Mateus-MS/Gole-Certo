@@ -38,7 +38,7 @@ func readProductRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Perform the query
-	if prod, err = app.GetInstance().Services.Product.Read(query); err != nil {
+	if prod, err = app.GetInstance().Services.Stock.Read(query); err != nil {
 		http.Error(w, "Some error occurred while querying: "+err.Error(), http.StatusInternalServerError)
 		return
 	}

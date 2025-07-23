@@ -28,7 +28,7 @@ func registerProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 2 - Save the product in DB
-	if err = app.GetInstance().Services.Product.Create(prod); err != nil {
+	if err = app.GetInstance().Services.Stock.Create(prod); err != nil {
 		if errors.Is(err, product.ErrDuplicated) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

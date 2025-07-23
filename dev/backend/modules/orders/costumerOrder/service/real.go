@@ -3,10 +3,9 @@ package costumerOrder_service
 import (
 	"errors"
 
+	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
 	costumerOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/model"
 	costumerOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/repository"
-	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
-	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -14,20 +13,26 @@ type service struct {
 	repository costumerOrder_repository.Repository
 
 	// Dependencies
-	userService user_service.Service
-	prodService product_service.Service
+	userService  contracts.User_Service
+	stockService contracts.Stock_Service
 }
 
 var (
 	ErrInsufficientStock = errors.New("the order is ordering more items than there is in stock")
 )
 
-func New(coll *mongo.Collection, userService user_service.Service, prodService product_service.Service) service {
+func New(coll *mongo.Collection) service {
 	return service{
-		repository:  *costumerOrder_repository.New(coll),
-		userService: userService,
-		prodService: prodService,
+		repository: *costumerOrder_repository.New(coll),
 	}
+}
+
+func (s *service) SetUserService(userService contracts.User_Service) {
+	s.userService = userService
+}
+
+func (s *service) SetStockService(stockService contracts.Stock_Service) {
+	s.stockService = stockService
 }
 
 func (s *service) Register(ord costumerOrder.CostumerOrder) (ordID string, err error) {
@@ -38,7 +43,7 @@ func (s *service) Register(ord costumerOrder.CostumerOrder) (ordID string, err e
 
 	// check if the received products list really exists on DB
 	for _, prod := range ord.Products {
-		stock, err := s.prodService.ReadByID(prod.GetProductID())
+		stock, err := s.stockService.ReadByID(prod.GetProductID())
 		if err != nil {
 			return "", err
 		}

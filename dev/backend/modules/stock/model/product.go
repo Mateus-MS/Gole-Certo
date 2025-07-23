@@ -22,11 +22,12 @@ var (
 )
 
 type ProductStock struct {
-	ProductID primitive.ObjectID   `json:"ProductID,omitempty" bson:"_id,omitempty"`
-	Name      string               `json:"Name"                bson:"name"`
-	Brand     string               `json:"Brand"               bson:"brand"`
-	Price     primitive.Decimal128 `json:"Price"               bson:"price"`
-	Stock     int64                `json:"Quantity"            bson:"quantity"`
+	ProductID    primitive.ObjectID   `json:"ProductID,omitempty" bson:"_id,omitempty"`
+	Name         string               `json:"Name"                bson:"name"`
+	Brand        string               `json:"Brand"               bson:"brand"`
+	Price        primitive.Decimal128 `json:"Price"               bson:"price"`
+	Stock        int64                `json:"Quantity"            bson:"quantity"`
+	MinThreshold int64                `json:"MinThreshold"        bson:"minthreshold"`
 }
 
 // Constructor
@@ -39,11 +40,12 @@ func New(name, brand, priceStr string, stock int64) (ProductStock, error) {
 	}
 
 	prod := ProductStock{
-		ProductID: primitive.NewObjectIDFromTimestamp(time.Now()),
-		Name:      name,
-		Brand:     brand,
-		Price:     price,
-		Stock:     stock,
+		ProductID:    primitive.NewObjectIDFromTimestamp(time.Now()),
+		Name:         name,
+		Brand:        brand,
+		Price:        price,
+		Stock:        stock,
+		MinThreshold: 200, // 200 items
 	}
 
 	if err := prod.IsValid(); err != nil {
@@ -73,6 +75,12 @@ func (p *ProductStock) IsValid() error {
 
 	// Check the quantity
 	if p.Stock < 0 {
+		return ErrInvalidQuantity
+	}
+
+	// Check the quantity
+	// Since doesn't make sense the MIN threshold be 90%
+	if p.MinThreshold <= 0 && p.MinThreshold >= 90 {
 		return ErrInvalidQuantity
 	}
 

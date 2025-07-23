@@ -6,8 +6,7 @@ import (
 
 	duffbeer_service "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
-	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
-	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
+	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
 	stock_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,11 +22,11 @@ type Application struct {
 }
 
 type Services struct {
-	User    user_service.Service
-	Product stock_service.Service
+	User  contracts.User_Service
+	Stock contracts.Stock_Service
 
-	SupplierOrder supplierOrder_service.Service
-	CostumerOrder costumerOrder_service.Service
+	SupplierOrder contracts.SupplierOrder_Service
+	CostumerOrder contracts.CostumerOrder_Service
 
 	DuffBeer duffbeer_service.Service
 }
@@ -64,7 +63,7 @@ func createServices(client *mongo.Client) *Services {
 
 	return &Services{
 		User:     user,
-		Product:  prod,
+		Stock:    prod,
 		DuffBeer: duffbeer,
 	}
 }

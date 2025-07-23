@@ -28,7 +28,7 @@ func GetMockRegistered(t *testing.T, app *testutils.Application) []product.Produ
 		15,
 	)
 
-	app.Services.Product.Create(prod)
+	app.Services.Stock.Create(prod)
 
 	return []product.ProductStock{prod}
 }

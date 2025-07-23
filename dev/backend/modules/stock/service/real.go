@@ -1,6 +1,7 @@
 package stock_service
 
 import (
+	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	product_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/repository"
 	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/utils"
@@ -13,10 +14,44 @@ type Stock = product.ProductStock
 
 type service struct {
 	repository product_repository.Repository
+
+	supplierOrder contracts.SupplierOrder_Service
+}
+
+func (s *service) SetSupplierOrderService(supplierOrder contracts.SupplierOrder_Service) {
+	s.supplierOrder = supplierOrder
 }
 
 func New(coll *mongo.Collection) *service {
-	return &service{repository: *product_repository.New(coll)}
+	return &service{
+		repository: *product_repository.New(coll),
+	}
+}
+
+// NOTE: This function normally will be called ONLY after user and prod validation
+// so i will not validate that again here, if needed refactor later
+func (s *service) ApplyStockReduction(prodID string, quantityToRemove int64) error {
+	// Get the product
+	stock, err := s.ReadByID(prodID)
+	if err != nil {
+		return err
+	}
+
+	// Remove the quantity from it
+	stock.Stock -= quantityToRemove
+
+	// Update it on DB
+	s.UpdateByID(stock)
+
+	// Check for the Min threshold
+	if stock.GetAmmount() > stock.MinThreshold {
+		return nil
+	}
+
+	// If in the min threshold, re-stock with supplierOrder
+	// s.supplierOrder
+
+	return nil
 }
 
 func (s *service) Create(prod Stock) (err error) {
