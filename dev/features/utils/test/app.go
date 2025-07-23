@@ -33,6 +33,8 @@ func createTestApp() *Application {
 	costumerOrder.SetStockService(stock)
 	costumerOrder.SetUserService(user)
 
+	stock.SetSupplierOrderService(&supplierOrder)
+
 	duffbeer := duffbeerService_mock.New()
 
 	services := &app.Services{

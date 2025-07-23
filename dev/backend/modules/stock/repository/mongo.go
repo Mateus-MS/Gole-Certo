@@ -120,10 +120,12 @@ func (repo *Repository) Delete(queryFilter bson.M) (err error) {
 func (repo *Repository) Update(prod Product, filter bson.M) (err error) {
 	update := bson.M{
 		"$set": bson.M{
-			"name":     prod.Name,
-			"brand":    prod.Brand,
-			"price":    prod.Price,
-			"quantity": prod.Stock,
+			"name":         prod.Name,
+			"brand":        prod.Brand,
+			"price":        prod.Price,
+			"stock":        prod.Stock,
+			"minthreshold": prod.MinThreshold,
+			"maxstock":     prod.MaxStock,
 		},
 	}
 

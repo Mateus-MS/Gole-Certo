@@ -23,12 +23,11 @@ func TestRegister_Success(t *testing.T) {
 	// Get a registered product in DB
 	stock := producttestutils.GetMockRegistered(t, app)[0]
 	prod := stock.GetInCostumerFormat()
-	prod.Quantity = 10 // Set the desire quantity
+	prod.Quantity = 40 // Set the desire quantity
 
 	// Create the order OBJ
 	ord, _ := costumerOrder.New(
 		[]costumerOrder.CostumerProduct{*prod},
-		"processing",
 	)
 	// Set the user that made the order request
 	ord.UserID = usr.GetIdentifier()
@@ -61,7 +60,6 @@ func TestRegister_InexistentProduct(t *testing.T) {
 	// Create the order OBJ
 	ord, _ := costumerOrder.New(
 		[]costumerOrder.CostumerProduct{*prod},
-		"processing",
 	)
 	// Set the user that made the order request
 	ord.UserID = usr.GetIdentifier()
@@ -85,7 +83,6 @@ func TestRegister_InsufficientStock(t *testing.T) {
 	// Create the order OBJ
 	ord, _ := costumerOrder.New(
 		[]costumerOrder.CostumerProduct{*prod},
-		"processing",
 	)
 	// Set the user that made the order request
 	ord.UserID = usr.GetIdentifier()

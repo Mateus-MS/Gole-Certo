@@ -20,7 +20,6 @@ func GetUnregisteredMock(t *testing.T, app *testutils.Application) (supplierOrde
 	// Create the new supplier order OBJ
 	order, _ := supplierOrder.New(
 		[]*supplierOrder.SupplierProduct{prod},
-		"batching",
 	)
 
 	return order, stock, prod

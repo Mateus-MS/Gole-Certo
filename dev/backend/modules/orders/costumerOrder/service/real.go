@@ -57,9 +57,19 @@ func (s *service) Register(ord costumerOrder.CostumerOrder) (ordID string, err e
 	}
 
 	// Create the order
-	return s.Create(ord)
+	ordID, err = s.Create(ord)
+	if err != nil {
+		return "", err
+	}
 
 	// Remove from STOCK what was ordered
+	for _, prod := range ord.Products {
+		if err := s.stockService.ApplyStockReduction(prod.GetProductID(), prod.GetAmmount()); err != nil {
+			return "", err
+		}
+	}
+
+	return ordID, nil
 }
 
 // C R U D

@@ -2,7 +2,6 @@ package costumerOrder
 
 import (
 	"errors"
-	"slices"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -22,18 +21,14 @@ type CostumerOrder struct {
 	UserID string `json:"UserID" bson:"userID"`
 }
 
-func New(prods []CostumerProduct, state string) (CostumerOrder, error) {
+func New(prods []CostumerProduct) (CostumerOrder, error) {
 	if len(prods) <= 0 {
 		return CostumerOrder{}, ErrEmptyProductList
-	}
-
-	if !slices.Contains([]string{"processing", "delivering", "received"}, state) {
-		return CostumerOrder{}, ErrInvalidState
 	}
 
 	return CostumerOrder{
 		ID:       primitive.NewObjectIDFromTimestamp(time.Now()),
 		Products: prods,
-		State:    state,
+		State:    "processing",
 	}, nil
 }

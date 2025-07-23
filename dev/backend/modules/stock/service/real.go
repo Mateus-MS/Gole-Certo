@@ -2,6 +2,7 @@ package stock_service
 
 import (
 	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
+	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	product_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/repository"
 	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/utils"
@@ -44,12 +45,32 @@ func (s *service) ApplyStockReduction(prodID string, quantityToRemove int64) err
 	s.UpdateByID(stock)
 
 	// Check for the Min threshold
-	if stock.GetAmmount() > stock.MinThreshold {
+	reStockAmount := stock.CalculateRestockAmount()
+	if reStockAmount == 0 {
 		return nil
 	}
 
 	// If in the min threshold, re-stock with supplierOrder
-	// s.supplierOrder
+
+	// Get the prod in the right format and with the correct quantity
+	supProd := stock.GetInSupplierFormat()
+	supProd.Quantity = reStockAmount
+
+	// Create the order OBJ
+	supOrder, err := supplierOrder.New(
+		[]*supplierOrder.SupplierProduct{
+			supProd,
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	// Register the new order
+	_, err = s.supplierOrder.Register(supOrder)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

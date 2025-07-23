@@ -12,7 +12,7 @@ func GetMock() []product.ProductStock {
 		"Super BOCK Black",
 		"Super BOCK",
 		"1.99",
-		15,
+		50,
 	)
 
 	return []product.ProductStock{prod}
@@ -25,7 +25,7 @@ func GetMockRegistered(t *testing.T, app *testutils.Application) []product.Produ
 		"Super BOCK Black",
 		"Super BOCK",
 		"1.99",
-		15,
+		50,
 	)
 
 	app.Services.Stock.Create(prod)

@@ -2,7 +2,6 @@ package supplierOrder
 
 import (
 	"errors"
-	"slices"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -21,19 +20,14 @@ type SupplierOrder struct {
 	TotalQuantity int64              `json:"TotalQuantity"  bson:"totalQuantity"`
 }
 
-func New(prods []*SupplierProduct, state string) (SupplierOrder, error) {
+func New(prods []*SupplierProduct) (SupplierOrder, error) {
 	if len(prods) <= 0 {
 		return SupplierOrder{}, ErrEmptyProductList
-	}
-
-	// TODO: think if is better to just use "batching" as default state instead of receiving it
-	if !slices.Contains([]string{"batching", "processing", "delivering", "delivered"}, state) {
-		return SupplierOrder{}, ErrInvalidState
 	}
 
 	return SupplierOrder{
 		ID:       primitive.NewObjectIDFromTimestamp(time.Now()),
 		Products: prods,
-		State:    state,
+		State:    "batching",
 	}, nil
 }

@@ -35,7 +35,6 @@ func TestCreate_NotRegisteredProduct(t *testing.T) {
 	// Create the new supplier order OBJ
 	order, _ := supplierOrder.New(
 		[]*supplierOrder.SupplierProduct{prod},
-		"batching",
 	)
 
 	// Try to save it on DB

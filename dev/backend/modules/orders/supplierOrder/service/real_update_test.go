@@ -25,7 +25,6 @@ func TestRegister_SuccessUpdatingProduct(t *testing.T) {
 	// Create a new order with the same product
 	order2, _ := supplierOrder.New(
 		[]*supplierOrder.SupplierProduct{prod},
-		"batching",
 	)
 
 	// try to register it again
@@ -74,7 +73,6 @@ func TestRegister_SuccessAppendingProduct(t *testing.T) {
 	// Create the first order with the first prod
 	order1, _ := supplierOrder.New(
 		[]*supplierOrder.SupplierProduct{prod1},
-		"batching",
 	)
 
 	// Order for the first order
@@ -85,7 +83,6 @@ func TestRegister_SuccessAppendingProduct(t *testing.T) {
 	// Now a new order with a different product
 	order2, _ := supplierOrder.New(
 		[]*supplierOrder.SupplierProduct{prod2},
-		"batching",
 	)
 
 	// Order for the second order

@@ -26,8 +26,9 @@ type ProductStock struct {
 	Name         string               `json:"Name"                bson:"name"`
 	Brand        string               `json:"Brand"               bson:"brand"`
 	Price        primitive.Decimal128 `json:"Price"               bson:"price"`
-	Stock        int64                `json:"Quantity"            bson:"quantity"`
-	MinThreshold int64                `json:"MinThreshold"        bson:"minthreshold"`
+	Stock        int64                `json:"Stock"               bson:"stock"`
+	MinThreshold int8                 `json:"MinThreshold"        bson:"minthreshold"`
+	MaxStock     int64                `json:"MaxStock"            bson:"maxstock"`
 }
 
 // Constructor
@@ -45,7 +46,8 @@ func New(name, brand, priceStr string, stock int64) (ProductStock, error) {
 		Brand:        brand,
 		Price:        price,
 		Stock:        stock,
-		MinThreshold: 200, // 200 items
+		MinThreshold: 15, // 15%
+		MaxStock:     200,
 	}
 
 	if err := prod.IsValid(); err != nil {
@@ -99,6 +101,15 @@ func (p *ProductStock) GetAmmount() int64 {
 }
 
 // Utils
+func (p *ProductStock) CalculateRestockAmount() int64 {
+	threshold := int64(p.MinThreshold) * p.MaxStock / 100
+	if p.Stock < threshold {
+		return p.MaxStock - p.Stock
+	}
+	return 0
+}
+
+// Converters
 
 func (p *ProductStock) GetInSupplierFormat() *supplierOrder.SupplierProduct {
 	return &supplierOrder.SupplierProduct{
