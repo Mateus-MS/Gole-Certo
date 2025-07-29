@@ -37,51 +37,76 @@ var (
 	ErrMissingTypeField   = errors.New("the queryied document doesn't has the type field")
 )
 
-func (repo *Repository) Read(identifier string) (c User, err error) {
-	// The query
+func (repo *Repository) ReadByID(ctx context.Context, identifier string) (c User, err error) {
+	// Build the filter
 	filter := bson.M{"_id": identifier}
 
-	var raw bson.Raw
-
-	// Query in DB
-	if err = repo.Collection.FindOne(context.TODO(), filter).Decode(&raw); err != nil {
-		// If the cause of the error is, document not found
-		if errors.Is(err, mongo.ErrNoDocuments) {
-			// Means the user don't exists
-			return c, ErrUserNotFound
-		}
-
+	// Query
+	raw, err := repo.read(ctx, filter)
+	if err != nil {
 		return c, err
 	}
 
-	// Get the data for the field type
-	typeVal := raw.Lookup("type")
-	// Check if is of type string
-	if typeVal.Type == bson.TypeString {
-		var typeStr string
+	// Decode
+	return decodeUser(raw)
 
-		if err = typeVal.Unmarshal(&typeStr); err == nil {
+}
 
-			switch typeStr {
-			case "individual":
-				var ind user.Individual
-				// Unmarshal the whole struct and return it
-				if err = bson.Unmarshal(raw, &ind); err == nil {
-					return &ind, nil
-				}
-			case "company":
-				var comp user.Company
-				// Unmarshal the whole struct and return it
-				if err = bson.Unmarshal(raw, &comp); err == nil {
-					return &comp, nil
-				}
-			default:
-				return nil, ErrDocumentTypeUnkown
-			}
+// Works almost identically as `ReadById` but instead of returning the user or some error, it only returns a bool
+func (repo *Repository) HasUser(ctx context.Context, identifier string) bool {
+	filter := bson.M{"_id": identifier}
 
+	err := repo.Collection.FindOne(ctx, filter).Err()
+
+	return err == nil || !errors.Is(err, mongo.ErrNoDocuments)
+}
+
+// Basic CRUD
+
+// Simple search for documents on `DataBase` and return the raw bson.
+func (repo *Repository) read(ctx context.Context, filter bson.M) (raw bson.Raw, err error) {
+	if err = repo.Collection.FindOne(ctx, filter).Decode(&raw); err != nil {
+		// If the cause of the error is, document not found
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			// Means the user don't exists
+			return raw, ErrUserNotFound
 		}
+
+		// Another error
+		return raw, err
 	}
 
-	return nil, ErrMissingTypeField
+	// Success
+	return raw, err
+}
 
+// Utils
+
+func decodeUser(raw bson.Raw) (usr User, err error) {
+	typeVal := raw.Lookup("type")
+	if typeVal.Type != bson.TypeString {
+		return nil, ErrMissingTypeField
+	}
+
+	var typeStr string
+	if err := typeVal.Unmarshal(&typeStr); err != nil {
+		return nil, err
+	}
+
+	switch typeStr {
+	case "individual":
+		var ind user.Individual
+		if err := bson.Unmarshal(raw, &ind); err != nil {
+			return nil, err
+		}
+		return &ind, nil
+	case "company":
+		var comp user.Company
+		if err := bson.Unmarshal(raw, &comp); err != nil {
+			return nil, err
+		}
+		return &comp, nil
+	default:
+		return nil, ErrDocumentTypeUnkown
+	}
 }

@@ -7,15 +7,14 @@ import (
 )
 
 type service struct {
-	repository user_repository.Repository
+	repository *user_repository.Repository
 }
 
 func New(coll *mongo.Collection) *service {
-	return &service{repository: *user_repository.New(coll)}
+	return &service{repository: user_repository.New(coll)}
 }
 
-// TODO: instead of usr having a field `type`, it "discovers" here
-func (s *service) Create(usr user.User) (err error) {
+func (s *service) Register(usr user.User) (err error) {
 	// TODO: See if is need to first check if already exists a client equals to the received one
 	if err = usr.IsValid(); err != nil {
 		return err
@@ -24,6 +23,6 @@ func (s *service) Create(usr user.User) (err error) {
 	return s.repository.Create(usr)
 }
 
-func (s *service) Read(identifier string) (usr user.User, err error) {
-	return s.repository.Read(identifier)
+func (s *service) Repo() *user_repository.Repository {
+	return s.repository
 }

@@ -26,7 +26,7 @@ func searchUserRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// user.Search returns a NOT concrete type, it returns the Interface user.User
-	if usr, err = app.GetInstance().Services.User.Read(identifierRaw); err != nil {
+	if usr, err = app.GetInstance().Services.User.Repo().ReadByID(r.Context(), identifierRaw); err != nil {
 		http.Error(w, "Some error occurred while querying: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
