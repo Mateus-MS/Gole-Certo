@@ -1,0 +1,34 @@
+main 
+    width: 100dvw
+    height: fit-content
+    min-height: 70vh
+    background-color: black
+
+    display: flex
+    flex-direction: column
+
+    #filter-info
+        width: inherit
+        height: 30px
+
+    #container
+        width: inherit
+        flex-grow: 1
+
+        display: grid
+ 
+        // Mobile grid layout
+        grid-template-columns: repeat(1, 60vw)
+        gap: 80px
+        padding: 40px 60px
+        justify-content: center
+
+        // Desktop grid layout
+        @media (min-width: 768px)
+            grid-template-columns: repeat(4, 150px)
+            gap: 40px
+            padding: 40px 60px
+
+    #pagination
+        width: inherit
+        height: 70px
