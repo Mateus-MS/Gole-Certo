@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"time"
 
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func init() {
@@ -26,6 +28,9 @@ func registerProduct(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error while decoding the received JSON: "+err.Error(), http.StatusBadRequest)
 		return
 	}
+
+	// Temp
+	prod.ProductID = primitive.NewObjectIDFromTimestamp(time.Now())
 
 	// 2 - Save the product in DB
 	if err = app.GetInstance().Services.Stock.Create(prod); err != nil {
