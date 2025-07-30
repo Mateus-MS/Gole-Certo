@@ -1,11 +1,16 @@
 package contracts
 
 import (
+	"context"
+
 	costumerOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/model"
+	costumerOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/repository/mongo"
 	supplierOrder "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/model"
+	supplierOrder_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/repository/mongo"
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+	stock_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/repository/mongo"
 	user "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/model"
-	"go.mongodb.org/mongo-driver/bson"
+	user_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/repository/mongo"
 )
 
 type SupplierOrder_Service interface {
@@ -14,51 +19,39 @@ type SupplierOrder_Service interface {
 	// - Check if there is some batch... well, batching
 	// - Will update the existing batch with the sended products
 	// - If no batch, creates a new one
-	Register(supplierOrder.SupplierOrder) (string, error)
-
-	ReadByOrderID(any) (supplierOrder.SupplierOrder, error)
-	ReadOneByState(string) (supplierOrder.SupplierOrder, error)
-	ReadManyByState(string, int) ([]supplierOrder.SupplierOrder, error)
-
-	UpdateByID(supplierOrder.SupplierOrder) error
+	Register(context.Context, supplierOrder.SupplierOrder) (string, error)
 
 	SetStockService(Stock_Service)
+
+	// Exposes the repository layer to the service layer
+	Repo() *supplierOrder_repository.Repository
 }
 
 type CostumerOrder_Service interface {
-	Register(costumerOrder.CostumerOrder) (string, error)
+	Register(context.Context, costumerOrder.CostumerOrder) (string, error)
 
-	// C R U D
-	Create(costumerOrder.CostumerOrder) (string, error)
+	SetStockService(Stock_Service)
+	SetUserService(User_Service)
+
+	// Exposes the repository layer to the service layer
+	Repo() *costumerOrder_repository.Repository
 }
 
 type Stock_Service interface {
-	Create(product.ProductStock) error
+	Register(context.Context, product.ProductStock) error
 
-	// ReadManyAfterID(bson.M, string, int64) ([]Product, error)
-	ReadByID(string) (product.ProductStock, error)
-	ReadByName(string) (product.ProductStock, error)
-
-	UpdateByID(product.ProductStock) error
-
-	DeleteByID(string) error
-	DeleteByName(string) error
-
-	// Utils
-	ValidateProductByID(string) bool
-
-	// Base functions
-	Delete(bson.M) error
-	Read(bson.M) (product.ProductStock, error)
-
-	// TODO
-	ApplyStockReduction(string, int64) error
+	DeductFromStock(context.Context, product.ProductStock, int64) error
 
 	// Service setters
 	SetSupplierOrderService(SupplierOrder_Service)
+
+	// Exposes the repository layer to the service layer
+	Repo() *stock_repository.Repository
 }
 
 type User_Service interface {
-	Create(user.User) error
-	Read(string) (user.User, error)
+	Register(context.Context, user.User) error
+
+	// Exposes the repository layer to the service layer
+	Repo() *user_repository.Repository
 }

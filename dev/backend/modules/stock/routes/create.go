@@ -33,7 +33,7 @@ func registerProduct(w http.ResponseWriter, r *http.Request) {
 	prod.ProductID = primitive.NewObjectIDFromTimestamp(time.Now())
 
 	// 2 - Save the product in DB
-	if err = app.GetInstance().Services.Stock.Create(prod); err != nil {
+	if err = app.GetInstance().Services.Stock.Register(r.Context(), prod); err != nil {
 		if errors.Is(err, product.ErrDuplicated) {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

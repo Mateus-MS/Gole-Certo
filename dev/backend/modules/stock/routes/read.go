@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	product "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
-	product_utils "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/utils"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/app"
 	"github.com/Mateus-MS/Gole-Certo/dev/features/utils"
 	"go.mongodb.org/mongo-driver/bson"
@@ -24,21 +23,13 @@ func readProductRoute(w http.ResponseWriter, r *http.Request) {
 	var nameRaw, _ = utils.GetQueryParam(r, "name", false, "")
 	var idRaw, _ = utils.GetQueryParam(r, "id", false, "")
 
-	filter := product_utils.NewQueryFilter()
-	if nameRaw != "" {
-		filter.SetName(nameRaw)
-	}
-	if idRaw != "" {
-		filter.SetID(idRaw)
-	}
-	var query bson.M
-	if query, err = filter.Build(); err != nil {
-		http.Error(w, "ID received invalid: "+err.Error(), http.StatusInternalServerError)
-		return
+	query := bson.M{
+		"_id":  idRaw,
+		"name": nameRaw,
 	}
 
 	// Perform the query
-	if prod, err = app.GetInstance().Services.Stock.Read(query); err != nil {
+	if prod, err = app.GetInstance().Services.Stock.Repo().ReadRaw(r.Context(), query); err != nil {
 		http.Error(w, "Some error occurred while querying: "+err.Error(), http.StatusInternalServerError)
 		return
 	}

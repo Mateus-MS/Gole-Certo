@@ -31,7 +31,7 @@ func (s *service) DeductFromStock(ctx context.Context, prod Stock, quantityToRem
 	}
 
 	// Register the new order
-	_, err = s.supplierOrder.Register(supOrder)
+	_, err = s.supplierOrder.Register(ctx, supOrder)
 	if err != nil {
 		return err
 	}

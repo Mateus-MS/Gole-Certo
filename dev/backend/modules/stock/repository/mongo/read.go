@@ -10,6 +10,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// TEMP
+func (repo *Repository) ReadRaw(ctx context.Context, filter bson.M) (prod Product, err error) {
+	return repo.read(ctx, filter)
+}
+
 func (repo *Repository) ReadByID(ctx context.Context, id string) (prod Product, err error) {
 	// Convert the received ID into how mongoDB expectes it to be
 	var objID primitive.ObjectID

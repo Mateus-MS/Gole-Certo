@@ -49,7 +49,7 @@ func registerUserRoute(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Save in DB
-	if err = app.GetInstance().Services.User.Register(usr); err != nil {
+	if err = app.GetInstance().Services.User.Register(r.Context(), usr); err != nil {
 		http.Error(w, "Failed to save the user into DB: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
