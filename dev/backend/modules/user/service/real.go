@@ -2,7 +2,7 @@ package user_service
 
 import (
 	user "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/model"
-	user_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/repository"
+	user_repository "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/repository/mongo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
