@@ -54,7 +54,6 @@ func ShopPage(prods []product.ProductStock) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		println(len(prods))
 		for _, prod := range prods {
 			templ_7745c5c3_Err = page_shop_frags.ProdCard(prod).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {

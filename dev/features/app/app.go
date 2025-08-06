@@ -4,11 +4,14 @@ import (
 	"net/http"
 	"sync"
 
-	duffbeer_service "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
 	duffbeerService_mock "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer/mock"
-	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
-	stock_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
+	costumerOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/costumerOrder/service"
+	supplierOrder_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/orders/supplierOrder/service"
+	product_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/service"
 	user_service "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/service"
+
+	duffbeer_service "github.com/Mateus-MS/Gole-Certo/dev/backend/external/duffbeer"
+	contracts "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/common"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -57,13 +60,27 @@ func newApplication() *Application {
 
 func createServices(client *mongo.Client) *Services {
 	user := user_service.New(client.Database("goleCertoDB").Collection("users"))
-	prod := stock_service.New(client.Database("goleCertoDB").Collection("stock"))
+	stock := product_service.New(client.Database("goleCertoDB").Collection("stock"))
+	supplierOrder := supplierOrder_service.New(client.Database("goleCertoDB").Collection("supplier_orders"))
+	costumerOrder := costumerOrder_service.New(client.Database("goleCertoDB").Collection("costumer_orders"))
+
+	// Add the dependecies
+	supplierOrder.SetStockService(stock)
+
+	costumerOrder.SetStockService(stock)
+	costumerOrder.SetUserService(user)
+
+	stock.SetSupplierOrderService(&supplierOrder)
 
 	duffbeer := duffbeerService_mock.New()
 
 	return &Services{
-		User:     user,
-		Stock:    prod,
+		User:  user,
+		Stock: stock,
+
+		SupplierOrder: &supplierOrder,
+		CostumerOrder: &costumerOrder,
+
 		DuffBeer: duffbeer,
 	}
 }

@@ -1,0 +1,24 @@
+{
+    "customFileOrder.rules": {
+        "d:\\Documentos\\projetos\\Gole-Certo\\dev\\backend\\modules\\stock\\service": {
+            "order": [
+                "implementation.go",
+                "deductStock.go",
+                "register.go"
+            ],
+            "type": "manual"
+        },
+        "d:\\Documentos\\projetos\\Gole-Certo\\dev\\backend\\modules\\stock\\repository\\mongo": {
+            "order": [
+                "repo.go",
+                "basic.go",
+                "create.go",
+                "read.go",
+                "update.go",
+                "delete.go",
+                "utils.go"
+            ],
+            "type": "manual"
+        }
+    }
+}

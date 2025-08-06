@@ -4,8 +4,15 @@ import "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 
 templ ProdCard(prod product.ProductStock) {
     <div class="prod-card">
-        <div>{prod.Name}</div>
-        <div>{prod.Brand}</div>
-        <div>{prod.Price.String()}</div>
+        <div class="container"></div>
+        <div class="infos">
+            <div class="holder">
+                <span class="name">{prod.Name}</span>
+                <span class="score">5⭐</span>
+            </div>
+            <div class="price">
+                <span>{prod.Price.String()} €</span>
+            </div>
+        </div>
     </div>
 }
