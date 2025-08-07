@@ -1,0 +1,31 @@
+#filter-info
+    width: 100%
+    height: 40px
+    background-color: green
+    display: flex
+    align-items: center
+    padding: 15px 20px
+    grid-area: filter-info
+
+    #toggle-menu
+        font-family: 'icons'
+        font-size: 1.2em
+        padding: 7px
+
+        // Hide the button on desktop
+        @media (min-width: 768px)
+            display: none
+
+#filter-menu
+    position: absolute
+    left: 0
+    top: 0
+    width: 70%
+    height: 100%
+
+    @media (min-width: 768px)
+        background-color: red
+        position: relative
+        width: 100%
+
+        grid-area: filter-menu

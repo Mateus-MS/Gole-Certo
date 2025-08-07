@@ -9,11 +9,10 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
 	page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
 )
 
-func ShopPage(prods []product.ProductStock) templ.Component {
+func ShopPage(pageIndex string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -50,17 +49,28 @@ func ShopPage(prods []product.ProductStock) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<main><div id=\"filter-info\"></div><div id=\"container\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, prod := range prods {
-			templ_7745c5c3_Err = page_shop_frags.ProdCard(prod).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
+		templ_7745c5c3_Err = page_shop_frags.FilterInfo().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div id=\"pagination\"></div></main>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div id=\"filter-menu\"></div><div id=\"holder\" hx-get=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/components/prodPage?page=" + pageIndex)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/index.templ`, Line: 22, Col: 64}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" hx-trigger=\"load\" hx-swap=\"outerHTML\"></div></main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -68,7 +78,7 @@ func ShopPage(prods []product.ProductStock) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -92,12 +102,12 @@ func head() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var2 == nil {
-			templ_7745c5c3_Var2 = templ.NopComponent
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<head><base href=\"/frontend/src/\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Gole Certo</title><link rel=\"stylesheet\" href=\"css/main.css\"><link rel=\"stylesheet\" href=\"css/shop/main.css\"><link rel=\"stylesheet\" href=\"css/shop/header.css\"><link rel=\"stylesheet\" href=\"css/shop/container.css\"><link rel=\"stylesheet\" href=\"css/shop/footer.css\"><link rel=\"stylesheet\" href=\"css/shop/prod-card.css\"></head>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<head><base href=\"/frontend/src/\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Gole Certo</title><link rel=\"stylesheet\" href=\"css/main.css\"><link rel=\"stylesheet\" href=\"css/shop/main.css\"><link rel=\"stylesheet\" href=\"css/shop/header.css\"><link rel=\"stylesheet\" href=\"css/shop/container.css\"><link rel=\"stylesheet\" href=\"css/shop/footer.css\"><link rel=\"stylesheet\" href=\"css/shop/prod-card.css\"><link rel=\"stylesheet\" href=\"css/shop/filter.css\"><link rel=\"stylesheet\" href=\"css/shop/pagination.css\"><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js\" defer></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

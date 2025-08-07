@@ -8,6 +8,7 @@ import (
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/routes"
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/user/routes"
 
+	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/components"
 	_ "github.com/Mateus-MS/Gole-Certo/dev/backend/routes/pages"
 	"github.com/joho/godotenv"
 

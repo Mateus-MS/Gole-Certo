@@ -2,3 +2,20 @@ body
     // TODO: add a min width
     width: 100dvw
     height: fit-content
+
+main 
+    width: 100vw
+    min-height: 50vh
+    height: fit-content
+
+    display: grid
+    grid-template-columns: 20vw 80vw
+    grid-template-rows: auto auto
+    // Make the pagination occupy the whole bottom on mobile
+    grid-template-areas: "filter-info filter-info" "filter-menu holder" "pagination pagination"
+
+    position: relative
+
+    // Make the pagination occupy just the right side on desktop
+    @media (min-width: 768px)
+        grid-template-areas: "filter-menu filter-info" "filter-menu holder" "filter-menu pagination"

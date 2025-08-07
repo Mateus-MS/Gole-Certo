@@ -1,0 +1,54 @@
+package page_shop
+
+import (
+    page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
+)
+
+templ ShopPage(pageIndex string) {
+    <!DOCTYPE html>
+    <html>
+    @head()
+    <body>
+        @page_shop_frags.Header()
+
+        <main>
+        
+            @page_shop_frags.FilterInfo()
+
+            <div id="filter-menu"></div>
+
+            <div 
+                id="holder"
+                hx-get={"/components/prodPage?page=" + pageIndex}
+                hx-trigger="load"
+                hx-swap="outerHTML"
+            ></div>
+
+        </main>
+
+        @page_shop_frags.Footer()
+    </body>
+    </html>
+}
+
+templ head() {
+    <head>
+        <base href="/frontend/src/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Gole Certo</title>
+
+        // CSS
+        <link rel="stylesheet" href="css/main.css">
+
+        <link rel="stylesheet" href="css/shop/main.css">
+        <link rel="stylesheet" href="css/shop/header.css">
+        <link rel="stylesheet" href="css/shop/container.css">
+        <link rel="stylesheet" href="css/shop/footer.css">
+        <link rel="stylesheet" href="css/shop/prod-card.css">
+        <link rel="stylesheet" href="css/shop/filter.css">
+        <link rel="stylesheet" href="css/shop/pagination.css">
+
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" defer></script>
+    </head>
+}

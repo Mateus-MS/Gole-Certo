@@ -1,0 +1,106 @@
+package components
+
+import (
+    page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+	"strconv"
+)
+
+templ ProductPageComponent(prods []product.ProductStock, pageIndex, totalPages int64) {
+    <div id="pagination_container">
+    
+        @products(prods)
+
+        @paginationController(pageIndex, totalPages)
+
+    </div>
+}
+
+func getControllerClassName(loopIndex, pageIndex int) string {
+    if pageIndex == loopIndex {
+        return "page active"
+    }
+
+    return "page"
+}
+
+script updatePath(pageIndex int) {
+    history.replaceState({}, '', '/shop?page=' + pageIndex)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+templ paginationController(pageIndex, totalPages int64){
+    <div id="controllers">
+
+        <button 
+            class="icons arrow"
+            if pageIndex == 1 {
+                style="visibility: hidden; pointer-events: none;"
+            }
+            hx-get={"/components/prodPage?page=" + strconv.Itoa(int(pageIndex) - 1)}
+            hx-target="#pagination_container"
+            hx-swap="outerHTML"
+            onclick={updatePath(int(pageIndex) - 1)}
+        >&#xE801;</button>
+
+        {{start := pageIndex - 1}}
+        if start < 1 {
+            {{start = 1}}
+        }
+
+        {{end := start + 2}}
+        if end > totalPages {
+            {{end = totalPages}}
+            {{start = end - 2}}
+            if start < 1 {
+                {{start = 1}}
+            }
+        }
+
+        for i := start; i <= end; i++ {
+            <button 
+                class={getControllerClassName(int(i), int(pageIndex))}
+                hx-get={"/components/prodPage?page=" + strconv.Itoa(int(i))}
+                hx-target="#pagination_container"
+                hx-swap="outerHTML"
+                onclick={updatePath(int(i))}
+            >
+                {strconv.Itoa(int(i))}
+            </button>
+        }
+
+        if end < totalPages-1 {
+            <span>...</span>
+
+            <button 
+                class={getControllerClassName(int(totalPages), int(pageIndex))}
+                hx-get={"/components/prodPage?page=" + strconv.Itoa(int(totalPages))}
+                hx-target="#pagination_container"
+                hx-swap="outerHTML"
+                onclick={updatePath(int(totalPages))}
+            >
+                {strconv.Itoa(int(totalPages))}
+            </button>
+        }
+
+        <button 
+            class="icons arrow"
+            if pageIndex == totalPages {
+                style="visibility: hidden; pointer-events: none;"
+            }
+            hx-get={"/components/prodPage?page=" + strconv.Itoa(int(pageIndex) + 1)}
+            hx-target="#pagination_container"
+            hx-swap="outerHTML"
+            onclick={updatePath(int(pageIndex) + 1)}
+        >&#xE802;</button>
+    
+    </div>
+}
+
+templ products(prods []product.ProductStock){
+    <div id="holder">
+        for _, prod := range prods {
+            @page_shop_frags.ProdCard(prod)
+        }
+    </div>
+}
