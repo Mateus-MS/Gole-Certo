@@ -7,13 +7,21 @@
     // grid layout 1 column
     grid-template-columns: repeat(1, 60vw)
     gap: 80px
-    padding: 0px 60px
+    padding: 0px 30px
     justify-content: center
 
-    // grid layout 3 columns
-    @media (min-width: 768px)
+    @media (min-width: 768px) and (max-width: 1200px)
         width: 100%
-        grid-template-columns: repeat(3, 200px)
+        grid-template-columns: repeat(3, 190px)
+        gap: 40px
+        padding: 0px 0px
+
+        grid-area: holder
+
+    // grid layout 3 columns
+    @media (min-width: 1200px)
+        width: 100%
+        grid-template-columns: repeat(4, 190px)
         gap: 40px
         padding: 0px 0px
 

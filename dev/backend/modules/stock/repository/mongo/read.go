@@ -52,38 +52,3 @@ func (repo *Repository) ReadManyPaged(ctx context.Context, filter bson.M, page i
 	}
 	return prods, nil
 }
-
-func (repo *Repository) ReadManyFilteredAfterID(ctx context.Context, filter bson.M, lastID string, limit int64) (prods []Product, err error) {
-
-	// 1 - Define the time limit for this operation
-	ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-	defer cancel()
-
-	findOptions := options.Find().SetLimit(limit).SetSort(bson.D{{Key: "_id", Value: 1}})
-
-	// 2 - If received a non empty lastID, add it to the query
-	if lastID != "" {
-
-		var objID primitive.ObjectID
-		// Convert the received ID into how mongoDB expectes it to be
-		if objID, err = primitive.ObjectIDFromHex(lastID); err != nil {
-			return prods, err
-		}
-
-		// Add the id in the filer, allowing only IDs greater than the one received
-		filter["_id"] = bson.M{"$gt": objID}
-	}
-
-	// 3 - Perform the query
-	var result *mongo.Cursor
-	if result, err = repo.collection.Find(ctx, filter, findOptions); err != nil {
-		return prods, err
-	}
-	defer result.Close(ctx)
-
-	// 4 - Decode the result
-	if err := result.All(ctx, &prods); err != nil {
-		return nil, err
-	}
-	return prods, nil
-}

@@ -1,0 +1,108 @@
+#price-range
+    position: relative
+    width: 100%
+
+    .range
+        --start:0%
+        --end:100%
+        $range-height: 19px
+
+        width: 100%
+        height: $range-height 
+        position: relative
+
+        margin: 1em 0 .7em 0
+
+        @media (min-width: 768px)
+            $range-height: 15px
+
+        &::before
+            content: ""
+            position: absolute
+            top: 50%
+            transform: translateY(-50%)
+            left: 0
+            width: 100%
+            height: 4px
+            background: linear-gradient(to right, #c7c7c7 var(--start), #858585 var(--start) var(--end), #c7c7c7 var(--end))
+            border-radius: 10px
+
+        input
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+
+            // Hide the slider
+            -webkit-appearance: none
+            background: transparent
+
+            &::-webkit-slider-runnable-track
+                background: transparent
+                height: 10px
+
+            &::-webkit-slider-thumb
+                -webkit-appearance: none
+                height: $range-height
+                width: $range-height
+                background: #5d5d5d
+                border-radius: 50%
+                cursor: pointer
+                position: relative
+                z-index: 3
+                border: 2px solid white
+                box-shadow: none
+
+    .text
+        width: 100%
+        display: grid
+        grid-template-columns: 45% 45%
+        gap: 10%
+
+        .input_number
+            width: 100%
+            height: fit-content
+            border-bottom: 2px solid #858585
+            padding: 0 7px 4px 7px
+
+            // Mobile font size
+            font-size: 1em
+            font-family: Arial
+            color: #858585
+            display: flex
+            
+            // Desktop font size
+            @media (min-width: 768px)
+                font-size: .7em
+                font-family: Arial
+                color: #858585
+                display: flex
+
+            span
+                font-size: inherit
+                font-family: inherit
+                color: inherit
+                margin-right: 7px
+
+            input
+                width: 100%
+
+                // Input styling
+                background-color: transparent
+                box-sizing: border-box
+                outline: none
+
+                // Text styling
+                color: inherit
+                text-align: start
+                font-size: inherit
+                font-family: inherit
+
+                // Remove the little arrows on the side
+                // Firefox
+                -moz-appearance: textfield
+                // Chrome, Safari, Edge, Opera
+                &::-webkit-inner-spin-button,
+                &::-webkit-outer-spin-button
+                    -webkit-appearance: none
+                    margin: 0

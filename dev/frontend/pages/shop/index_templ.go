@@ -12,7 +12,7 @@ import (
 	page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
 )
 
-func ShopPage(pageIndex string) templ.Component {
+func ShopPage(pathParams string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -53,18 +53,18 @@ func ShopPage(pageIndex string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = page_shop_frags.FilterInfo().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = page_shop_frags.FilterMenu().Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div id=\"filter-menu\"></div><div id=\"holder\" hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div id=\"holder\" hx-get=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/components/prodPage?page=" + pageIndex)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("/components/prodPage?" + pathParams)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/index.templ`, Line: 22, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/index.templ`, Line: 20, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -107,7 +107,7 @@ func head() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<head><base href=\"/frontend/src/\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Gole Certo</title><link rel=\"stylesheet\" href=\"css/main.css\"><link rel=\"stylesheet\" href=\"css/shop/main.css\"><link rel=\"stylesheet\" href=\"css/shop/header.css\"><link rel=\"stylesheet\" href=\"css/shop/container.css\"><link rel=\"stylesheet\" href=\"css/shop/footer.css\"><link rel=\"stylesheet\" href=\"css/shop/prod-card.css\"><link rel=\"stylesheet\" href=\"css/shop/filter.css\"><link rel=\"stylesheet\" href=\"css/shop/pagination.css\"><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js\" defer></script></head>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<head><base href=\"/frontend/src/\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Gole Certo</title><link rel=\"stylesheet\" href=\"css/main.css\"><link rel=\"stylesheet\" href=\"css/shop/main.css\"><link rel=\"stylesheet\" href=\"css/shop/header.css\"><link rel=\"stylesheet\" href=\"css/shop/container.css\"><link rel=\"stylesheet\" href=\"css/shop/footer.css\"><link rel=\"stylesheet\" href=\"css/shop/prod-card.css\"><link rel=\"stylesheet\" href=\"css/shop/filter.css\"><link rel=\"stylesheet\" href=\"css/shop/pagination.css\"><link rel=\"stylesheet\" href=\"css/shop/price-range.css\"><script src=\"js/utils/debounce.js\"></script><script>\r\n            const MIN_PRICE = 0.45\r\n            const MAX_PRICE = 56.50\r\n            const MIN_DIFFERENCE = 20 \r\n        </script><script src=\"js/shop/main.js\"></script><script src=\"js/shop/filter.js\" defer></script><script src=\"js/shop/price-range/classes/Range.js\"></script><script src=\"js/shop/price-range/classes/Price.js\"></script><script src=\"js/shop/price-range/main.js\" defer></script><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js\" defer></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

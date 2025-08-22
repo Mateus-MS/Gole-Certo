@@ -4,7 +4,7 @@ import (
     page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
 )
 
-templ ShopPage(pageIndex string) {
+templ ShopPage(pathParams string) {
     <!DOCTYPE html>
     <html>
     @head()
@@ -13,13 +13,11 @@ templ ShopPage(pageIndex string) {
 
         <main>
         
-            @page_shop_frags.FilterInfo()
-
-            <div id="filter-menu"></div>
+            @page_shop_frags.FilterMenu()
 
             <div 
                 id="holder"
-                hx-get={"/components/prodPage?page=" + pageIndex}
+                hx-get={"/components/prodPage?" + pathParams}
                 hx-trigger="load"
                 hx-swap="outerHTML"
             ></div>
@@ -48,7 +46,24 @@ templ head() {
         <link rel="stylesheet" href="css/shop/prod-card.css">
         <link rel="stylesheet" href="css/shop/filter.css">
         <link rel="stylesheet" href="css/shop/pagination.css">
+        <link rel="stylesheet" href="css/shop/price-range.css">
 
+        // JS
+        <script src="js/utils/debounce.js"></script>
+
+        <script>
+            const MIN_PRICE = 0.45
+            const MAX_PRICE = 56.50
+            const MIN_DIFFERENCE = 20 
+        </script>
+
+        <script src="js/shop/main.js"></script>
+        <script src="js/shop/filter.js" defer></script>
+
+        <script src="js/shop/price-range/classes/Range.js"></script>
+        <script src="js/shop/price-range/classes/Price.js"></script>
+        <script src="js/shop/price-range/main.js" defer></script>
+        
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" defer></script>
     </head>
 }
