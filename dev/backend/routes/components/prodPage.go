@@ -36,9 +36,15 @@ func prodPageRoute(w http.ResponseWriter, r *http.Request) {
 	// Get the product repository
 	prodRepository := app.GetInstance().Services.Stock.Repo()
 
+	ascending, err := utils.GetQueryParam(r, "price-order", false, "ascending")
+	if err != nil {
+		http.Error(w, "Must pass the page index", http.StatusBadRequest)
+		return
+	}
+
 	// Get the data to render the page
 	var prods []stock_repository.Product
-	if prods, err = getProducts(r.Context(), prodRepository, int64(pageIndex), filter); err != nil {
+	if prods, err = getProducts(r.Context(), prodRepository, int64(pageIndex), filter, ascending == "ascending"); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -56,8 +62,8 @@ func prodPageRoute(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getProducts(context context.Context, repo *stock_repository.Repository, pageIndex int64, filter bson.M) ([]stock_repository.Product, error) {
-	prods, err := repo.ReadManyPaged(context, filter, pageIndex, stock_repository.ItemsPerPage)
+func getProducts(context context.Context, repo *stock_repository.Repository, pageIndex int64, filter bson.M, ascending bool) ([]stock_repository.Product, error) {
+	prods, err := repo.ReadManyPaged(context, filter, pageIndex, stock_repository.ItemsPerPage, ascending)
 	if err != nil {
 		return nil, err
 	}

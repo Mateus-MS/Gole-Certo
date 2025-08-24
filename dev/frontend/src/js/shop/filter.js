@@ -20,11 +20,17 @@ window.addEventListener("load", ()=>{
         let brandsArray = brands.split(":")
         createSelectedFiltersBrands(brandsArray)
     }
+
+    let priceOrder = params.get("price-order");
+    if(priceOrder !== null){
+        setPriceOrder(priceOrder)
+    }
 }, {once: true})
 
 function createSelectedFiltersBrands(brandsArray){
     for(let i = 0; i < brandsArray.length; i++){
         let li = document.createElement("li")
+        li.classList.add("checker")
         let label = document.createElement("label")
         let input = document.createElement("input")
         input.type = "checkbox"
@@ -37,7 +43,7 @@ function createSelectedFiltersBrands(brandsArray){
         
         let span = document.createElement("span")
         span.innerText = brandsArray[i]
-        span.classList.add("brand-name")
+        span.classList.add("text")
 
         label.appendChild(input)
         label.appendChild(span)
@@ -59,7 +65,9 @@ function createSelectedFiltersBrands(brandsArray){
  */
 const FILTERS = {
     page: 1,
+    // TODO: Rename it to priceRange
     price: `${MIN_PRICE}-${MAX_PRICE}`,
+    priceOrder: getpriceOrderFromURL(),
     brands: getFiltersBrandsSelectedsInRequestFormatFromURL()
 };
 
@@ -85,7 +93,7 @@ function getFiltersBrandsSelectedsInRequestFormatFromURL(){
 }
 
 function getFiltersBrandsSelectedsInRequestFormatFromDOM(){
-    let brands = document.getElementById("brands_filters")
+    let brands = document.getElementById("selecteds-holder")
     let selecteds = brands.querySelectorAll("input:checked")
 
     let filter = ""
@@ -154,6 +162,11 @@ function GetFiltersInRequestFormat(){
     }
     if(FILTERS.brands !== ""){
         params.set("brands", FILTERS.brands);
+    }
+
+    let temp = getpriceOrderFromDOM()
+    if(temp !== null){
+        params.set("price-order", temp)
     }
 
     return params.toString()

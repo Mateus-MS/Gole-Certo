@@ -29,32 +29,32 @@ func FilterMenu(brands []string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"filter-menu\" onclick=\"CloseFilterMenu(event)\"><div style=\"max-width: 0; max-height: 0; overflow: hidden;\"><input autofocus=\"true\"></div><h1 id=\"filter-group-text\">Filter Options</h1><span class=\"filter-group-title\">Brands</span><div id=\"brands_filters\"><input type=\"text\" id=\"brand-search-input\" placeholder=\"Search a brand\" oninput=\"DebouncBrandFilterSuggestionCall()\"> <span class=\"title\">Suggestions</span><ul id=\"suggestions-holder\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"filter-menu\" onclick=\"CloseFilterMenu(event)\"><div style=\"max-width: 0; max-height: 0; overflow: hidden;\"><input autofocus=\"true\"></div><h1 id=\"filter-group-header\">Filter Options</h1><div class=\"filter-group-holder\"><h2 class=\"filter-group-title\">Brands</h2><input type=\"text\" id=\"brand-search-input\" placeholder=\"Search a brand\" oninput=\"DebouncBrandFilterSuggestionCall()\"> <span class=\"filter-group-text\">Suggestions</span><ul id=\"suggestions-holder\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, brand := range brands {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<li><label><input type=\"checkbox\" name=\"brand\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<li class=\"checker\"><label><input type=\"checkbox\" name=\"brand\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(brand)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/frags/filter-menu.templ`, Line: 27, Col: 76}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/frags/filter-menu.templ`, Line: 24, Col: 76}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" onchange=\"DeboucingFiltersConstUpdate(this)\"> <span class=\"brand-name\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" onchange=\"DeboucingFiltersConstUpdate(this)\"> <span class=\"text\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(brand)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/frags/filter-menu.templ`, Line: 28, Col: 59}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/frags/filter-menu.templ`, Line: 25, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -65,7 +65,7 @@ func FilterMenu(brands []string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</ul><hr><span class=\"title\">Selecteds</span><ul id=\"selecteds-holder\"></ul></div><h2 class=\"filter-group-title\">Price</h2>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</ul><hr><span class=\"filter-group-text\">Selecteds</span><ul id=\"selecteds-holder\"></ul></div><div class=\"filter-group-holder\"><h2 class=\"filter-group-title\">Price</h2>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -73,7 +73,7 @@ func FilterMenu(brands []string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</dialog>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<hr><span class=\"filter-group-text\">Order</span><ul><li class=\"checker\"><label><input id=\"price-order-ascending\" type=\"radio\" name=\"order\" value=\"ascending\" onchange=\"DeboucingFiltersConstUpdate()\" checked> <span class=\"text\">Ascending</span></label></li><li class=\"checker\"><label><input id=\"price-order-descending\" type=\"radio\" name=\"order\" value=\"descending\" onchange=\"DeboucingFiltersConstUpdate()\"> <span class=\"text\">Descending</span></label></li></ul></div></dialog>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
