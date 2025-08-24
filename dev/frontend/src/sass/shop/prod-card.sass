@@ -1,7 +1,9 @@
+@use '../globals' as g;
+@use 'sass:map' as map;
+
 .prod-card
     width: 100%
     height: fit-content
-    font-family: Arial, Helvetica, sans-serif
 
     .container
         width: 100%
@@ -10,28 +12,18 @@
 
     .infos
         margin-top: .5em
+        font-weight: bolder
 
-        // Mobile
         .name
             font-size: .8em
             display: block
-            color: #5d5d5d
-            font-weight: bolder
-
-            // Desktop
-            @media (min-width: 768px)
-                .name
-                    font-size: .9em
+            color: map.get(g.$colors, primary)
         
         .price
-            // Commons
-            font-weight: bolder
-            color: #5d5d5d
-
-            // Mobile
+            color: map.get(g.$colors, primary)
             font-size: 1.2em
 
-            // Desktop
-            @media (min-width: 768px)
-                margin-top: .2em
+            @include g.when-desktop((
+                margin-top: .2em,
                 font-size: .9em 
+            ))
