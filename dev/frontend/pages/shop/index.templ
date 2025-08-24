@@ -6,7 +6,7 @@ import (
 
 templ ShopPage(pathParams string) {
     <!DOCTYPE html>
-    <html>
+    <html class="remove-scroll-bar">
     @head()
     <body>
         @page_shop_frags.Header()
@@ -59,6 +59,7 @@ templ head() {
 
         <script src="js/shop/main.js"></script>
         <script src="js/shop/filter.js" defer></script>
+        <script src="js/shop/openFilterMenu.js" defer></script>
 
         <script src="js/shop/price-range/classes/Range.js"></script>
         <script src="js/shop/price-range/classes/Price.js"></script>

@@ -1,5 +1,7 @@
+@use '../globals' as g;
+@use 'sass:map' as map;
+    
 #price-range
-    position: relative
     width: 100%
 
     .range
@@ -13,9 +15,6 @@
 
         margin: 1em 0 .7em 0
 
-        @media (min-width: 768px)
-            $range-height: 15px
-
         &::before
             content: ""
             position: absolute
@@ -24,7 +23,7 @@
             left: 0
             width: 100%
             height: 4px
-            background: linear-gradient(to right, #c7c7c7 var(--start), #858585 var(--start) var(--end), #c7c7c7 var(--end))
+            background: linear-gradient(to right, map.get(g.$colors, quaternary) var(--start), map.get(g.$colors, secondary) var(--start) var(--end), map.get(g.$colors, quaternary) var(--end))
             border-radius: 10px
 
         input
@@ -35,74 +34,51 @@
 
             // Hide the slider
             -webkit-appearance: none
-            background: transparent
 
             &::-webkit-slider-runnable-track
-                background: transparent
                 height: 10px
 
             &::-webkit-slider-thumb
                 -webkit-appearance: none
-                height: $range-height
-                width: $range-height
-                background: #5d5d5d
+                @include g.make-it-square($range-height)
+                background: map.get(g.$colors, primary)
                 border-radius: 50%
                 cursor: pointer
                 position: relative
                 z-index: 3
-                border: 2px solid white
+                border: 3px solid white
                 box-shadow: none
 
     .text
+        $gap: 12%
+        $input-width: (100% - $gap) / 2
+
         width: 100%
         display: grid
-        grid-template-columns: 45% 45%
-        gap: 10%
+        grid-template-columns: $input-width $input-width
+        gap: $gap
 
         .input_number
             width: 100%
             height: fit-content
-            border-bottom: 2px solid #858585
+            border-bottom: 2px solid map.get(g.$colors, secondary)
             padding: 0 7px 4px 7px
 
-            // Mobile font size
-            font-size: 1em
-            font-family: Arial
-            color: #858585
+            font-weight: bold
             display: flex
+            align-items: center
             
-            // Desktop font size
-            @media (min-width: 768px)
-                font-size: .7em
-                font-family: Arial
-                color: #858585
-                display: flex
-
             span
-                font-size: inherit
-                font-family: inherit
-                color: inherit
+                color: map.get(g.$colors, secondary)
                 margin-right: 7px
+                font-size: .8em
 
             input
                 width: 100%
 
-                // Input styling
-                background-color: transparent
-                box-sizing: border-box
-                outline: none
-
-                // Text styling
-                color: inherit
-                text-align: start
+                color: map.get(g.$colors, primary)
                 font-size: inherit
-                font-family: inherit
+                font-weight: inherit
 
-                // Remove the little arrows on the side
-                // Firefox
-                -moz-appearance: textfield
-                // Chrome, Safari, Edge, Opera
-                &::-webkit-inner-spin-button,
-                &::-webkit-outer-spin-button
-                    -webkit-appearance: none
-                    margin: 0
+                @include g.remove-arrows-from-input-number()
+                

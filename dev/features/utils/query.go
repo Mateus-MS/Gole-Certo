@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func GetQueryParam[T any](r *http.Request, key string, required bool, defaultVal T) (T, error) {
@@ -41,4 +44,44 @@ func GetQueryParam[T any](r *http.Request, key string, required bool, defaultVal
 	default:
 		return zero, fmt.Errorf("unsupported type")
 	}
+}
+
+func GetProductFilters(r *http.Request, includeBrand, includePrice bool) (filter bson.M, err error) {
+	filter = bson.M{}
+
+	if includeBrand {
+		// Get the "brand" filter from the URL
+		var brandRaw string
+		if brandRaw, err = GetQueryParam(r, "brands", false, ""); err != nil {
+			return filter, err
+		}
+		if brandRaw != "" {
+			// Assume multiple brands are separated by commas
+			brands := strings.Split(brandRaw, ":")
+			filter["brand"] = bson.M{
+				"$in": brands,
+			}
+		}
+	}
+
+	if includePrice {
+		// Get the "price" filter from the URL
+		var priceRaw string
+		if priceRaw, err = GetQueryParam(r, "price", false, ""); err != nil {
+			return filter, err
+		}
+		if priceRaw != "" {
+			priceMinMax := strings.Split(priceRaw, "-")
+			if len(priceMinMax) == 2 {
+				min, _ := strconv.ParseFloat(priceMinMax[0], 64)
+				max, _ := strconv.ParseFloat(priceMinMax[1], 64)
+				filter["price"] = bson.M{
+					"$gte": min,
+					"$lte": max,
+				}
+			}
+		}
+	}
+
+	return filter, nil
 }

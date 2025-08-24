@@ -39,7 +39,7 @@ func getControllerClassName(loopIndex, pageIndex int) string {
 templ filterInfo(filter bson.M){
     <div id="filter-info">
 
-        <div class="holder remove-scroll-bar">
+        <div class="holder">
 
             // Count how many allias was created on this render
             {{ aliasCounter := 0 }}
@@ -94,7 +94,7 @@ templ filterInfo(filter bson.M){
 
         </div>
 
-        <button id="toggle-menu">&#xf0c9;</button>
+        <button id="toggle-menu" onclick="OpenFilterMenu()">&#xf0c9;</button>
     </div>
 }
 

@@ -1,202 +1,190 @@
+@use '../globals' as g;
+@use 'sass:map' as map;
+@use 'sass:color' as color;
+
 #filter-info
     width: 100%
     height: 70px
     display: flex
     align-items: center
-    padding: 15px 20px
-    grid-area: filter-info
+    padding: 15px 30px
 
-    @media (min-width: 768px)
+    @include g.when-desktop((
         padding: 0px
+    ))
 
     .holder
         display: inline-flex
         align-items: center
         width: 100%
-        overflow: scroll
+        @include g.remove-scroll-bar()
+
+        // Used on childrens
+        font-weight: bolder
+        white-space: nowrap
+        font-size: .7em
+        color: map.get(g.$colors, primary)
 
         .filter-alias
             height: fit-content
             border: 1.5px solid #b9b9b9
             background-color: #dddddd
             padding: 4px 6px
-            display: flex
-            align-items: center
             border-radius: 5px
             cursor: pointer
             margin-right: 2em
 
-            @media (min-width: 768px)
+            // Used on childrens
+            color: inherit
+            font-weight: inherit
+            font-size: inherit
+
+            @include g.flex-align(center, center)
+            @include g.when-desktop((
                 margin-right: 1em
+            ))
+
+            span
+                margin: 0 3px
 
             .tag
-                font-size: 1em
-                
-                font-weight: bolder
-                color: #797979
-                white-space: nowrap
-
-                @media (min-width: 768px)
-                    font-size: .55em
-
-            .value 
-                font-size: 1em
-                color: #464646
-                font-weight: bolder
-                margin: 0px 10px
-                white-space: nowrap
-
-                @media (min-width: 768px)
-                    font-size: .55em
-                    margin: 0px 5px
-
-                span
-                    margin-right: 5px
-
-            .close
-                
-                font-size: 1em
-                font-weight: bolder
-                color: #464646
-
-                @media (min-width: 768px)
-                    font-size: .7em
+                font-size: .9em
+                color: map.get(g.$colors, secondary)
 
         #filter-alias_clearall
-            font-weight: bolder
-            color: #464646
-            white-space: nowrap
-            height: 80%
-            font-size: .55em
-            background-color: transparent
-            border-bottom: 1.5px solid #464646
+            font-weight: inherit
+            color: inherit
+            border-bottom: 1.5px solid map.get(g.$colors, primary)
             cursor: pointer
 
     #toggle-menu
-        font-family: 'icons'
+        @include g.add-icons-font()
         font-size: 1.2em
-        padding: 7px
+        padding: 7px 0px 7px 7px
+        color: map.get(g.$colors, primary)
 
-        // Hide the button on desktop
-        @media (min-width: 768px)
+        @include g.when-desktop((
             display: none
+        ))
+
+        @include g.when-clicked((
+            background-color: transparent
+        ))
 
 #filter-menu
+    // Positining
     position: absolute
     left: 0
     top: 0
+    transform: translateX(-100%)
+    
     width: 70%
-    height: 100%
-    background-color: white
+    height: 100dvh
+    background-color: map.get(g.$colors, background)
     padding: 1.5em 2em
-    opacity: 0
-    display: none
+    transition: transform .2s ease-out
+    max-height: unset // The browser enforces this to be something around 97%
 
-    @media (min-width: 768px)
-        position: relative
-        width: 100%
-        grid-area: filter-menu
-        padding: 1.5em 1.5em
-        opacity: 1
-        display: block
+    // Used on children
+    font-family: Arial, Helvetica, sans-serif
+    font-weight: bold
+    font-size: 1em
+    color: map.get(g.$colors, primary)
+
+    &::backdrop
+        background-color: rgba(map.get(g.$colors, primary), 0.5)
+        backdrop-filter: blur(2px)
+
+    &.show
+        transform: translateX(0%)
+
+    @include g.when-desktop((
+        position: relative,
+        width: 100%,
+        height: 100%,
+        padding: 1.5em 1.5em,
+        display: block,
+        transform: translateX(0%)
+    ))
 
     hr
         width: 100%
         height: 1px
-        background-color: rgb(227, 227, 227)
-        margin: 1.3em 0
+        background-color: map.get(g.$colors, quaternary)
+        margin: 1em 0
 
-    h2 
+    #filter-group-text
         font-size: 1.4em
-        font-family: Arial, Helvetica, sans-serif
-        font-weight: bold
-        color: #5d5d5d
-
-        @media (min-width: 768px)
-            font-size: 1em
-
-    ul 
-        margin-top: 1.4em  
-        margin-bottom: 1.4em  
+        margin-bottom: 1em
+        color: map.get(g.$colors, secondary)
+    
+    .filter-group-title
+        font-size: 1.4em
+        
+    #brands_filters 
+        margin-top: .6em  
+        margin-bottom: 2em  
         margin-left: .5em
 
-        span
-            margin-bottom: 1em
+        #brand-search-input
+            width: 100%
+            border: 2px solid map.get(g.$colors, primary)
+            color: map.get(g.$colors, primary)
+            border-radius: 10px
+            padding: 6px 10px
+            font-size: 16px // To prevent zooming when selecting this input
+
+            &::placeholder
+                color: map.get(g.$colors, tertiary)
+            
+        .title
+            margin: 1em 0
             display: block
 
-            // Common font style
-            font-family: Arial, Helvetica, sans-serif
-            font-weight: bold
-            color: gray
-
-            // Mobile font style
-            font-size: 1em
-
-            // Desktop font style
-            @media (min-width: 768px)
-                font-size: .75em
+        ul
+            list-style-type: none
+            padding-left: .75em
             
-        label 
-            width: 100%
-            height: 100%
-
-            list-style: none
-            cursor: pointer
-            
-            margin-bottom: .5em
-            margin-left: .75em
-
-            display: flex
-            align-items: center
-
-            input
-                // Hides the default checkbox
-                $inputSize: 13px
-                $inputBorderWidth: 1.5px
-
-                appearance: none
-                -webkit-appearance: none
-                -moz-appearance: none
-
-                height: $inputSize
-                width: $inputSize
-                margin-right: .5em
-                cursor: pointer
-
-                position: relative
-
-                // Uses this pseudo element as the checkbox
-                &::before
-                    content: ""
-                    position: absolute
-                    width: $inputSize - $inputBorderWidth * 2
-                    height: $inputSize - $inputBorderWidth * 2
-
-                    border-radius: 2px
-                    border: $inputBorderWidth solid #aaaaaa
-                    background: white
-                
-                    transition: color .2s ease-in, background-color .2s ease-in
-
-                // When selected
-                &:checked + span
-                    color: #5d5d5d
+            li
+                label 
+                    cursor: pointer
                     
-                &:checked::before
-                    background: #5d5d5d
-                    border: $inputBorderWidth solid #5d5d5d
+                    margin-bottom: .5em
 
-            span
-                user-select: none
-                margin-bottom: 0
-                
-                // Common font style
-                font-family: Arial, Helvetica, sans-serif
-                color: #aaaaaa
+                    display: flex
+                    align-items: center
 
-                // Mobile font style
-                font-size: 1em
+                    input
+                        @include g.remove-check-box()
+                        
+                        $inputSize: 16px
+                        $inputBorderWidth: 1.5px
+                        @include g.make-it-square($inputSize)
+                        margin-right: .5em
+                        cursor: pointer
+                        position: relative
 
-                // Desktop font style
-                @media (min-width: 768px)
-                    font-size: .75em
+                        // Uses this pseudo element as the checkbox
+                        &::before
+                            content: ""
+                            position: absolute
+                            @include g.make-it-square($inputSize - $inputBorderWidth * 2)
+
+                            border-radius: 2px
+                            border: $inputBorderWidth solid map.get(g.$colors, tertiary)
+                            background: map.get(g.$colors, background)
+                        
+                            transition: color .2s ease-in, background-color .2s ease-in
+
+                        // When selected, change the text color
+                        &:checked + span
+                            color: map.get(g.$colors, primary)
+
+                        // When selected, change the pseudo checkbox color   
+                        &:checked::before
+                            background: map.get(g.$colors, primary)
+                            border: $inputBorderWidth solid map.get(g.$colors, primary)
+
+                    .brand-name
+                        user-select: none
+                        color: map.get(g.$colors, tertiary)

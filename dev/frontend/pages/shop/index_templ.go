@@ -33,7 +33,7 @@ func ShopPage(pathParams string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html class=\"remove-scroll-bar\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -107,7 +107,7 @@ func head() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<head><base href=\"/frontend/src/\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Gole Certo</title><link rel=\"stylesheet\" href=\"css/main.css\"><link rel=\"stylesheet\" href=\"css/shop/main.css\"><link rel=\"stylesheet\" href=\"css/shop/header.css\"><link rel=\"stylesheet\" href=\"css/shop/container.css\"><link rel=\"stylesheet\" href=\"css/shop/footer.css\"><link rel=\"stylesheet\" href=\"css/shop/prod-card.css\"><link rel=\"stylesheet\" href=\"css/shop/filter.css\"><link rel=\"stylesheet\" href=\"css/shop/pagination.css\"><link rel=\"stylesheet\" href=\"css/shop/price-range.css\"><script src=\"js/utils/debounce.js\"></script><script>\r\n            const MIN_PRICE = 0.45\r\n            const MAX_PRICE = 56.50\r\n            const MIN_DIFFERENCE = 20 \r\n        </script><script src=\"js/shop/main.js\"></script><script src=\"js/shop/filter.js\" defer></script><script src=\"js/shop/price-range/classes/Range.js\"></script><script src=\"js/shop/price-range/classes/Price.js\"></script><script src=\"js/shop/price-range/main.js\" defer></script><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js\" defer></script></head>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<head><base href=\"/frontend/src/\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Gole Certo</title><link rel=\"stylesheet\" href=\"css/main.css\"><link rel=\"stylesheet\" href=\"css/shop/main.css\"><link rel=\"stylesheet\" href=\"css/shop/header.css\"><link rel=\"stylesheet\" href=\"css/shop/container.css\"><link rel=\"stylesheet\" href=\"css/shop/footer.css\"><link rel=\"stylesheet\" href=\"css/shop/prod-card.css\"><link rel=\"stylesheet\" href=\"css/shop/filter.css\"><link rel=\"stylesheet\" href=\"css/shop/pagination.css\"><link rel=\"stylesheet\" href=\"css/shop/price-range.css\"><script src=\"js/utils/debounce.js\"></script><script>\r\n            const MIN_PRICE = 0.45\r\n            const MAX_PRICE = 56.50\r\n            const MIN_DIFFERENCE = 20 \r\n        </script><script src=\"js/shop/main.js\"></script><script src=\"js/shop/filter.js\" defer></script><script src=\"js/shop/openFilterMenu.js\" defer></script><script src=\"js/shop/price-range/classes/Range.js\"></script><script src=\"js/shop/price-range/classes/Price.js\"></script><script src=\"js/shop/price-range/main.js\" defer></script><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js\" defer></script></head>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

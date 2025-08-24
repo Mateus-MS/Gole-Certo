@@ -1,20 +1,17 @@
+@use 'globals' as g;
+    
 *
     padding: 0
     border: 0
     margin: 0
     box-sizing: border-box
+    background-color: transparent
+    font-family: Arial
+    outline: none
 
-@font-face
-    font-family: 'icons'
-    src: url(/frontend/static/icons.ttf)
+html
+    @include g.remove-scroll-bar()
 
-.icons
-    font-family: icons
-
-.remove-scroll-bar
-    overflow: auto           // allow scrolling
-    scrollbar-width: none    // Firefox
-    -ms-overflow-style: none // IE 10+
-
-    &::-webkit-scrollbar
-        display: none        // Chrome, Safari, Edge
+.disable-scrolling
+    height: 100dvh
+    overflow: hidden

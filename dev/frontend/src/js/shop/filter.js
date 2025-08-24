@@ -1,3 +1,6 @@
+const SUGGESTIONS_HOLDER = document.getElementById("suggestions-holder")
+const SELECTEDS_HOLDER   = document.getElementById("selecteds-holder")
+
 window.addEventListener("load", ()=>{
     const params = new URLSearchParams(window.location.search);
 
@@ -15,9 +18,35 @@ window.addEventListener("load", ()=>{
     let brands = params.get("brands");
     if(brands !== null){
         let brandsArray = brands.split(":")
-        selectFiltersBrands(brandsArray)
+        createSelectedFiltersBrands(brandsArray)
     }
 }, {once: true})
+
+function createSelectedFiltersBrands(brandsArray){
+    for(let i = 0; i < brandsArray.length; i++){
+        let li = document.createElement("li")
+        let label = document.createElement("label")
+        let input = document.createElement("input")
+        input.type = "checkbox"
+        input.checked = true
+        input.name = "brand"
+        input.value = brandsArray[i]
+        input.onchange = function() {
+            DeboucingFiltersConstUpdate(input);
+        }
+        
+        let span = document.createElement("span")
+        span.innerText = brandsArray[i]
+        span.classList.add("brand-name")
+
+        label.appendChild(input)
+        label.appendChild(span)
+
+        li.appendChild(label)
+
+        SELECTEDS_HOLDER.appendChild(li)
+    }
+}
 
 /**
  * Represents the current state of filters based on user input.
@@ -31,11 +60,32 @@ window.addEventListener("load", ()=>{
 const FILTERS = {
     page: 1,
     price: `${MIN_PRICE}-${MAX_PRICE}`,
-    brands: ""
+    brands: getFiltersBrandsSelectedsInRequestFormatFromURL()
 };
 
-function getFiltersBrandsSelectedsInRequestFormat(){
-    let brands = document.getElementById("brands_filter")
+function getFiltersBrandsSelectedsInRequestFormatFromURL(){
+    let url = new URLSearchParams(window.location.search);
+    let brandsRaw = url.get("brands")
+    if(brandsRaw !== null){
+        let brands = brandsRaw.split(":")
+
+        let reqFormat = ""
+        for(let i = 0; i < brands.length; i++){
+            reqFormat += brands[i]
+            
+            if(i < brands.length){
+                reqFormat += ":"
+            }
+        }
+
+        return reqFormat
+    }
+
+    return ""
+}
+
+function getFiltersBrandsSelectedsInRequestFormatFromDOM(){
+    let brands = document.getElementById("brands_filters")
     let selecteds = brands.querySelectorAll("input:checked")
 
     let filter = ""
@@ -51,27 +101,14 @@ function getFiltersBrandsSelectedsInRequestFormat(){
     return filter
 }
 
-function selectFiltersBrands(brandsArray){
-    let brandsElements = document.querySelectorAll("#brands_filter input[type=checkbox]")
-    for(let i = 0; i < brandsElements.length; i++){
-        for(let j = 0; j < brandsArray.length; j++){
-            if(brandsElements[i].value === brandsArray[j]){
-                // Mark the input box as selected
-                brandsElements[i].checked = true;
-                break
-            }
-        }
-    }
-}
-
 function UnselectFiltersBrands(){
-    let brandsElements = document.querySelectorAll("#brands_filter input[type=checkbox]")
-    for(let i = 0; i < brandsElements.length; i++){
-        if(brandsElements[i].checked === true){
-            // Mark the input box as unselected
-            brandsElements[i].checked = false;
+    let brandsElements = SELECTEDS_HOLDER.querySelectorAll("input[type=checkbox]")
+    brandsElements.forEach(
+        brand => {
+            brand.checked = false
+            handleBrandFilterToggle(brand.parentElement.parentElement)
         }
-    }
+    )
 
     ProductsRefresh()
 }
@@ -98,7 +135,7 @@ function UnselectFilterPrice(){
 function GetFiltersInRequestFormat(){
     // Update the values with the actual values from the inputs
     FILTERS.price = getPriceInRequestFormat()
-    FILTERS.brands = getFiltersBrandsSelectedsInRequestFormat()
+    FILTERS.brands = getFiltersBrandsSelectedsInRequestFormatFromDOM()
 
     // Build the URL parameters
     let params = new URLSearchParams();
@@ -144,12 +181,7 @@ function ProductsRefresh(){
     // Refresh the product list with HTMX
     htmx.ajax('GET', `/components/prodPage?${params}`, {
         target: '#pagination_container',
-        swap: 'outerHTML',
-        vals: {
-            page: FILTERS.page,
-            price: FILTERS.price,
-            brands: FILTERS.brands
-        }
+        swap: 'outerHTML'
     });
 
     // Update the history with the new URL parameters
@@ -167,6 +199,23 @@ const debouncedUpdate = debounce(() => {
     ProductsRefresh()
 }, 1000);
 
+const debouncBrandFilterSuggestion = debounce(()=>{
+    let params = new URLSearchParams()
+    let search = document.getElementById("brand-search-input").value
+    if(search !== ""){
+        params.set("search", search)
+    }
+
+    if(FILTERS.brands !== ""){
+        params.set("brands", FILTERS.brands)
+    }
+    // Refresh the product list with HTMX
+    htmx.ajax('GET', `/components/filtersSuggestions?${params.toString()}`, {
+        target: '#suggestions-holder',
+        swap: 'innerHTML'
+    });
+}, 200);
+
 /**
  * Executes a debounced update to the `FILTERS` constant with a delay of 1000ms.
  *
@@ -179,8 +228,40 @@ const debouncedUpdate = debounce(() => {
  * @file /js/shop/filter.js
  * 
  */
-function DeboucingFiltersConstUpdate() {
+function DeboucingFiltersConstUpdate(element) {
     FILTERS.page = 1
 
     debouncedUpdate();
+
+    if(element !== undefined) {
+        moveTheSelectedBrandFilterToSelectedHolder(element)
+    }
+}
+
+function moveTheSelectedBrandFilterToSelectedHolder(element){
+    let brandFilter = element.parentElement.parentElement
+
+    handleBrandFilterToggle(brandFilter)
+}
+
+function handleBrandFilterToggle(brandFilter){
+    // Try to select
+    if(brandFilter.parentElement.id === SUGGESTIONS_HOLDER.id){
+        SELECTEDS_HOLDER.appendChild(brandFilter)
+        return
+    }
+
+    // Test if the suggestions holder is at max capacity
+    if(SUGGESTIONS_HOLDER.children.length > 5) {
+        // Delete the clicked brand filter
+        brandFilter.parentElement.removeChild(brandFilter)
+        return
+    }
+
+    // If is NOT at capacity, move it back to suggestions holder
+    SUGGESTIONS_HOLDER.appendChild(brandFilter)
+}
+
+function DebouncBrandFilterSuggestionCall(){
+    debouncBrandFilterSuggestion()
 }

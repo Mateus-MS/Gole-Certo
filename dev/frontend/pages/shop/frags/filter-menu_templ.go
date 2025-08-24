@@ -29,7 +29,7 @@ func FilterMenu() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div id=\"filter-menu\"><h2>Filter Options</h2><ul id=\"brands_filter\"><span>Marcas</span> <label><input type=\"checkbox\" name=\"brand\" value=\"Corona\" onchange=\"DeboucingFiltersConstUpdate()\"> <span>Corona</span></label> <label><input type=\"checkbox\" name=\"brand\" value=\"Heineken\" onchange=\"DeboucingFiltersConstUpdate()\"> <span>Heineken</span></label> <label><input type=\"checkbox\" name=\"brand\" value=\"Super BOCK\" onchange=\"DeboucingFiltersConstUpdate()\"> <span>Super BOCK</span></label> <label><input type=\"checkbox\" name=\"brand\" value=\"Skol\" onchange=\"DeboucingFiltersConstUpdate()\"> <span>Skol</span></label> <label><input type=\"checkbox\" name=\"brand\" value=\"Itaipava\" onchange=\"DeboucingFiltersConstUpdate()\"> <span>Itaipava</span></label> <label><input type=\"checkbox\" name=\"brand\" value=\"Glacial\" onchange=\"DeboucingFiltersConstUpdate()\"> <span>Glacial</span></label></ul><h2>Price</h2>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"filter-menu\" onclick=\"CloseFilterMenu(event)\"><div style=\"max-width: 0; max-height: 0; overflow: hidden;\"><input autofocus=\"true\"></div><h1 id=\"filter-group-text\">Filter Options</h1><span class=\"filter-group-title\">Brands</span><div id=\"brands_filters\"><input type=\"text\" id=\"brand-search-input\" placeholder=\"Search a brand\" oninput=\"DebouncBrandFilterSuggestionCall()\"> <span class=\"title\">Suggestions</span><ul id=\"suggestions-holder\" hx-get=\"/components/filtersSuggestions\" hx-vals=\"js:{brands: FILTERS.brands}\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></ul><hr><span class=\"title\">Selecteds</span><ul id=\"selecteds-holder\"></ul></div><h2 class=\"filter-group-title\">Price</h2>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -37,7 +37,7 @@ func FilterMenu() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</dialog>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,0 +1,62 @@
+@font-face
+    font-family: 'icons'
+    src: url(/frontend/static/icons.ttf)
+    
+$colors: (
+    primary: #5d5d5d,
+    secondary: #999999,
+    tertiary: #aaaaaa,
+    quaternary: rgb(227, 227, 227),
+    background: white
+)
+$min-size-to-be-desktop: 768px
+
+@mixin remove-scroll-bar()
+    overflow: auto           // allow scrolling
+    scrollbar-width: none    // Firefox
+    -ms-overflow-style: none // IE 10+
+
+    &::-webkit-scrollbar
+        display: none        // Chrome, Safari, Edge
+
+@mixin remove-check-box()
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
+
+@mixin remove-arrows-from-input-number()
+    // Firefox
+    -moz-appearance: textfield
+    // Chrome, Safari, Edge, Opera
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button
+        -webkit-appearance: none
+        margin: 0
+
+@mixin add-icons-font()
+    font-family: icons
+
+@mixin when-clicked($styles)
+    // Media query
+    &:active
+        // For each property received on the map
+        @each $property, $value in $styles
+            // Add it
+            #{$property}: $value
+
+@mixin when-desktop($styles)
+    // Media query
+    @media (min-width: $min-size-to-be-desktop)
+        // For each property received on the map
+        @each $property, $value in $styles
+            // Add it
+            #{$property}: $value
+
+@mixin flex-align($align: center, $justify: center)
+    display: flex
+    align-items: $align
+    justify-content: $justify
+
+@mixin make-it-square($size)
+    width: $size
+    height: $size
