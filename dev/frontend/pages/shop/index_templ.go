@@ -12,7 +12,7 @@ import (
 	page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
 )
 
-func ShopPage(pathParams string) templ.Component {
+func ShopPage(pathParams string, brands []string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -53,7 +53,7 @@ func ShopPage(pathParams string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = page_shop_frags.FilterMenu().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = page_shop_frags.FilterMenu(brands).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

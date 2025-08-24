@@ -8,7 +8,7 @@ package page_shop_frags
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func FilterMenu() templ.Component {
+func FilterMenu(brands []string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,7 +29,43 @@ func FilterMenu() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"filter-menu\" onclick=\"CloseFilterMenu(event)\"><div style=\"max-width: 0; max-height: 0; overflow: hidden;\"><input autofocus=\"true\"></div><h1 id=\"filter-group-text\">Filter Options</h1><span class=\"filter-group-title\">Brands</span><div id=\"brands_filters\"><input type=\"text\" id=\"brand-search-input\" placeholder=\"Search a brand\" oninput=\"DebouncBrandFilterSuggestionCall()\"> <span class=\"title\">Suggestions</span><ul id=\"suggestions-holder\" hx-get=\"/components/filtersSuggestions\" hx-vals=\"js:{brands: FILTERS.brands}\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></ul><hr><span class=\"title\">Selecteds</span><ul id=\"selecteds-holder\"></ul></div><h2 class=\"filter-group-title\">Price</h2>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<dialog id=\"filter-menu\" onclick=\"CloseFilterMenu(event)\"><div style=\"max-width: 0; max-height: 0; overflow: hidden;\"><input autofocus=\"true\"></div><h1 id=\"filter-group-text\">Filter Options</h1><span class=\"filter-group-title\">Brands</span><div id=\"brands_filters\"><input type=\"text\" id=\"brand-search-input\" placeholder=\"Search a brand\" oninput=\"DebouncBrandFilterSuggestionCall()\"> <span class=\"title\">Suggestions</span><ul id=\"suggestions-holder\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, brand := range brands {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<li><label><input type=\"checkbox\" name=\"brand\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(brand)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/frags/filter-menu.templ`, Line: 27, Col: 76}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" onchange=\"DeboucingFiltersConstUpdate(this)\"> <span class=\"brand-name\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(brand)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `dev/frontend/pages/shop/frags/filter-menu.templ`, Line: 28, Col: 59}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></label></li>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</ul><hr><span class=\"title\">Selecteds</span><ul id=\"selecteds-holder\"></ul></div><h2 class=\"filter-group-title\">Price</h2>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -37,7 +73,7 @@ func FilterMenu() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</dialog>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</dialog>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -4,7 +4,7 @@ import (
     page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
 )
 
-templ ShopPage(pathParams string) {
+templ ShopPage(pathParams string, brands []string) {
     <!DOCTYPE html>
     <html class="remove-scroll-bar">
     @head()
@@ -13,7 +13,7 @@ templ ShopPage(pathParams string) {
 
         <main>
         
-            @page_shop_frags.FilterMenu()
+            @page_shop_frags.FilterMenu(brands)
 
             <div 
                 id="holder"

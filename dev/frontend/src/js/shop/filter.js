@@ -200,20 +200,29 @@ const debouncedUpdate = debounce(() => {
 }, 1000);
 
 const debouncBrandFilterSuggestion = debounce(()=>{
-    let params = new URLSearchParams()
-    let search = document.getElementById("brand-search-input").value
-    if(search !== ""){
-        params.set("search", search)
+    let brandsItems = SUGGESTIONS_HOLDER.children
+    let searchQuery = document.getElementById("brand-search-input").value
+
+    // Show all items
+    if(searchQuery === "") {
+        for(let i = 0; i < brandsItems.length; i++){
+            brandsItems[i].style.display = "block"
+        }
+        return
     }
 
-    if(FILTERS.brands !== ""){
-        params.set("brands", FILTERS.brands)
+    // Hide all items that doesn't match
+    let escapedSearch = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let regex = new RegExp(escapedSearch, 'i');
+
+    for(let i = 0; i < brandsItems.length; i++){
+        let item = brandsItems[i]
+        let value = item.querySelector("input").value
+
+        if(!regex.test(value)){
+            item.style.display = "none"
+        }
     }
-    // Refresh the product list with HTMX
-    htmx.ajax('GET', `/components/filtersSuggestions?${params.toString()}`, {
-        target: '#suggestions-holder',
-        swap: 'innerHTML'
-    });
 }, 200);
 
 /**
@@ -251,15 +260,17 @@ function handleBrandFilterToggle(brandFilter){
         return
     }
 
-    // Test if the suggestions holder is at max capacity
-    if(SUGGESTIONS_HOLDER.children.length > 5) {
-        // Delete the clicked brand filter
-        brandFilter.parentElement.removeChild(brandFilter)
-        return
-    }
-
-    // If is NOT at capacity, move it back to suggestions holder
+    // Move it back to suggestions holder
     SUGGESTIONS_HOLDER.appendChild(brandFilter)
+
+    // Re-order it alphabetically
+    let items = Array.from(SUGGESTIONS_HOLDER.children)
+    items.sort((a, b) => 
+        a.textContent.trim().localeCompare(b.textContent.trim(), undefined, { sensitivity: 'base' })
+    );
+
+    // Re-append in sorted order
+    items.forEach(item => SUGGESTIONS_HOLDER.appendChild(item));
 }
 
 function DebouncBrandFilterSuggestionCall(){

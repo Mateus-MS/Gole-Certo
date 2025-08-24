@@ -1,6 +1,6 @@
 package page_shop_frags
 
-templ FilterMenu() {
+templ FilterMenu(brands []string) {
 
     <dialog id="filter-menu" onclick="CloseFilterMenu(event)">
 
@@ -20,11 +20,15 @@ templ FilterMenu() {
             // TODO: Make it show the hotest brands
             <ul 
                 id="suggestions-holder"
-                hx-get="/components/filtersSuggestions"
-                hx-vals="js:{brands: FILTERS.brands}"
-                hx-trigger="load"
-                hx-swap="innerHTML"
             >
+                for _, brand := range brands {
+                    <li>
+                        <label>
+                            <input type="checkbox" name="brand" value={brand} onchange="DeboucingFiltersConstUpdate(this)">
+                            <span class="brand-name">{brand}</span>
+                        </label>
+                    </li>
+                }
             </ul>
 
             <hr/>
