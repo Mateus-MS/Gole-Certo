@@ -35,7 +35,7 @@ func main() {
 func startServer(router *app.Router, env string) {
 	if env == "dev" {
 		println("Starting SERVER in DEV mode")
-		err := http.ListenAndServe(":3000", router.Handle())
+		err := http.ListenAndServe(":3434", router.Handle())
 		if err != nil {
 			log.Fatalf("Server error: %v", err)
 		}
