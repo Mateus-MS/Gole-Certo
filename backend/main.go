@@ -12,7 +12,7 @@ func main() {
 
 	// SERVICES
 	stockService := stock_service.New(db.Database("goleCertoDB").Collection("stock"))
-	userService := user_service.New(db.Database("goleCertoDB").Collection("users"))
+	userService := user_service.New(db.Database("users").Collection("users"))
 
 	app := NewApp(
 		db,

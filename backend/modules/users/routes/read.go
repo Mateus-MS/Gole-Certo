@@ -29,6 +29,6 @@ func ReadUser(userService user_service.IService) gin.HandlerFunc {
 			c.String(500, fmt.Errorf("Something went wrong: %w", err).Error())
 		}
 
-		c.JSON(http.StatusOK, user)
+		c.JSON(http.StatusOK, user.GetDTO())
 	}
 }
