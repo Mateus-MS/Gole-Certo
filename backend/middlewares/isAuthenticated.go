@@ -1,9 +1,11 @@
 package middlewares
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"strings"
+	"time"
 
 	user_repository "alves.com/backend/modules/users/repo"
 	user_service "alves.com/backend/modules/users/service"
@@ -16,41 +18,73 @@ var (
 	ErrExpiredToken      = errors.New("expired token provided")
 )
 
+// NOTE: this function only validates the received token by checking it's cached or armazened duration
+// This should really be improved since this way it's just a "weak authentication" and opens a lot of security flaws
 func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Get the token from the header
 		token, err := getTokenFromHeader(c.GetHeader("Authorization"))
 		if err != nil {
-			if errors.Is(err, ErrMissingAuthHeader) {
-				c.String(http.StatusBadRequest, err.Error())
-				return
+			status := http.StatusInternalServerError
+			if errors.Is(err, ErrMissingAuthHeader) || errors.Is(err, ErrInvalidAuthHeader) {
+				status = http.StatusBadRequest
 			}
-
-			c.String(http.StatusInternalServerError, err.Error())
+			c.String(status, err.Error())
 			return
 		}
 
-		// Query for a user with that token
-		userEntity, err := userService.Repo().ReadBySessionToken(c, token)
+		expiresAt, err := getTokenExpiry(c, token, userService)
 		if err != nil {
-			if errors.Is(err, user_repository.ErrUserInexistent) {
-				c.String(http.StatusUnauthorized, "none user match the provided credential")
-				return
+			status := http.StatusInternalServerError
+			if errors.Is(err, ErrExpiredToken) || errors.Is(err, user_repository.ErrUserInexistent) {
+				status = http.StatusUnauthorized
 			}
-
-			c.String(http.StatusInternalServerError, "some ")
+			c.String(status, err.Error())
 			return
 		}
 
-		// Validate the token
-		if !userEntity.SessionToken.IsValid() {
-			c.String(http.StatusUnauthorized, "expired credential provided")
+		if time.Now().After(expiresAt) {
+			c.String(http.StatusUnauthorized, ErrExpiredToken.Error())
 			return
 		}
 
-		c.Set("user", userEntity)
 		c.Next()
 	}
+}
+
+func getTokenExpiry(ctx context.Context, token string, service user_service.IService) (time.Time, error) {
+	// Try Redis first
+	expiresAt, err := getExpiryFromCache(ctx, token, service)
+	if err == nil {
+		return expiresAt, err
+	}
+
+	// If not in Redis, try on Mongo
+	user, err := service.Repo().ReadBySessionToken(ctx, token)
+	if err != nil {
+		if errors.Is(err, user_repository.ErrUserInexistent) {
+			return time.Time{}, ErrExpiredToken
+		}
+		return time.Time{}, err
+	}
+
+	// Since it's not in cache, save on Redis
+	_ = service.Cache().Set(ctx, token, user.SessionToken.ExpiresAt, 30*time.Minute)
+
+	return user.SessionToken.ExpiresAt, nil
+}
+
+func getExpiryFromCache(ctx context.Context, token string, service user_service.IService) (time.Time, error) {
+	expiresStr, err := service.Cache().Get(ctx, token)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	expiresAt, err := time.Parse(time.RFC3339, expiresStr)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return expiresAt, nil
 }
 
 func getTokenFromHeader(header string) (string, error) {

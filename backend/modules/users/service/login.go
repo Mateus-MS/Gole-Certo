@@ -30,7 +30,16 @@ func (s *service) Login(ctx context.Context, username, password string) error {
 	userEntity.SessionToken = sessionToken
 
 	// Update the DB state of user with the generated token
-	s.repository.UpdateByName(ctx, userEntity)
+	err = s.repository.UpdateByName(ctx, userEntity)
+	if err != nil {
+		return err
+	}
+
+	// Add the token to the cache
+	err = s.cache.Set(ctx, sessionToken.Token, sessionToken.ExpiresAt, 30*time.Minute)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
