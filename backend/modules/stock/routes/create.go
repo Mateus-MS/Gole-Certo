@@ -2,10 +2,12 @@ package stock_routes
 
 import (
 	"net/http"
+	"time"
 
 	stock_model "alves.com/backend/modules/stock/model"
 	stock_service "alves.com/backend/modules/stock/service"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func CreateProduct(stockService stock_service.IService) gin.HandlerFunc {
@@ -13,11 +15,12 @@ func CreateProduct(stockService stock_service.IService) gin.HandlerFunc {
 		var inputStock stock_model.StockEntity
 
 		err := c.ShouldBindJSON(&inputStock)
-
 		if err != nil {
 			c.String(http.StatusBadRequest, err.Error())
 			return
 		}
+
+		inputStock.ID = primitive.NewObjectIDFromTimestamp(time.Now())
 
 		err = stockService.Repo().Create(c, &inputStock)
 		if err != nil {

@@ -2,6 +2,7 @@ package main
 
 import (
 	stock_service "alves.com/backend/modules/stock/service"
+	user_service "alves.com/backend/modules/users/service"
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,12 +12,14 @@ func main() {
 
 	// SERVICES
 	stockService := stock_service.New(db.Database("goleCertoDB").Collection("stock"))
+	userService := user_service.New(db.Database("goleCertoDB").Collection("users"))
 
 	app := NewApp(
 		db,
 		router,
 		&Services{
 			Stock: stockService,
+			User:  userService,
 		},
 	)
 

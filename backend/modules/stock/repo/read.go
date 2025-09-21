@@ -11,7 +11,6 @@ import (
 )
 
 func (repo *Repository) ReadByName(ctx context.Context, name string) (stock_model.StockEntity, error) {
-
 	productGeneric, err := repo.Read(ctx, bson.M{"name": name})
 	if err != nil {
 		if errors.Is(err, generic_repository.ErrItemInexistent) {

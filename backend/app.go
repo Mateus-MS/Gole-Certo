@@ -2,12 +2,14 @@ package main
 
 import (
 	stock_service "alves.com/backend/modules/stock/service"
+	user_service "alves.com/backend/modules/users/service"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Services struct {
 	Stock stock_service.IService
+	User  user_service.IService
 }
 
 type App struct {

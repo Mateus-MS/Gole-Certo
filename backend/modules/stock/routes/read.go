@@ -12,7 +12,7 @@ import (
 
 func ReadProduct(stockService stock_service.IService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		name := c.Param("name")
+		name := c.Query("name")
 
 		product, err := stockService.Repo().ReadByName(c, name)
 
