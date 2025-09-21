@@ -5,5 +5,6 @@ import (
 )
 
 func addRoutes(app *App) {
-	app.Router.GET("/product", stock_routes.CreateProduct(app.Services.Stock))
+	app.Router.POST("/products", stock_routes.CreateProduct(app.Services.Stock))
+	app.Router.GET("/products/:name", stock_routes.ReadProduct(app.Services.Stock))
 }
