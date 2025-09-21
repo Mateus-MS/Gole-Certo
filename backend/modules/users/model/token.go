@@ -12,6 +12,10 @@ type Token struct {
 	ExpiresAt time.Time `json:"expiresAt" binding:"required" bson:"expiresAt"`
 }
 
+func (t *Token) IsValid() bool {
+	return time.Now().Before(t.ExpiresAt)
+}
+
 func NewToken(tokenCost int, duration time.Duration) (Token, error) {
 	var token Token
 
