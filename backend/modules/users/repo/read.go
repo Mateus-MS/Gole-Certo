@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	generic_repository "alves.com/backend/modules/common/repo"
-	user_error "alves.com/backend/modules/users/errors"
 	user_model "alves.com/backend/modules/users/model"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -15,7 +14,7 @@ func (repo *Repository) ReadByName(ctx context.Context, name string) (user_model
 
 	if err != nil {
 		if errors.Is(err, generic_repository.ErrItemInexistent) {
-			return user_model.UserEntity{}, user_error.ErrUserInexistent
+			return user_model.UserEntity{}, ErrUserInexistent
 		} else {
 			return user_model.UserEntity{}, errors.Join(errors.New("something went wrong"), err)
 		}
@@ -23,7 +22,7 @@ func (repo *Repository) ReadByName(ctx context.Context, name string) (user_model
 
 	user, ok := userGeneric.(*user_model.UserEntity)
 	if !ok {
-		return user_model.UserEntity{}, user_error.ErrCannotConvert
+		return user_model.UserEntity{}, ErrCannotConvert
 	}
 
 	return *user, nil

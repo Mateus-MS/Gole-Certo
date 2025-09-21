@@ -12,7 +12,7 @@ import (
 func (repo *GenericRepository[T]) Read(ctx context.Context, filter bson.M) (generic_persistent.IPersistent, error) {
 	var item T
 
-	err := repo.collection.FindOne(ctx, filter).Decode(&item)
+	err := repo.Collection.FindOne(ctx, filter).Decode(&item)
 
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {

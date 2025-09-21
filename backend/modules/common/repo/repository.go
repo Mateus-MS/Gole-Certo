@@ -12,9 +12,9 @@ type iPersistent = generic_persistent.IPersistent
 
 // This `GenericRepository` carry the basic C-R-U-D methods
 type GenericRepository[T iPersistent] struct {
-	collection *mongo.Collection
+	Collection *mongo.Collection
 }
 
 func New[T iPersistent](coll *mongo.Collection) *GenericRepository[T] {
-	return &GenericRepository[T]{collection: coll}
+	return &GenericRepository[T]{Collection: coll}
 }

@@ -1,6 +1,8 @@
 package user_service
 
 import (
+	"context"
+
 	user_repository "alves.com/backend/modules/users/repo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -11,6 +13,8 @@ type IService interface {
 	// DeductFromStock(context.Context, product.ProductStock, int64) error
 
 	Repo() *user_repository.Repository
+
+	Login(context.Context, string, string) error
 }
 
 type service struct {

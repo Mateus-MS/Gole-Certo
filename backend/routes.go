@@ -12,5 +12,6 @@ func addRoutes(app *App) {
 	app.Router.POST("/products", middlewares.IsAdmin(admCollection), stock_routes.CreateProduct(app.Services.Stock))
 	app.Router.GET("/products", stock_routes.ReadProduct(app.Services.Stock))
 
-	app.Router.GET("/users/:name", user_routes.ReadUser(app.Services.User))
+	app.Router.GET("/users/:name", user_routes.UserRead(app.Services.User))
+	app.Router.POST("/users/login", user_routes.UserLogin(app.Services.User))
 }

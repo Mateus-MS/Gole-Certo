@@ -1,8 +1,6 @@
-package user_error
+package user_repository
 
-import (
-	"errors"
-)
+import "errors"
 
 var (
 	ErrUserInexistent = errors.New("user not found")

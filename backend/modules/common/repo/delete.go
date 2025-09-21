@@ -10,7 +10,7 @@ import (
 func (repo *GenericRepository[T]) Delete(ctx context.Context, filter bson.M) error {
 	var result *mongo.DeleteResult
 
-	result, err := repo.collection.DeleteOne(ctx, filter)
+	result, err := repo.Collection.DeleteOne(ctx, filter)
 
 	if result.DeletedCount == 0 {
 		return ErrItemInexistent

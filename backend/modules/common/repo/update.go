@@ -7,7 +7,7 @@ import (
 )
 
 func (repo *GenericRepository[T]) Update(ctx context.Context, filter bson.M, updateSet bson.M) error {
-	result, err := repo.collection.UpdateOne(ctx, filter, updateSet)
+	result, err := repo.Collection.UpdateOne(ctx, filter, updateSet)
 
 	if result.MatchedCount == 0 {
 		return ErrItemInexistent
