@@ -15,6 +15,7 @@ type IService interface {
 	Repo() *user_repository.Repository
 
 	Login(context.Context, string, string) error
+	Register(context.Context, string, string) error
 }
 
 type service struct {

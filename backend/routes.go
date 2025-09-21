@@ -14,4 +14,5 @@ func addRoutes(app *App) {
 
 	app.Router.GET("/users/:name", user_routes.UserRead(app.Services.User))
 	app.Router.POST("/users/login", user_routes.UserLogin(app.Services.User))
+	app.Router.POST("/users/register", user_routes.UserRegister(app.Services.User))
 }

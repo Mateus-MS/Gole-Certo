@@ -3,6 +3,8 @@ package user_service
 import (
 	"crypto/rand"
 	"encoding/base64"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 func GenerateToken(n int) (string, error) {
@@ -13,4 +15,14 @@ func GenerateToken(n int) (string, error) {
 	}
 
 	return base64.URLEncoding.EncodeToString(bytes), nil
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+func CheckPassword(hashedPassword, plainPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(plainPassword))
+	return err == nil
 }
