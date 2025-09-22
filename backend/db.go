@@ -16,7 +16,7 @@ func StartDBConnection() (mongoClient *mongo.Client) {
 	var err error
 	if mongoClient, err = mongo.Connect(
 		ctx,
-		options.Client().ApplyURI("mongodb://localhost:27017")); err != nil {
+		options.Client().ApplyURI("mongodb://mongo:27017/cluster")); err != nil {
 		log.Fatal("Mongo connection error: " + err.Error())
 	}
 

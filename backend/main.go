@@ -11,8 +11,8 @@ func main() {
 	router := gin.Default()
 
 	// SERVICES
-	stockService := stock_service.New(db.Database("goleCertoDB").Collection("stock"))
-	userService := user_service.New(db.Database("users").Collection("users"))
+	stockService := stock_service.New(db.Database("cluster").Collection("stock"))
+	userService := user_service.New(db.Database("cluster").Collection("users"))
 
 	app := NewApp(
 		db,
@@ -25,5 +25,5 @@ func main() {
 
 	addRoutes(app)
 
-	app.Router.Run("localhost:9090")
+	app.Router.Run(":8080")
 }
