@@ -9,7 +9,6 @@ import (
 
 func UserProtected(userService user_service.IService) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userEntity, _ := c.Get("user")
-		c.JSON(http.StatusOK, userEntity)
+		c.JSON(http.StatusOK, "Successfully accessed the protected route")
 	}
 }

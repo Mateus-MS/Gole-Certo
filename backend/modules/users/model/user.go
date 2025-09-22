@@ -12,9 +12,8 @@ import (
 type UserEntity struct {
 	generic_persistent.Persistent `bson:",inline"`
 
-	Name         string `json:"name"         binding:"required" bson:"name"`
-	Password     string `json:"password"     binding:"required" bson:"password"`
-	SessionToken Token  `json:"sessionToken" binding:"required" bson:"sessionToken"`
+	Name     string `json:"name"         binding:"required" bson:"name"`
+	Password string `json:"password"     binding:"required" bson:"password"`
 }
 
 func NewUser(username, password string) *UserEntity {

@@ -10,9 +10,8 @@ import (
 func (repo *Repository) UpdateByName(ctx context.Context, user user_model.UserEntity) error {
 	set := bson.M{
 		"$set": bson.M{
-			"name":         user.Name,
-			"password":     user.Password,
-			"sessionToken": user.SessionToken,
+			"name":     user.Name,
+			"password": user.Password,
 		},
 	}
 	return repo.Update(ctx, bson.M{"name": user.Name}, set)

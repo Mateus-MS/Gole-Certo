@@ -14,8 +14,8 @@ var (
 
 // TODO: Seems strange and maybe a big security flaw
 // This will map: token => duration
-func (c *Cache) Set(ctx context.Context, token string, expiresAt time.Time, TTL time.Duration) error {
-	return c.Redis.Set(ctx, token, expiresAt, TTL).Err()
+func (c *Cache) Set(ctx context.Context, token string, userID string, TTL time.Duration) error {
+	return c.Redis.Set(ctx, token, userID, TTL).Err()
 }
 
 func (c *Cache) Get(ctx context.Context, token string) (string, error) {
