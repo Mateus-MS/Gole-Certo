@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	generic_persistent "alves.com/backend/modules/common/model"
+	generic_persistent "alves.com/modules/common/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )

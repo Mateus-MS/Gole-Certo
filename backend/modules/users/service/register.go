@@ -3,8 +3,8 @@ package user_service
 import (
 	"context"
 
-	user_model "alves.com/backend/modules/users/model"
-	user_repository "alves.com/backend/modules/users/repo"
+	user_model "alves.com/modules/users/model"
+	user_repository "alves.com/modules/users/repo"
 )
 
 func (s *service) Register(ctx context.Context, username, password string) error {

@@ -1,8 +1,8 @@
 package main
 
 import (
-	stock_service "alves.com/backend/modules/stock/service"
-	user_service "alves.com/backend/modules/users/service"
+	stock_service "alves.com/modules/stock/service"
+	user_service "alves.com/modules/users/service"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )

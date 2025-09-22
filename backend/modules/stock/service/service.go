@@ -1,7 +1,7 @@
 package stock_service
 
 import (
-	stock_repository "alves.com/backend/modules/stock/repo"
+	stock_repository "alves.com/modules/stock/repo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

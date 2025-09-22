@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
-	user_cache "alves.com/backend/modules/users/cache"
-	user_service "alves.com/backend/modules/users/service"
+	user_cache "alves.com/modules/users/cache"
+	user_service "alves.com/modules/users/service"
 	"github.com/gin-gonic/gin"
 )
 

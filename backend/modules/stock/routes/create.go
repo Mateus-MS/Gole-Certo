@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	stock_model "alves.com/backend/modules/stock/model"
-	stock_service "alves.com/backend/modules/stock/service"
+	stock_model "alves.com/modules/stock/model"
+	stock_service "alves.com/modules/stock/service"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

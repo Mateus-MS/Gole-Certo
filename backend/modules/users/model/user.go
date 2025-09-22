@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	generic_persistent "alves.com/backend/modules/common/model"
+	generic_persistent "alves.com/modules/common/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

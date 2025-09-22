@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	user_repository "alves.com/backend/modules/users/repo"
+	user_repository "alves.com/modules/users/repo"
 )
 
 func (s *service) Login(ctx context.Context, username, password string) (string, error) {

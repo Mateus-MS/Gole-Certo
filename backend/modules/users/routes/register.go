@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	user_repository "alves.com/backend/modules/users/repo"
-	user_service "alves.com/backend/modules/users/service"
+	user_repository "alves.com/modules/users/repo"
+	user_service "alves.com/modules/users/service"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,9 +4,9 @@ import (
 	"errors"
 	"net/http"
 
-	generic_repository "alves.com/backend/modules/common/repo"
-	user_repository "alves.com/backend/modules/users/repo"
-	user_service "alves.com/backend/modules/users/service"
+	generic_repository "alves.com/modules/common/repo"
+	user_repository "alves.com/modules/users/repo"
+	user_service "alves.com/modules/users/service"
 	"github.com/gin-gonic/gin"
 )
 

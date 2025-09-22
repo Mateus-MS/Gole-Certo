@@ -1,9 +1,9 @@
 package main
 
 import (
-	"alves.com/backend/middlewares"
-	stock_routes "alves.com/backend/modules/stock/routes"
-	user_routes "alves.com/backend/modules/users/routes"
+	"alves.com/middlewares"
+	stock_routes "alves.com/modules/stock/routes"
+	user_routes "alves.com/modules/users/routes"
 )
 
 func addRoutes(app *App) {

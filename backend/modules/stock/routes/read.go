@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	stock_error "alves.com/backend/modules/stock/errors"
-	stock_service "alves.com/backend/modules/stock/service"
+	stock_error "alves.com/modules/stock/errors"
+	stock_service "alves.com/modules/stock/service"
 	"github.com/gin-gonic/gin"
 )
 

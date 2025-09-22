@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	generic_repository "alves.com/backend/modules/common/repo"
-	user_model "alves.com/backend/modules/users/model"
+	generic_repository "alves.com/modules/common/repo"
+	user_model "alves.com/modules/users/model"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

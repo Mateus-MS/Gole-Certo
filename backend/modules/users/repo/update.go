@@ -3,7 +3,7 @@ package user_repository
 import (
 	"context"
 
-	user_model "alves.com/backend/modules/users/model"
+	user_model "alves.com/modules/users/model"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

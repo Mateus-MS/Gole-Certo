@@ -3,8 +3,8 @@ package user_service
 import (
 	"context"
 
-	user_cache "alves.com/backend/modules/users/cache"
-	user_repository "alves.com/backend/modules/users/repo"
+	user_cache "alves.com/modules/users/cache"
+	user_repository "alves.com/modules/users/repo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
