@@ -16,7 +16,7 @@ type IService interface {
 	Repo() *user_repository.Repository
 	Cache() *user_cache.Cache
 
-	Login(context.Context, string, string) error
+	Login(context.Context, string, string) (string, error)
 	Register(context.Context, string, string) error
 }
 

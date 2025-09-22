@@ -7,16 +7,16 @@ import (
 	user_repository "alves.com/backend/modules/users/repo"
 )
 
-func (s *service) Login(ctx context.Context, username, password string) error {
+func (s *service) Login(ctx context.Context, username, password string) (string, error) {
 	// Search for the user on DB
 	userEntity, err := s.repository.ReadByName(ctx, username)
 	if err != nil {
-		return user_repository.ErrUserInexistent
+		return "", user_repository.ErrUserInexistent
 	}
 
 	// Check if the finded user password, match with the received one
 	if !CheckPassword(userEntity.Password, password) {
-		return ErrInvalidCredentials
+		return "", ErrInvalidCredentials
 	}
 
 	// Generate a session token
@@ -25,10 +25,8 @@ func (s *service) Login(ctx context.Context, username, password string) error {
 	// Add the token to the cache
 	err = s.cache.Set(ctx, sessionToken, userEntity.ID.Hex(), 30*time.Minute)
 	if err != nil {
-		return err
+		return "", err
 	}
 
-	println(sessionToken)
-
-	return nil
+	return sessionToken, nil
 }

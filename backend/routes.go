@@ -16,4 +16,5 @@ func addRoutes(app *App) {
 	app.Router.POST("/users/login", user_routes.UserLogin(app.Services.User))
 	app.Router.POST("/users/register", user_routes.UserRegister(app.Services.User))
 	app.Router.GET("/users/protected", middlewares.AuthMiddleware(app.Services.User), user_routes.UserProtected(app.Services.User))
+	app.Router.POST("/users/delete", middlewares.AuthMiddleware(app.Services.User), user_routes.UserDelete(app.Services.User))
 }

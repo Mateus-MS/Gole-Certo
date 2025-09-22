@@ -17,12 +17,16 @@ func UserLogin(userService user_service.IService) gin.HandlerFunc {
 		}
 
 		// Try to login the user with the received credentials
-		err := userService.Login(c, username, password)
+		token, err := userService.Login(c, username, password)
 		if err != nil {
 			c.String(400, err.Error())
 			return
 		}
 
-		c.String(200, "logged successfully")
+		// Return token in JSON instead of cookie
+		c.JSON(http.StatusOK, gin.H{
+			"accessToken": token,
+			"message":     "logged in successfully",
+		})
 	}
 }
