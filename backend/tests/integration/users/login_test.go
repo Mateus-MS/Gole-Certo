@@ -9,16 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ValidUsername = "jhonDoe"
-var ValidPassword = "jhonpass"
-
 func TestUserLogin_Success(t *testing.T) {
 	t.Parallel()
 	router := integration_helper.SetupUserApp(t)
 
 	// Assuming that the register will work
-	integration_users.AttemptRegister(router, ValidUsername, ValidPassword)
-	w := integration_users.AttemptLogin(router, ValidUsername, ValidPassword)
+	integration_users.AttemptRegister(router, validUsername, validPassword)
+	w := integration_users.AttemptLogin(router, validUsername, validPassword)
 
 	assert.Equal(t, http.StatusOK, w.Code, "expected HTTP 200")
 }
@@ -27,7 +24,7 @@ func TestUserLogin_Unregistered(t *testing.T) {
 	t.Parallel()
 	router := integration_helper.SetupUserApp(t)
 
-	w := integration_users.AttemptLogin(router, ValidUsername, ValidPassword)
+	w := integration_users.AttemptLogin(router, validUsername, validPassword)
 
 	assert.Equal(t, http.StatusUnauthorized, w.Code, "expected HTTP 401")
 }

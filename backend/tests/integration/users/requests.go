@@ -26,3 +26,12 @@ func AttemptRegister(router *gin.Engine, username, password string) *httptest.Re
 
 	return w
 }
+
+func AttemptRead(router *gin.Engine, username string) *httptest.ResponseRecorder {
+	req, _ := http.NewRequest(http.MethodGet, "/users/"+username, nil)
+
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	return w
+}

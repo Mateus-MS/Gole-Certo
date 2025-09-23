@@ -10,7 +10,6 @@ type Cache struct {
 }
 
 func New() *Cache {
-	println("redis URI: " + config.GetRedisURI())
 	return &Cache{
 		Redis: redis.NewClient(&redis.Options{
 			Addr:     config.GetRedisURI(),
