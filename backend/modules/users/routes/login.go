@@ -19,7 +19,8 @@ func UserLogin(userService user_service.IService) gin.HandlerFunc {
 		// Try to login the user with the received credentials
 		token, err := userService.Login(c, username, password)
 		if err != nil {
-			c.String(400, err.Error())
+			// If something went wrong while loggin, just say that the credentials are invalids
+			c.String(http.StatusUnauthorized, "Invalid credentials")
 			return
 		}
 

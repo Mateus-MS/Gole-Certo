@@ -1,29 +1,39 @@
 package main
 
 import (
+	"log"
+
+	"alves.com/app"
+	"alves.com/app/config"
+	"alves.com/app/routes"
 	stock_service "alves.com/modules/stock/service"
 	user_service "alves.com/modules/users/service"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	db := StartDBConnection()
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, relying on environment variables")
+	}
+
+	db := config.StartDBConnection()
 	router := gin.Default()
 
 	// SERVICES
 	stockService := stock_service.New(db.Database("cluster").Collection("stock"))
 	userService := user_service.New(db.Database("cluster").Collection("users"))
 
-	app := NewApp(
+	aplication := app.NewApp(
 		db,
 		router,
-		&Services{
+		&app.Services{
 			Stock: stockService,
 			User:  userService,
 		},
 	)
 
-	addRoutes(app)
+	routes.InitRoutes(aplication)
 
-	app.Router.Run(":8080")
+	aplication.Router.Run(":8080")
 }

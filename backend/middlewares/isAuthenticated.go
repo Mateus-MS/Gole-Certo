@@ -33,11 +33,11 @@ func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
 		userID, err := userService.Cache().Get(c, token)
 		if err != nil {
 			if errors.Is(err, user_cache.ErrTokenNotFound) {
-				c.String(http.StatusUnauthorized, "not logged")
+				c.AbortWithError(http.StatusUnauthorized, err)
 				return
 			}
 
-			c.String(http.StatusInternalServerError, err.Error())
+			c.AbortWithError(http.StatusInternalServerError, err)
 			return
 		}
 

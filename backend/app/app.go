@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	stock_service "alves.com/modules/stock/service"

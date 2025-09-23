@@ -1,6 +1,7 @@
 package user_cache
 
 import (
+	"alves.com/app/config"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -9,9 +10,10 @@ type Cache struct {
 }
 
 func New() *Cache {
+	println("redis URI: " + config.GetRedisURI())
 	return &Cache{
 		Redis: redis.NewClient(&redis.Options{
-			Addr:     "redis:6379",
+			Addr:     config.GetRedisURI(),
 			Password: "",
 			DB:       0,
 		}),
