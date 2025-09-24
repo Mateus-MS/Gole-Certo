@@ -1,4 +1,4 @@
-package integration_users
+package integration_users_test
 
 import (
 	"net/http"
@@ -6,6 +6,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
+
+var validUsername = "jhonDoe"
+var validPassword = "jhonpass"
 
 func AttemptLogin(router *gin.Engine, username, password string) *httptest.ResponseRecorder {
 	req, _ := http.NewRequest(http.MethodPost, "/users/login", nil)
