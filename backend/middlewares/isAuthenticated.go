@@ -30,7 +30,7 @@ func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
 		}
 
 		// Check if the token is on Cache
-		userID, err := userService.Cache().Get(c, token)
+		userCache, err := userService.Cache().Read(c, token)
 		if err != nil {
 			if errors.Is(err, user_cache.ErrTokenNotFound) {
 				c.AbortWithError(http.StatusUnauthorized, err)
@@ -41,7 +41,8 @@ func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
 			return
 		}
 
-		c.Set("userID", userID)
+		c.Set("userID", userCache.ID.Hex())
+		c.Set("userIsAdmin", userCache.IsAdmin)
 		c.Next()
 	}
 }

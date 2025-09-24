@@ -18,7 +18,9 @@ func SetupUserApp(t *testing.T) *gin.Engine {
 	}
 
 	database := SetupDB(t)
-	userService := user_service.New(database.Collection("user"))
+	cache := SetupCache(t)
+	// Kinda dumb but will stay like this till it bothers me enough
+	userService := user_service.New(database.Collection("user"), cache.Redis, cache.Prefix)
 
 	router := gin.Default()
 	routes.RegisterUserRoutes(router, userService)

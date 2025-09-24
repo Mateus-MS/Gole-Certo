@@ -18,14 +18,16 @@ func main() {
 	}
 
 	db := config.StartDBConnection()
+	cache := config.StartCacheConnection()
 	router := gin.Default()
 
 	// SERVICES
 	stockService := stock_service.New(db.Database("cluster").Collection("stock"))
-	userService := user_service.New(db.Database("cluster").Collection("users"))
+	userService := user_service.New(db.Database("cluster").Collection("users"), cache, "")
 
 	aplication := app.NewApp(
 		db,
+		cache,
 		router,
 		&app.Services{
 			Stock: stockService,

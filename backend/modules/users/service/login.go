@@ -22,8 +22,11 @@ func (s *service) Login(ctx context.Context, username, password string) (string,
 	// Generate a session token
 	sessionToken, err := GenerateRandomToken(20)
 
+	// Create the user cache entity
+	userCache := userEntity.GetCache()
+
 	// Add the token to the cache
-	err = s.cache.Set(ctx, sessionToken, userEntity.ID.Hex(), 30*time.Minute)
+	err = s.cache.Save(ctx, sessionToken, *userCache, 30*time.Minute)
 	if err != nil {
 		println("CACHE ERROR", err.Error())
 		return "", err

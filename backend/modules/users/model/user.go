@@ -5,17 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	generic_persistent "alves.com/modules/common/model"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-
-type UserEntity struct {
-	generic_persistent.Persistent `bson:",inline"`
-
-	Name     string `json:"name"         binding:"required" bson:"name"`
-	Password string `json:"password"     binding:"required" bson:"password"`
-	IsAdmin  bool   `json:"isAdmin"                         bson:"isAdmin"`
-}
 
 func NewUser(username, password string) *UserEntity {
 	user := UserEntity{
@@ -42,6 +33,9 @@ func (u *UserEntity) GetDTO() *UserDTO {
 	}
 }
 
-type UserDTO struct {
-	Name string `json:"name"`
+func (u *UserEntity) GetCache() *UserCache {
+	return &UserCache{
+		Persistent: u.Persistent,
+		IsAdmin:    u.IsAdmin,
+	}
 }

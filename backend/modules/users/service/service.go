@@ -5,6 +5,7 @@ import (
 
 	user_cache "alves.com/modules/users/cache"
 	user_repository "alves.com/modules/users/repo"
+	"github.com/redis/go-redis/v9"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,10 +26,10 @@ type service struct {
 	cache      *user_cache.Cache
 }
 
-func New(coll *mongo.Collection) *service {
+func New(coll *mongo.Collection, cache *redis.Client, prefix string) *service {
 	return &service{
 		repository: user_repository.New(coll),
-		cache:      user_cache.New(),
+		cache:      user_cache.New(cache, prefix),
 	}
 }
 
