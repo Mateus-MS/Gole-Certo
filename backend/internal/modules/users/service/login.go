@@ -5,6 +5,7 @@ import (
 	"time"
 
 	user_repository "alves.com/modules/users/repo"
+	"alves.com/pkg/security"
 )
 
 func (s *service) Login(ctx context.Context, username, password string) (string, error) {
@@ -15,12 +16,12 @@ func (s *service) Login(ctx context.Context, username, password string) (string,
 	}
 
 	// Check if the finded user password, match with the received one
-	if !CheckPassword(userEntity.Password, password) {
+	if !security.CheckPassword(userEntity.Password, password) {
 		return "", ErrInvalidCredentials
 	}
 
 	// Generate a session token
-	sessionToken, err := GenerateRandomToken(20)
+	sessionToken, err := security.GenerateRandomToken(20)
 
 	// Create the user cache entity
 	userCache := userEntity.GetCache()

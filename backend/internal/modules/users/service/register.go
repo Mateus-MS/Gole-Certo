@@ -5,6 +5,7 @@ import (
 
 	user_model "alves.com/modules/users/model"
 	user_repository "alves.com/modules/users/repo"
+	"alves.com/pkg/security"
 )
 
 func (s *service) Register(ctx context.Context, username, password string) error {
@@ -15,7 +16,7 @@ func (s *service) Register(ctx context.Context, username, password string) error
 	}
 
 	// Hash the password
-	hashedPassword, err := HashPassword(password)
+	hashedPassword, err := security.HashPassword(password)
 	if err != nil {
 		return err
 	}

@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	user_service "alves.com/modules/users/service"
+	"alves.com/pkg/security"
 	test_helper_app "alves.com/tests/helper"
 	test_helper_stock "alves.com/tests/helper/services/stock"
 	"github.com/stretchr/testify/assert"
@@ -42,7 +42,7 @@ func TestStockCreate_WithInvalidBearerToken(t *testing.T) {
 	req.Header.Set("Content-Type", "application/json")
 
 	// Add an invalid token to header
-	token, _ := user_service.GenerateRandomToken(20)
+	token, _ := security.GenerateRandomToken(20)
 	req.Header.Set("Authorization", "Bearer "+token)
 
 	// Sent the request
