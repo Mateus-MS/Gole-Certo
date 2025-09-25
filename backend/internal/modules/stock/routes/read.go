@@ -14,7 +14,7 @@ func ReadProduct(stockService stock_service.IService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Query("name")
 
-		product, err := stockService.Repo().ReadByName(c, name)
+		product, err := stockService.ReadByName(c, name)
 
 		if err != nil {
 			if errors.Is(err, stock_error.ErrProductInexistent) {
