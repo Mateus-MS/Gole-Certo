@@ -10,9 +10,7 @@ import (
 )
 
 func InitRoutes(app *app.App) {
-	admCollection := app.DB.Database("users").Collection("adms")
-
-	app.Router.POST("/products", middlewares.IsAdmin(admCollection), stock_routes.CreateProduct(app.Services.Stock))
+	app.Router.POST("/products", middlewares.AuthMiddleware(app.Services.User), middlewares.IsAdmin(), stock_routes.CreateProduct(app.Services.Stock))
 	app.Router.GET("/products", stock_routes.ReadProduct(app.Services.Stock))
 
 	RegisterUserRoutes(app.Router, app.Services.User)

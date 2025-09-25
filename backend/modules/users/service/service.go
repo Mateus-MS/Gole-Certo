@@ -4,6 +4,7 @@ import (
 	"context"
 
 	user_cache "alves.com/modules/users/cache"
+	user_model "alves.com/modules/users/model"
 	user_repository "alves.com/modules/users/repo"
 	"github.com/redis/go-redis/v9"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -14,8 +15,11 @@ type IService interface {
 
 	// DeductFromStock(context.Context, product.ProductStock, int64) error
 
-	Repo() *user_repository.Repository
+	Repo() *user_repository.Repository // TODO: REMOVE THIS
 	Cache() *user_cache.Cache
+
+	// Read
+	ReadByName(context.Context, string) (user_model.UserEntity, error)
 
 	Login(context.Context, string, string) (string, error)
 	Register(context.Context, string, string) error

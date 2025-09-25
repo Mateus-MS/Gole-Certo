@@ -1,22 +1,30 @@
 package integration_users_test
 
 import (
-	"net/http"
 	"testing"
 
-	integration_helper "alves.com/tests/integration/helper"
+	user_service "alves.com/modules/users/service"
+	test_helper_app "alves.com/tests/helper"
 	"github.com/stretchr/testify/assert"
 )
 
+var validUsername = "jhonDoe"
+var validPassword = "jhonPass"
+
 func TestUserGET_Success(t *testing.T) {
 	t.Parallel()
-	router := integration_helper.SetupUserApp(t)
+	deps := test_helper_app.NewAppBase(t)
+	userService := user_service.New(deps.DB.Collection("users"), deps.Cache.Redis, deps.Cache.Prefix)
 
-	AttemptRegister(router, validUsername, validPassword)
+	// Try to register
+	{
+		err := userService.Register(t.Context(), validUsername, validPassword)
+		assert.Nil(t, err, "user registration should not return an error")
+	}
 
-	w := AttemptRead(router, validUsername)
-
-	assert.Equal(t, http.StatusOK, w.Code, "expected HTTP 200")
-
-	println(w.Body.String())
+	// Try to read the user
+	{
+		_, err := userService.ReadByName(t.Context(), validUsername)
+		assert.Nil(t, err, "user query should not return an error")
+	}
 }

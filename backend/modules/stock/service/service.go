@@ -10,7 +10,7 @@ type IService interface {
 
 	// DeductFromStock(context.Context, product.ProductStock, int64) error
 
-	Repo() *stock_repository.Repository
+	Repo() *stock_repository.Repository // TODO: REMOVE THIS
 }
 
 type service struct {

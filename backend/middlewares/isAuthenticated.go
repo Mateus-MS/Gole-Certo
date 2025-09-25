@@ -33,16 +33,18 @@ func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
 		userCache, err := userService.Cache().Read(c, token)
 		if err != nil {
 			if errors.Is(err, user_cache.ErrTokenNotFound) {
-				c.AbortWithError(http.StatusUnauthorized, err)
+				c.AbortWithStatus(http.StatusUnauthorized)
 				return
 			}
 
-			c.AbortWithError(http.StatusInternalServerError, err)
+			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 
 		c.Set("userID", userCache.ID.Hex())
-		c.Set("userIsAdmin", userCache.IsAdmin)
+		if userCache.IsAdmin {
+			c.Set("userIsAdmin", userCache.IsAdmin)
+		}
 		c.Next()
 	}
 }
