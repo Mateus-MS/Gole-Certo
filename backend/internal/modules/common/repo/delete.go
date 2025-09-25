@@ -24,12 +24,6 @@ func (repo *GenericRepository[T]) Delete(ctx context.Context, filter bson.M) err
 	return nil
 }
 
-func (repo *GenericRepository[T]) DeleteByID(ctx context.Context, id string) error {
-	// TEMP
-	objID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		return err
-	}
-
-	return repo.Delete(ctx, bson.M{"_id": objID})
+func (repo *GenericRepository[T]) DeleteByID(ctx context.Context, id primitive.ObjectID) error {
+	return repo.Delete(ctx, bson.M{"_id": id})
 }

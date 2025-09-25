@@ -8,6 +8,7 @@ import (
 	user_repository "alves.com/modules/users/repo"
 	user_service "alves.com/modules/users/service"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func UserDelete(userService user_service.IService) gin.HandlerFunc {
@@ -17,7 +18,8 @@ func UserDelete(userService user_service.IService) gin.HandlerFunc {
 			c.String(http.StatusUnauthorized, "user id not found")
 			return
 		}
-		err := userService.Repo().DeleteByID(c, userID.(string))
+		idObj, _ := primitive.ObjectIDFromHex(userID.(string))
+		err := userService.DeleteByID(c, idObj)
 		if err != nil {
 			if errors.Is(err, user_repository.ErrUserInexistent) || errors.Is(err, generic_repository.ErrItemInexistent) {
 				c.String(http.StatusNotFound, "this user doesn't exists")

@@ -14,7 +14,7 @@ func UserRead(userService user_service.IService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Param("name")
 
-		user, err := userService.Repo().ReadByName(c, name)
+		user, err := userService.ReadByName(c, name)
 
 		if err != nil {
 			if errors.Is(err, user_repository.ErrUserInexistent) {

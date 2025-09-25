@@ -10,7 +10,7 @@ import (
 
 func (s *service) Register(ctx context.Context, username, password string) error {
 	// check if already exists an user with this name
-	_, err := s.Repo().ReadByName(ctx, username)
+	_, err := s.ReadByName(ctx, username)
 	if err == nil {
 		return user_repository.ErrDuplicatedUser
 	}
