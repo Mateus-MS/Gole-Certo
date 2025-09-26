@@ -1,10 +1,11 @@
-package generic_repository
+package generic_repository_mongo
 
 import (
 	"context"
 	"errors"
 
 	generic_persistent "alves.com/modules/common/model"
+	generic_repository "alves.com/modules/common/repo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -16,7 +17,7 @@ func (repo *GenericRepository[T]) Read(ctx context.Context, filter bson.M) (gene
 
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
-			return item, ErrItemInexistent
+			return item, generic_repository.ErrItemInexistent
 		}
 	}
 

@@ -1,4 +1,4 @@
-package generic_repository
+package generic_repository_mongo
 
 import "context"
 
