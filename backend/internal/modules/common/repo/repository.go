@@ -1,16 +1,28 @@
 package generic_repository
 
 import (
+	"context"
+
 	generic_persistent "alves.com/modules/common/model"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Alias
 type iPersistent = generic_persistent.IPersistent
 
-// I know that this approach is not much a "go" way of doing things but hey i'm just messing with concepts.
+type IGenericRepository[T iPersistent] interface {
+	Create(context.Context, T) error
 
-// This `GenericRepository` carry the basic C-R-U-D methods
+	Read(context.Context, bson.M) (generic_persistent.IPersistent, error)
+
+	Update(context.Context, bson.M, bson.M) error
+
+	Delete(context.Context, bson.M) error
+	DeleteByID(context.Context, primitive.ObjectID) error
+}
+
 type GenericRepository[T iPersistent] struct {
 	Collection *mongo.Collection
 }

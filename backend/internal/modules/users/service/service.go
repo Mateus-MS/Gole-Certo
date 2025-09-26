@@ -12,21 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// TODO: if it became to get clunky, split this interface in parts, for a better organization
 type IService interface {
-	// Register(context.Context, product.ProductStock) error
-
-	// DeductFromStock(context.Context, product.ProductStock, int64) error
-
-	// DB crud functions to be exported
-	Create(context.Context, user_model.UserEntity) error
-
-	ReadByName(context.Context, string) (user_model.UserEntity, error)
-
-	UpdateByName(context.Context, user_model.UserEntity) error
-
-	DeleteByID(context.Context, primitive.ObjectID) error
-
 	// Basic login
 	Login(context.Context, string, string) (string, error)
 	Register(context.Context, string, string) error
@@ -34,10 +20,15 @@ type IService interface {
 	// Cache functions
 	SaveInCache(context.Context, string, user_model.UserCache, time.Duration) error
 	ReadFromCache(context.Context, string) (user_model.UserCache, error)
+
+	// DB crud functions to be exported
+	Create(context.Context, user_model.UserEntity) error
+	ReadByName(context.Context, string) (user_model.UserEntity, error)
+	DeleteByID(context.Context, primitive.ObjectID) error
 }
 
 type service struct {
-	repository *user_repository.Repository
+	repository user_repository.IRepository
 	cache      *user_cache.Cache
 }
 

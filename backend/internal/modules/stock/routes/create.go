@@ -22,7 +22,7 @@ func CreateProduct(stockService stock_service.IService) gin.HandlerFunc {
 
 		inputStock.ID = primitive.NewObjectIDFromTimestamp(time.Now())
 
-		err = stockService.Create(c, inputStock)
+		err = stockService.Register(c, inputStock)
 		if err != nil {
 			c.String(http.StatusInternalServerError, err.Error())
 			return

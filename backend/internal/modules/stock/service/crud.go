@@ -6,7 +6,7 @@ import (
 	stock_model "alves.com/modules/stock/model"
 )
 
-func (s *service) Create(ctx context.Context, product stock_model.StockEntity) error {
+func (s *service) Register(ctx context.Context, product stock_model.StockEntity) error {
 	return s.repository.Create(ctx, &product)
 }
 

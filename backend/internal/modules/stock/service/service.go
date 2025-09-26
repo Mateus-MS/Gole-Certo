@@ -9,16 +9,13 @@ import (
 )
 
 type IService interface {
-	// Register(context.Context, product.ProductStock) error
-
 	// DeductFromStock(context.Context, product.ProductStock, int64) error
-
-	Create(context.Context, stock_model.StockEntity) error
+	Register(context.Context, stock_model.StockEntity) error
 	ReadByName(context.Context, string) (stock_model.StockEntity, error)
 }
 
 type service struct {
-	repository *stock_repository.Repository
+	repository stock_repository.IRepository
 }
 
 func New(coll *mongo.Collection) *service {
