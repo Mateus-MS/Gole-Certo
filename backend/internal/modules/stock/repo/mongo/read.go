@@ -1,4 +1,4 @@
-package stock_repository
+package stock_repository_mongo
 
 import (
 	"context"

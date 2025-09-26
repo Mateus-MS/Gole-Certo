@@ -5,6 +5,7 @@ import (
 
 	stock_model "alves.com/modules/stock/model"
 	stock_repository "alves.com/modules/stock/repo"
+	stock_repository_mongo "alves.com/modules/stock/repo/mongo"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -20,6 +21,6 @@ type service struct {
 
 func New(coll *mongo.Collection) *service {
 	return &service{
-		repository: stock_repository.New(coll),
+		repository: stock_repository_mongo.New(coll),
 	}
 }
