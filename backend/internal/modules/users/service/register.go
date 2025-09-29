@@ -22,9 +22,9 @@ func (s *service) Register(ctx context.Context, username, password string) error
 	}
 
 	// Save into DB
-	err = s.repository.Create(
+	err = s.Create(
 		ctx,
-		user_model.NewUser(username, hashedPassword),
+		*user_model.NewUser(username, hashedPassword),
 	)
 	if err != nil {
 		return err

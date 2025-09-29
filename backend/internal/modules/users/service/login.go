@@ -10,7 +10,7 @@ import (
 
 func (s *service) Login(ctx context.Context, username, password string) (string, error) {
 	// Search for the user on DB
-	userEntity, err := s.repository.ReadByName(ctx, username)
+	userEntity, err := s.ReadByName(ctx, username)
 	if err != nil {
 		return "", user_repository.ErrUserInexistent
 	}
@@ -27,7 +27,7 @@ func (s *service) Login(ctx context.Context, username, password string) (string,
 	userCache := userEntity.GetCache()
 
 	// Add the token to the cache
-	err = s.cache.Save(ctx, sessionToken, *userCache, 30*time.Minute)
+	err = s.SaveInCache(ctx, sessionToken, *userCache, 30*time.Minute)
 	if err != nil {
 		println("CACHE ERROR", err.Error())
 		return "", err
