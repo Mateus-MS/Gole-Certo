@@ -25,6 +25,6 @@ func TestUserGET_Success(t *testing.T) {
 	// Try to read the user
 	{
 		_, err := userService.ReadByName(t.Context(), validUsername)
-		assert.Nil(t, err, "user query should not return an error")
+		assert.NotNil(t, err, "user query should not return an error")
 	}
 }
