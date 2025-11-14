@@ -4,12 +4,13 @@ on:
   push:
     branches:
       - main
-    workflow_dispatch:
+  workflow_dispatch:   # <-- manual trigger ENABLED
 
-  jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
       # 1. Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,11 +21,12 @@ on:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      # 3. Copy repo to remote server and deploy
+      # 3. Deploy to remote Windows server
       - name: Deploy to Windows server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} `
-          "cd C:\Gole-Certo && `
-          git pull origin main && `
-          docker compose down && `
-          docker compose up -d --build"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "
+            cd C:/Gole-Certo;
+            git pull origin main;
+            docker compose down;
+            docker compose up -d --build
+          "
