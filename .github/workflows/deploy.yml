@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - refactor
-  workflow_dispatch:   # <-- manual trigger ENABLED
+  workflow_dispatch:
 
 jobs:
   deploy:
