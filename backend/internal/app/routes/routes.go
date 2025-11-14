@@ -14,8 +14,6 @@ func InitRoutes(app *app.App) {
 	app.Router.GET("/products", stock_routes.ReadProduct(app.Services.Stock))
 
 	RegisterUserRoutes(app.Router, app.Services.User)
-
-	app.Router.POST("/server/deploy", DeployRoute())
 }
 
 func RegisterUserRoutes(router *gin.Engine, serv user_service.IService) {

@@ -3,28 +3,53 @@ name: tests
 on:
   push:
     branches:
-      - refactor
       - main
+      - refactor
   pull_request:
     branches:
-      - refactor
       - main
+      - refactor
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Set up Go
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.24'
 
+      # Start services
+      - name: Start services
+        run: docker compose -f ./docker/docker-compose.yml up -d
+
+      # Wait for services
+      - name: Wait for services
+        run: |
+          docker run --rm --network host jwilder/dockerize \
+            -wait tcp://localhost:27017 \
+            -wait tcp://localhost:6379 \
+            -timeout 30s
+
+      # Install Go module dependencies
       - name: Install dependencies
+        working-directory: ./backend/internal
         run: go mod tidy
 
+      # Run all tests
       - name: Run tests
-        run: go test ./backend/internal/... -v
+        working-directory: ./backend/internal
+        env:
+          MONGO_URI: "mongodb://localhost:27017"
+          REDIS_ADDR: "localhost:6379"
+        run: go test ./... -v
+
+      # Tear down services
+      - name: Stop services
+        run: docker compose -f ./docker/docker-compose.yml down
