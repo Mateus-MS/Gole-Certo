@@ -1,4 +1,4 @@
-name: tests
+name: Go tests
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  testing:
     runs-on: ubuntu-latest
 
     steps:
