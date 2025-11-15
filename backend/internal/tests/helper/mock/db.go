@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	test_helper_users "alves.com/tests/helper/services/users"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -22,6 +23,8 @@ func SetupDB(t *testing.T) *mongo.Database {
 	}
 
 	db := client.Database(dbName)
+
+	test_helper_users.RegisterTempADM(t, db.Collection("users"))
 
 	t.Cleanup(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
