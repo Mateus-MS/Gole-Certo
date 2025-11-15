@@ -6,8 +6,6 @@ WORKDIR /app
 # Copy all files into container
 COPY ../pkg .
 
-WORKDIR /app/pkg
-
 # Compile go
 RUN go mod tidy
 RUN go build -o server .
@@ -17,7 +15,7 @@ FROM debian:bookworm-slim
 WORKDIR /app
 
 # Move the compiled go to the run-time image
-COPY --from=builder /app/pkg/server .
+COPY --from=builder /app/server .
 
 EXPOSE 8080
 CMD ["./server"] 
