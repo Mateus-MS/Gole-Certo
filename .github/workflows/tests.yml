@@ -22,7 +22,7 @@ jobs:
 
       # Start services
       - name: Start services
-        run: docker compose -f ./docker/docker-compose.yml up -d
+        run: docker compose -f ./build/docker-compose.yml up -d
 
       # Wait for services
       - name: Wait for services
@@ -34,12 +34,12 @@ jobs:
 
       # Install Go module dependencies
       - name: Install dependencies
-        working-directory: ./backend/internal
+        working-directory: ./pkg
         run: go mod tidy
 
       # Run all tests
       - name: Run tests
-        working-directory: ./backend/internal
+        working-directory: ./pkg
         env:
           MONGO_URI: "mongodb://localhost:27017"
           REDIS_ADDR: "localhost:6379"
@@ -47,4 +47,4 @@ jobs:
 
       # Tear down services
       - name: Stop services
-        run: docker compose -f ./docker/docker-compose.yml down
+        run: docker compose -f ./build/docker-compose.yml down
