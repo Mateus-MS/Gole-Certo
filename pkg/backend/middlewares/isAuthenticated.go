@@ -1,0 +1,63 @@
+package middlewares
+
+import (
+	"errors"
+	"net/http"
+	"strings"
+
+	user_cache "alves.com/backend/modules/users/cache"
+	user_service "alves.com/backend/modules/users/service"
+	"github.com/gin-gonic/gin"
+)
+
+var (
+	ErrMissingAuthHeader = errors.New("missing authorization header")
+	ErrInvalidAuthHeader = errors.New("invalid authorization header")
+	ErrExpiredToken      = errors.New("expired token provided")
+)
+
+func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Read the token from the header
+		token, err := getTokenFromHeader(c.GetHeader("Authorization"))
+		if err != nil {
+			status := http.StatusInternalServerError
+			if errors.Is(err, ErrMissingAuthHeader) || errors.Is(err, ErrInvalidAuthHeader) {
+				status = http.StatusBadRequest
+			}
+			c.String(status, err.Error())
+			return
+		}
+
+		// Check if the token is on Cache
+		userCache, err := userService.ReadFromCache(c, token)
+		if err != nil {
+			if errors.Is(err, user_cache.ErrTokenNotFound) {
+				c.AbortWithStatus(http.StatusUnauthorized)
+				return
+			}
+
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		c.Set("userID", userCache.ID.Hex())
+		if userCache.IsAdmin {
+			c.Set("userIsAdmin", userCache.IsAdmin)
+		}
+		c.Next()
+	}
+}
+
+func getTokenFromHeader(header string) (string, error) {
+	if header == "" {
+		return "", ErrMissingAuthHeader
+	}
+
+	parts := strings.SplitN(header, " ", 2)
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		return "", ErrInvalidAuthHeader
+	}
+
+	return parts[1], nil
+}
