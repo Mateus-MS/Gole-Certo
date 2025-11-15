@@ -34,12 +34,12 @@ jobs:
 
       # Install Go module dependencies
       - name: Install dependencies
-        working-directory: ./backend/internal
+        working-directory: ./app
         run: go mod tidy
 
       # Run all tests
       - name: Run tests
-        working-directory: ./backend/internal
+        working-directory: ./app
         env:
           MONGO_URI: "mongodb://localhost:27017"
           REDIS_ADDR: "localhost:6379"
