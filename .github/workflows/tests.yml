@@ -22,7 +22,7 @@ jobs:
 
       # Start services
       - name: Start services
-        run: docker compose -f ./docker/docker-compose.yml up -d
+        run: docker compose -f ./build/docker-compose.yml up -d
 
       # Wait for services
       - name: Wait for services
@@ -47,4 +47,4 @@ jobs:
 
       # Tear down services
       - name: Stop services
-        run: docker compose -f ./docker/docker-compose.yml down
+        run: docker compose -f ./build/docker-compose.yml down
