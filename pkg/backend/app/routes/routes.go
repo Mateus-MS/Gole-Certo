@@ -4,14 +4,14 @@ import (
 	"alves.com/backend/app"
 	"alves.com/backend/middlewares"
 	stock_routes "alves.com/backend/modules/stock/routes"
-	user_routes "alves.com/backend/modules/users/routes"
-	user_service "alves.com/backend/modules/users/service"
+	user_routes "alves.com/backend/modules/user/routes"
+	user_service "alves.com/backend/modules/user/service"
 	"github.com/gin-gonic/gin"
 )
 
 func InitRoutes(app *app.App) {
-	app.Router.POST("/products", middlewares.AuthMiddleware(app.Services.User), middlewares.IsAdmin(), stock_routes.CreateProduct(app.Services.Stock))
-	app.Router.GET("/products", stock_routes.ReadProduct(app.Services.Stock))
+	app.Router.POST("/products", middlewares.AuthMiddleware(app.Services.User), middlewares.IsAdmin(), stock_routes.StockCreate(app.Services.Stock))
+	app.Router.GET("/products", stock_routes.StockRead(app.Services.Stock))
 
 	RegisterUserRoutes(app.Router, app.Services.User)
 }

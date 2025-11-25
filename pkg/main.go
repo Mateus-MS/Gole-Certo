@@ -7,7 +7,7 @@ import (
 	"alves.com/backend/app/config"
 	"alves.com/backend/app/routes"
 	stock_service "alves.com/backend/modules/stock/service"
-	user_service "alves.com/backend/modules/users/service"
+	user_service "alves.com/backend/modules/user/service"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )

@@ -1,4 +1,4 @@
-package stock_repository
+package user_repository
 
 import "go.mongodb.org/mongo-driver/mongo"
 

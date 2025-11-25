@@ -3,24 +3,24 @@ package stock_service
 import (
 	"context"
 
-	stock_model "alves.com/backend/modules/stock/model"
-	stock_repository "alves.com/backend/modules/stock/repo"
-	stock_repository_mongo "alves.com/backend/modules/stock/repo/mongo"
+	user_model "alves.com/backend/modules/user/model"
+	user_repository "alves.com/backend/modules/user/repo"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type IService interface {
-	// DeductFromStock(context.Context, product.ProductStock, int64) error
-	Register(context.Context, stock_model.StockEntity) error
-	ReadByName(context.Context, string) (stock_model.StockEntity, error)
+	Create(context.Context, user_model.UserEntity) error
+	ReadByName(context.Context, string) (*user_model.UserEntity, error)
+	DeleteByID(context.Context, primitive.ObjectID) error
 }
 
 type service struct {
-	repository stock_repository.IRepository
+	repository *user_repository.Repository
 }
 
 func New(coll *mongo.Collection) *service {
 	return &service{
-		repository: stock_repository_mongo.New(coll),
+		repository: user_repository.New(coll),
 	}
 }

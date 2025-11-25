@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"alves.com/backend/internal/security"
-	user_model "alves.com/backend/modules/users/model"
-	user_service "alves.com/backend/modules/users/service"
+	user_model "alves.com/backend/modules/user/model"
+	user_service "alves.com/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

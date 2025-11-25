@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func StockCreate(stockService stock_service.IService) gin.HandlerFunc {
+func StockDelete(stockService stock_service.IService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.String(http.StatusOK, "Not implemented yet")
 	}

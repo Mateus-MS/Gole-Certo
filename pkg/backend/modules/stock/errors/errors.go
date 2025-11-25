@@ -1,10 +1,8 @@
 package stock_error
 
-import (
-	"errors"
-)
+import "errors"
 
 var (
-	ErrProductInexistent = errors.New("product not found")
-	ErrCannotConvert     = errors.New("cannot convert")
+	ErrStockInexistent    = errors.New("this product does not exists on DB")
+	ErrStockAlreadyExists = errors.New("this product already exists on DB")
 )

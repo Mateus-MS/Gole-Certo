@@ -2,7 +2,7 @@ package app
 
 import (
 	stock_service "alves.com/backend/modules/stock/service"
-	user_service "alves.com/backend/modules/users/service"
+	user_service "alves.com/backend/modules/user/service"
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 	"go.mongodb.org/mongo-driver/mongo"

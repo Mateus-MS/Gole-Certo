@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"alves.com/backend/app/config"
-	user_cache "alves.com/backend/modules/users/cache"
+	user_cache "alves.com/backend/modules/user/cache"
 	"github.com/redis/go-redis/v9"
 )
 

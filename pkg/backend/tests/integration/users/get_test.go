@@ -3,7 +3,7 @@ package integration_users_test
 import (
 	"testing"
 
-	user_service "alves.com/backend/modules/users/service"
+	user_service "alves.com/backend/modules/user/service"
 	test_helper_app "alves.com/backend/tests/helper"
 	"github.com/stretchr/testify/assert"
 )
