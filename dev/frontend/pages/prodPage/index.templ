@@ -1,0 +1,65 @@
+package page_prodpage
+
+import (
+    "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+    common_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/frags"    
+)
+
+templ ProdPage(productData product.ProductStock){
+    <!DOCTYPE html>
+    <html>
+    @head()
+    <body>
+        @common_frags.Header()
+        <nav>
+            <button id="back" onclick="window.history.back()">Back</button>
+        </nav>
+
+        <main>
+            <div id="left">
+                <div id="photo_display"></div>            
+                <div id="photo_gallery">
+                    <div class="photo_options"></div>
+                    <div class="photo_options"></div>
+                    <div class="photo_options"></div>
+                    <div class="photo_options"></div>
+                </div>            
+            </div>
+
+            <div id="right">
+            
+                <div id="information_container">
+                    <p id="name">{productData.Name}</p>
+                    <p id="price">€ {productData.Price.String()}</p>
+                    <br/>
+                </div>
+
+                <div id="actions">
+                    <button id="add_to_cart">Add to cart</button>
+                </div>
+
+            </div>
+        </main>
+
+        @common_frags.Footer()
+    </body>
+    </html>
+}
+
+templ head() {
+    <head>
+        <base href="/frontend/src/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        // CSS
+        <link rel="stylesheet" href="css/common/header.css">
+        <link rel="stylesheet" href="css/common/footer.css">
+
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/prodPage/main.css">
+
+        <title>Gole Certo</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js" defer></script>
+    </head>
+}

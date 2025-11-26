@@ -1,0 +1,75 @@
+@use '../globals' as g;
+@use 'sass:map' as map;
+
+#pagination_container
+    width: 100vw
+    height: fit-content
+    min-height: 75vh
+    display: flex
+    flex-direction: column
+
+    // Used on childrens
+    color: map.get(g.$colors, primary)
+    font-size: 1.3em
+
+    @include g.when-desktop((
+        width: 100%
+    ))
+
+    #controllers
+        width: 100vw
+        height: 130px
+
+        @include g.flex-align(center, center)
+        @include g.when-desktop ((
+            width: 100%,
+            height: 80px
+        ))
+
+        span
+            color: inherit
+
+        button
+            cursor: pointer
+
+        .page
+            @include g.make-it-square(1.7em)
+            
+            // Positioning
+            padding: 5px
+            margin: 0 .5em
+
+            // Font
+            color: inherit
+            text-align: center
+            font-size: inherit
+
+            &.active
+                color: map.get(g.$colors, background)
+                background-color: map.get(g.$colors, primary)
+                border-radius: 50%
+
+        .arrow
+            @include g.add-icons-font()
+            color: inherit
+            font-size: 1em
+
+    #no-match-fallback
+        width: 100%
+        flex-grow: 1
+        position: relative
+
+        span
+            width: 200px
+            
+            // Positioning
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+
+            // Font
+            color: inherit
+            text-align: center
+            font-weight: bold
+        

@@ -1,0 +1,13 @@
+package page_shop_frags
+
+import "github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+
+templ ProdCard(prod product.ProductStock) {
+    <div class="prod-card" onclick={templ.JSFuncCall("OpenProductPage", prod.GetProductID())}>
+        <div class="container"></div>
+        <div class="infos">
+            <span class="name">{prod.Name}</span>
+            <span class="price">{prod.Price.String()} €</span>
+        </div>
+    </div>
+}

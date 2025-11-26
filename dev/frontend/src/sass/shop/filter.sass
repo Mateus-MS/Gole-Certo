@@ -1,0 +1,196 @@
+@use '../globals' as g;
+@use 'sass:map' as map;
+@use 'sass:color' as color;
+
+#filter-info
+    width: 100%
+    height: 70px
+    display: flex
+    align-items: center
+    padding: 15px 30px
+
+    @include g.when-desktop((
+        padding: 0px
+    ))
+
+    .holder
+        display: inline-flex
+        align-items: center
+        width: 100%
+        @include g.remove-scroll-bar()
+
+        // Used on childrens
+        font-weight: bolder
+        white-space: nowrap
+        font-size: .7em
+        color: map.get(g.$colors, primary)
+
+        .filter-alias
+            height: fit-content
+            border: 1.5px solid #b9b9b9
+            background-color: #dddddd
+            padding: 4px 6px
+            border-radius: 5px
+            cursor: pointer
+            margin-right: 2em
+
+            // Used on childrens
+            color: inherit
+            font-weight: inherit
+            font-size: inherit
+
+            @include g.flex-align(center, center)
+            @include g.when-desktop((
+                margin-right: 1em
+            ))
+
+            span
+                margin: 0 3px
+
+            .tag
+                font-size: .9em
+                color: map.get(g.$colors, secondary)
+
+        #filter-alias_clearall
+            font-weight: inherit
+            color: inherit
+            border-bottom: 1.5px solid map.get(g.$colors, primary)
+            cursor: pointer
+
+    #toggle-menu
+        @include g.add-icons-font()
+        font-size: 1.2em
+        padding: 7px 0px 7px 7px
+        color: map.get(g.$colors, primary)
+
+        @include g.when-desktop((
+            display: none
+        ))
+
+        @include g.when-clicked((
+            background-color: transparent
+        ))
+
+#filter-menu
+    // Positining
+    position: absolute
+    left: 0
+    top: 0
+    transform: translateX(-100%)
+    
+    width: 70%
+    height: 100dvh
+    background-color: map.get(g.$colors, background)
+    padding: 1.5em 2em
+    transition: transform .2s ease-out
+    max-height: unset // The browser enforces this to be something around 97%
+
+    // Used on children
+    font-weight: bold
+    font-size: 1em
+    color: map.get(g.$colors, primary)
+
+    &::backdrop
+        background-color: rgba(map.get(g.$colors, primary), 0.5)
+        backdrop-filter: blur(2px)
+
+    &.show
+        transform: translateX(0%)
+
+    @include g.when-desktop((
+        position: relative,
+        width: 100%,
+        height: 100%,
+        padding: 70px 2.5em 2.5em 2.5em,
+        display: block,
+        transform: translateX(0%)
+    ))
+
+    hr
+        width: 100%
+        height: 1px
+        background-color: map.get(g.$colors, quaternary)
+        margin: 1em 0
+
+    #filter-group-header
+        font-size: 1.4em
+        margin-bottom: 1em
+        color: map.get(g.$colors, secondary)
+    
+    .filter-group-holder
+        padding-left: .5em
+
+        .filter-group-title
+            font-size: 1.4em
+            margin: .7em 0 .7em -.5rem
+
+        .filter-group-text
+            margin: 1em 0
+            display: block
+
+        #brand-search-input
+            width: 100%
+            border: 2px solid map.get(g.$colors, primary)
+            color: map.get(g.$colors, primary)
+            border-radius: 10px
+            padding: 6px 10px
+            font-size: 16px // To prevent zooming when selecting this input
+
+            &::placeholder
+                color: map.get(g.$colors, tertiary)
+
+        ul
+            padding-left: .75em
+            max-height: 150px
+            overflow-x: scroll
+            @include g.remove-scroll-bar()
+            
+.checker
+    font-weight: bold
+    font-size: 1em
+    color: map.get(g.$colors, primary)
+
+    &.hidden
+        display: none
+
+    label 
+        cursor: pointer
+        margin-bottom: .5em
+
+        display: flex
+        align-items: center
+
+        input
+            @include g.remove-check-box()
+            
+            $inputSize: 16px
+            $inputBorderWidth: 1.5px
+            @include g.make-it-square($inputSize)
+            margin-right: .5em
+            cursor: pointer
+            position: relative
+
+            // Uses this pseudo element as the checkbox
+            &::before
+                content: ""
+                position: absolute
+                @include g.make-it-square($inputSize - $inputBorderWidth * 2)
+
+                border-radius: 2px
+                border: $inputBorderWidth solid map.get(g.$colors, tertiary)
+                background: map.get(g.$colors, background)
+            
+                transition: color .2s ease-in, background-color .2s ease-in
+
+            // When selected, change the text color
+            &:checked + span
+                color: map.get(g.$colors, primary)
+
+            // When selected, change the pseudo checkbox color   
+            &:checked::before
+                background: map.get(g.$colors, primary)
+                border: $inputBorderWidth solid map.get(g.$colors, primary)
+
+        .text
+            user-select: none
+            color: map.get(g.$colors, tertiary)

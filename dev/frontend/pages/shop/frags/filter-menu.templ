@@ -1,0 +1,63 @@
+package page_shop_frags
+
+
+templ FilterMenu(brands []string) {
+
+    <dialog id="filter-menu" onclick="CloseFilterMenu(event)">
+
+        // That's to prevent the auto focus
+        <div style="max-width: 0; max-height: 0; overflow: hidden;">
+            <input autofocus="true" />
+        </div>
+
+        <h1 id="filter-group-header">Filter Options</h1>
+
+        <div class="filter-group-holder">
+            <h2 class="filter-group-title">Brands</h2>
+            
+            <input type="text" id="brand-search-input" placeholder="Search a brand">
+
+            <span class="filter-group-text">Suggestions</span>
+            <ul id="suggestions-holder">
+                for _, brand := range brands {
+                    <li class="checker">
+                        <label>
+                            <input type="checkbox" name="brand" value={brand} onchange="BRAND_MANAGER.onClick(this)">
+                            <span class="text">{brand}</span>
+                        </label>
+                    </li>
+                }
+            </ul>
+
+            <hr/>
+
+            <span class="filter-group-text">Selecteds</span>
+            <ul id="selecteds-holder">
+            </ul>
+        </div>
+
+        <div class="filter-group-holder">
+            <h2 class="filter-group-title">Price</h2>
+            @priceRange()
+
+            <hr/>
+
+            <span class="filter-group-text">Order</span>
+            <ul>
+                <li class="checker">
+                    <label>
+                        <input id="price-order-ascending" type="radio" name="order" value="ascending" checked>
+                        <span class="text">Ascending</span>
+                    </label>
+                </li>
+                <li class="checker">
+                    <label>
+                        <input id="price-order-descending" type="radio" name="order" value="descending">
+                        <span class="text">Descending</span>
+                    </label>
+                </li>
+            </ul>
+        </div>
+
+    </dialog>
+}

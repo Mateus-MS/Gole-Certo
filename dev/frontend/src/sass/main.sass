@@ -1,0 +1,21 @@
+@use 'globals' as g;
+    
+*
+    padding: 0
+    border: 0
+    margin: 0
+    box-sizing: border-box
+    background-color: transparent
+    font-family: Arial
+    outline: none
+    -webkit-tap-highlight-color: transparent
+
+ul
+    list-style-type: none
+
+html
+    @include g.remove-scroll-bar()
+
+.disable-scrolling
+    height: 100dvh
+    overflow: hidden

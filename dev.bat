@@ -1,0 +1,1 @@
+wgo run ./dev/main.go --env="dev" :: wgo -file .sass sass ./dev/frontend/src/sass:./dev/frontend/src/css :: wgo -file .templ templ generate

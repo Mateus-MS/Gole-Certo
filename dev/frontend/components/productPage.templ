@@ -1,0 +1,177 @@
+package components
+
+import (
+    page_shop_frags "github.com/Mateus-MS/Gole-Certo/dev/frontend/pages/shop/frags"
+	"github.com/Mateus-MS/Gole-Certo/dev/backend/modules/stock/model"
+	"strconv"
+	"go.mongodb.org/mongo-driver/bson"
+)
+
+templ ProductPageGridComponent(filter bson.M, prods []product.ProductStock, pageIndex, totalPages int64) {
+    <div id="pagination_container">
+
+        @filterInfo(filter)
+
+        if len(prods) > 0 {
+
+            @products(prods)
+
+            @paginationController(pageIndex, totalPages)
+
+
+        } else {
+
+            @noProductMatchFiltersFallback()
+
+        }
+
+    </div>
+}
+
+func getControllerClassName(loopIndex, pageIndex int) string {
+    if pageIndex == loopIndex {
+        return "page active"
+    }
+
+    return "page"
+}
+
+templ filterInfo(filter bson.M){
+    <div id="filter-info">
+
+        <div class="holder">
+
+            // Count how many allias was created on this render
+            {{ aliasCounter := 0 }}
+
+            // If a price range filter was passed
+            if filter["price"] != nil {
+
+                // Get the values as string
+                {{
+                    priceRange := filter["price"].(bson.M) 
+                    minPrice := strconv.FormatFloat(priceRange["$gte"].(float64), 'f', 2, 64)
+                    maxPrice := strconv.FormatFloat(priceRange["$lte"].(float64), 'f', 2, 64)
+                }}
+
+                // Render the alias
+                <button id="filter-alias_pricerange" class="filter-alias" onclick="PRICE_MANAGER.reset()">
+                    <span class="tag">Price</span> 
+                    <span class="value">€{minPrice}  -  €{maxPrice}</span> 
+                    <span class="close"> X </span>
+                </button>
+
+                // Increase the alias render count
+                {{ aliasCounter += 1 }}
+
+            }
+
+            // If a brand filter was passed
+            if filter["brand"] != nil {
+
+                // Get the brands list as a string list
+                {{ brands := filter["brand"].(bson.M)["$in"].([]string) }}
+                
+                <button id="filter-alias_brands" class="filter-alias" onclick="BRAND_MANAGER.reset()">
+                    <span class="tag">Brands</span> 
+                    <span class="value">
+                        // Create a span for each brand in the brand list
+                        for _, brand := range brands {
+                            <span>{brand}</span>
+                        }
+                    </span> 
+                    <span class="close"> X </span>
+                </button>
+
+                // Increase the alias render count
+                {{ aliasCounter += 1 }}
+            }
+
+            // If there is at least 2 alias, show the button to clear all
+            if aliasCounter >= 2 {
+                <button id="filter-alias_clearall" onclick="ClearAllFilters()">clear all filters</button>
+            }
+
+        </div>
+
+        <button id="toggle-menu" onclick="OpenFilterMenu()">&#xf0c9;</button>
+    </div>
+}
+
+templ paginationController(pageIndex, totalPages int64){
+    <div id="controllers">
+
+        if totalPages > 1 {
+
+            <button  
+                class="icons arrow"
+                if pageIndex == 1 {
+                    style="visibility: hidden; pointer-events: none;"
+                }
+                onclick={ templ.JSFuncCall("UpdatePage", pageIndex - 1) }
+            >
+                &#xE801;
+            </button>
+
+            {{start := pageIndex - 1}}
+            if start < 1 {
+                {{start = 1}}
+            }
+
+            {{end := start + 2}}
+            if end > totalPages {
+                {{end = totalPages}}
+                {{start = end - 2}}
+                if start < 1 {
+                    {{start = 1}}
+                }
+            }
+
+            for i := start; i <= end; i++ {
+                <button  
+                    class={getControllerClassName(int(i), int(pageIndex))}
+                    onclick={ templ.JSFuncCall("UpdatePage", i) }
+                >
+                    {strconv.Itoa(int(i))}
+                </button>
+            }
+
+            if end < totalPages-1 {
+                <span>...</span>
+
+                <button  
+                    class={getControllerClassName(int(totalPages), int(pageIndex))}
+                    onclick={ templ.JSFuncCall("UpdatePage", totalPages) }
+                >
+                    {strconv.Itoa(int(totalPages))}
+                </button>
+            }
+
+            <button  
+                    class="icons arrow"
+                    if pageIndex == totalPages {
+                        style="visibility: hidden; pointer-events: none;"
+                    }
+                    onclick={ templ.JSFuncCall("UpdatePage", pageIndex + 1) }
+            >
+                &#xE802;
+            </button>
+
+        }
+    
+    </div>
+}
+
+templ products(prods []product.ProductStock){
+    <div id="holder">
+        for _, prod := range prods {
+            @page_shop_frags.ProdCard(prod)
+        }
+    </div>
+}
+
+templ noProductMatchFiltersFallback(){
+    <div id="no-match-fallback">
+        <span>We looked everywhere… <br>Even under the couch. <br>No matches!</span>
+    </div>
+}

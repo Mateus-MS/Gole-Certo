@@ -1,0 +1,29 @@
+@use '../globals' as g;
+@use 'sass:map' as map;
+
+.prod-card
+    width: 100%
+    height: fit-content
+
+    .container
+        width: 100%
+        background-color: gray
+        aspect-ratio: 1 / 1
+
+    .infos
+        margin-top: .5em
+        font-weight: bolder
+
+        .name
+            font-size: .8em
+            display: block
+            color: map.get(g.$colors, primary)
+        
+        .price
+            color: map.get(g.$colors, primary)
+            font-size: 1.2em
+
+            @include g.when-desktop((
+                margin-top: .2em,
+                font-size: .9em 
+            ))

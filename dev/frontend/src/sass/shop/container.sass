@@ -1,0 +1,32 @@
+#holder
+    width: 100vw
+    flex-grow: 1
+
+    display: grid
+
+    // grid layout 2 column
+    grid-template-columns: repeat(2, 1fr)
+    gap: 30px
+    padding: 0px 30px
+    justify-content: center
+
+    @media (min-width: 768px) and (max-width: 1200px)
+        width: 100%
+        grid-template-columns: repeat(3, 250px)
+        gap: 40px
+        padding: 0px 0px
+
+        grid-area: holder
+
+    // grid layout 4 columns
+    @media (min-width: 1200px)
+        width: 100%
+        grid-template-columns: repeat(4, 250px)
+        gap: 40px
+        padding: 0px 0px
+
+        grid-area: holder
+
+#pagination
+    width: inherit
+    height: 70px
