@@ -14,6 +14,8 @@ type IService interface {
 	ReadByName(context.Context, string) (*stock_model.StockEntity, error)
 	ReadByID(context.Context, primitive.ObjectID) (*stock_model.StockEntity, error)
 	DeleteByID(context.Context, primitive.ObjectID) error
+	UpdateByID(context.Context, stock_model.StockEntity) error
+	AtomicDecreaseStockByID(context.Context, primitive.ObjectID, int) error
 }
 
 type service struct {

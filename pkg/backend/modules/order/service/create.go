@@ -15,7 +15,15 @@ func (s *service) Create(ctx context.Context, order order_model.OrderEntity) err
 
 	// Check if the given products exists
 	for prodId := range order.Products {
-		_, err = s.stock_service.ReadByID(ctx, prodId)
+		_, err := s.stock_service.ReadByID(ctx, prodId)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Update the stock quantity
+	for prodId, quantity := range order.Products {
+		err := s.stock_service.AtomicDecreaseStockByID(ctx, prodId, quantity)
 		if err != nil {
 			return err
 		}
