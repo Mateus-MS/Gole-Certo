@@ -8,8 +8,14 @@ import (
 
 func IsAdmin() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		_, ok := c.Get("userIsAdmin")
+		isAdmin, ok := c.Get("userIsAdmin")
 		if !ok {
+			c.AbortWithStatus(http.StatusForbidden)
+			return
+		}
+
+		// type assert and check value
+		if adminBool, ok := isAdmin.(bool); !ok || !adminBool {
 			c.AbortWithStatus(http.StatusForbidden)
 			return
 		}
