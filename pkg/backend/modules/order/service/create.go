@@ -7,5 +7,11 @@ import (
 )
 
 func (s *service) Create(ctx context.Context, order order_model.OrderEntity) error {
+	// Check if the given user exists
+	_, err := s.user_service.ReadByID(ctx, order.UserID)
+	if err != nil {
+		return err
+	}
+
 	return s.repository.Create(ctx, order)
 }

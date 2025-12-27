@@ -23,6 +23,7 @@ type IService interface {
 
 	// DB crud functions to be exported
 	Create(context.Context, user_model.UserEntity) error
+	ReadByID(context.Context, primitive.ObjectID) (*user_model.UserEntity, error)
 	ReadByName(context.Context, string) (*user_model.UserEntity, error)
 	DeleteByID(context.Context, primitive.ObjectID) error
 }

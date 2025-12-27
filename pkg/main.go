@@ -24,8 +24,8 @@ func main() {
 
 	// SERVICES
 	stockService := stock_service.New(db.Database("cluster").Collection("stock"))
-	userService := user_service.New(db.Database("cluster").Collection("users"), cache, "")
-	orderService := order_service.New(db.Database("cluster").Collection("order"))
+	userService := user_service.New(db.Database("cluster").Collection("user"), cache, "")
+	orderService := order_service.New(db.Database("cluster").Collection("order"), userService)
 
 	aplication := app.NewApp(
 		db,

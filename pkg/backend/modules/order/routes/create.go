@@ -1,6 +1,8 @@
 package order_routes
 
 import (
+	"net/http"
+
 	order_model "alves.com/backend/modules/order/model"
 	order_service "alves.com/backend/modules/order/service"
 	"github.com/gin-gonic/gin"
@@ -36,10 +38,15 @@ func OrderCreate(stockService order_service.IService) gin.HandlerFunc {
 			products[id] = amount
 		}
 
-		stockService.Create(c.Request.Context(), order_model.OrderEntity{
+		err = stockService.Create(c.Request.Context(), order_model.OrderEntity{
 			ID:       primitive.NewObjectID(),
 			UserID:   userID,
 			Products: products,
 		})
+
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusNotFound, err.Error())
+			return
+		}
 	}
 }

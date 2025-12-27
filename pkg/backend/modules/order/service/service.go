@@ -5,6 +5,7 @@ import (
 
 	order_model "alves.com/backend/modules/order/model"
 	order_repository "alves.com/backend/modules/order/repo"
+	user_service "alves.com/backend/modules/user/service"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -15,10 +16,13 @@ type IService interface {
 
 type service struct {
 	repository *order_repository.Repository
+
+	user_service user_service.IService
 }
 
-func New(coll *mongo.Collection) *service {
+func New(coll *mongo.Collection, userService user_service.IService) *service {
 	return &service{
-		repository: order_repository.New(coll),
+		repository:   order_repository.New(coll),
+		user_service: userService,
 	}
 }
