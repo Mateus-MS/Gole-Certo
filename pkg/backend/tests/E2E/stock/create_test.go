@@ -21,7 +21,7 @@ func TestStockCreate_Success(t *testing.T) {
 	accessToken := test_helper_users.LoginTempADM(t, app.Services.User)
 
 	// Get the product
-	productJson := test_helper_stock.GetProductJson("Coca cola")
+	productJson := test_helper_stock.GetProductJson("Pepsi")
 
 	// Create the request
 	req, _ := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(productJson))
@@ -37,7 +37,7 @@ func TestStockCreate_Success(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code, "expected HTTP 200")
 
 	// Try to read the just created product
-	req, _ = http.NewRequest(http.MethodGet, "/products?name=Coca cola", nil)
+	req, _ = http.NewRequest(http.MethodGet, "/products/Pepsi", nil)
 	w = httptest.NewRecorder()
 	app.Router.ServeHTTP(w, req)
 
@@ -49,7 +49,7 @@ func TestStockCreate_WithoutBearerHeader(t *testing.T) {
 	app := test_helper_app.NewApp(t)
 
 	// Get the product
-	productJson := test_helper_stock.GetProductJson("Coca cola")
+	productJson := test_helper_stock.GetProductJson("Pepsi")
 
 	// Create the request
 	req, _ := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(productJson))
@@ -67,7 +67,7 @@ func TestStockCreate_WithInvalidBearerToken(t *testing.T) {
 	app := test_helper_app.NewApp(t)
 
 	// Get the product
-	productJson := test_helper_stock.GetProductJson("Coca cola")
+	productJson := test_helper_stock.GetProductJson("Pepsi")
 
 	// Create the request
 	req, _ := http.NewRequest(http.MethodPost, "/products", bytes.NewBuffer(productJson))
