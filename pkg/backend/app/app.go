@@ -1,6 +1,7 @@
 package app
 
 import (
+	order_service "alves.com/backend/modules/order/service"
 	stock_service "alves.com/backend/modules/stock/service"
 	user_service "alves.com/backend/modules/user/service"
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,7 @@ import (
 type Services struct {
 	Stock stock_service.IService
 	User  user_service.IService
+	Order order_service.IService
 }
 
 type App struct {

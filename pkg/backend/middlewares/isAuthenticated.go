@@ -42,9 +42,7 @@ func AuthMiddleware(userService user_service.IService) gin.HandlerFunc {
 		}
 
 		c.Set("userID", userCache.ID.Hex())
-		if userCache.IsAdmin {
-			c.Set("userIsAdmin", userCache.IsAdmin)
-		}
+		c.Set("userIsAdmin", userCache.IsAdmin)
 		c.Next()
 	}
 }

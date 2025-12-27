@@ -13,6 +13,9 @@ func (s *service) Create(ctx context.Context, user user_model.UserEntity) error 
 func (s *service) ReadByName(ctx context.Context, name string) (*user_model.UserEntity, error) {
 	return s.repository.ReadByName(ctx, name)
 }
+func (s *service) ReadByID(ctx context.Context, id primitive.ObjectID) (*user_model.UserEntity, error) {
+	return s.repository.ReadByID(ctx, id)
+}
 func (s *service) DeleteByID(ctx context.Context, id primitive.ObjectID) error {
 	return s.repository.DeleteByID(ctx, id)
 }

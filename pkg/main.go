@@ -6,6 +6,7 @@ import (
 	"alves.com/backend/app"
 	"alves.com/backend/app/config"
 	"alves.com/backend/app/routes"
+	order_service "alves.com/backend/modules/order/service"
 	stock_service "alves.com/backend/modules/stock/service"
 	user_service "alves.com/backend/modules/user/service"
 	"github.com/gin-gonic/gin"
@@ -22,8 +23,9 @@ func main() {
 	router := gin.Default()
 
 	// SERVICES
+	userService := user_service.New(db.Database("cluster").Collection("user"), cache, "")
 	stockService := stock_service.New(db.Database("cluster").Collection("stock"))
-	userService := user_service.New(db.Database("cluster").Collection("users"), cache, "")
+	orderService := order_service.New(db.Database("cluster").Collection("order"), userService, stockService)
 
 	aplication := app.NewApp(
 		db,
@@ -32,6 +34,7 @@ func main() {
 		&app.Services{
 			Stock: stockService,
 			User:  userService,
+			Order: orderService,
 		},
 	)
 
