@@ -7,6 +7,7 @@ import (
 	stock_error "alves.com/backend/modules/stock/errors"
 	stock_model "alves.com/backend/modules/stock/model"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -36,4 +37,18 @@ func (repo *Repository) ReadByName(ctx context.Context, name string) (*stock_mod
 	}
 
 	return &userGeneric, nil
+}
+
+func (repo *Repository) ReadByID(ctx context.Context, id primitive.ObjectID) (*stock_model.StockEntity, error) {
+	stock, err := repo.Read(ctx, bson.M{"_id": id})
+
+	if err != nil {
+		if errors.Is(err, stock_error.ErrStockInexistent) {
+			return &stock_model.StockEntity{}, stock_error.ErrStockInexistent
+		} else {
+			return &stock_model.StockEntity{}, errors.Join(errors.New("something went wrong"), err)
+		}
+	}
+
+	return &stock, nil
 }

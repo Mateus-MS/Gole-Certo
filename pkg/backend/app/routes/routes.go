@@ -13,7 +13,7 @@ import (
 
 func InitRoutes(app *app.App) {
 	app.Router.POST("/products", middlewares.AuthMiddleware(app.Services.User), middlewares.IsAdmin(), stock_routes.StockCreate(app.Services.Stock))
-	app.Router.GET("/products", stock_routes.StockRead(app.Services.Stock))
+	app.Router.GET("/products/:name", stock_routes.StockRead(app.Services.Stock))
 
 	RegisterUserRoutes(app.Router, app.Services.User)
 	RegisterOrderRoutes(app.Router, app.Services.Order)

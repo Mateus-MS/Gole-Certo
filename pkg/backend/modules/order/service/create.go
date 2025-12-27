@@ -13,5 +13,13 @@ func (s *service) Create(ctx context.Context, order order_model.OrderEntity) err
 		return err
 	}
 
+	// Check if the given products exists
+	for prodId := range order.Products {
+		_, err = s.stock_service.ReadByID(ctx, prodId)
+		if err != nil {
+			return err
+		}
+	}
+
 	return s.repository.Create(ctx, order)
 }
