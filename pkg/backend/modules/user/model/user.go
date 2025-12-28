@@ -8,13 +8,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func NewUser(username, password string) *UserEntity {
+func NewUser(username, hashedPassword string) *UserEntity {
 	user := UserEntity{
+		ID:       primitive.NewObjectIDFromTimestamp(time.Now()),
 		Name:     username,
-		Password: password,
+		Password: hashedPassword,
+		IsAdmin:  false,
 	}
-
-	user.ID = primitive.NewObjectIDFromTimestamp(time.Now())
 
 	return &user
 }
