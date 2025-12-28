@@ -7,12 +7,14 @@ import (
 	order_repository "alves.com/backend/modules/order/repo"
 	stock_service "alves.com/backend/modules/stock/service"
 	user_service "alves.com/backend/modules/user/service"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type IService interface {
-	// DB crud functions to be exported
 	Create(context.Context, order_model.OrderEntity) error
+
+	ReadAllByUserID(context.Context, primitive.ObjectID) ([]order_model.OrderEntity, error)
 }
 
 type service struct {
